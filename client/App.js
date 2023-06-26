@@ -6,7 +6,8 @@ import SettingsScreen from './Screens/SettingsScreen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { setBackgroundColorAsync } from 'expo-navigation-bar'
-import AddRecord from './Modals/AddRecord';
+import AddRecord from './Screens/AddRecord';
+import TopBar from './Components/Panels/TopBar';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -15,6 +16,7 @@ export default function App() {
 
 	return (
 		<SafeAreaProvider>
+			<TopBar />
 			<NavigationContainer>
 				<Tab.Navigator initialRouteName="Home"
 					headerShown={false}

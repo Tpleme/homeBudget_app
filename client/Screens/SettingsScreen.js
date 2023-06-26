@@ -1,25 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, Text, Button, StatusBar } from 'react-native';
+import { View, StatusBar, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import SettingsList from '../Components/Settings/SettingsList';
 
 function SettingsScreen({ navigation }) {
     const insets = useSafeAreaInsets();
-
+    
     return (
         <View
             style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
+                ...styles.mainContainer,
                 paddingTop: insets.top,
                 paddingBottom: insets.bottom,
-                paddingLeft: insets.left,
-                paddingRight: insets.right,
+                paddingLeft: insets.left + 20,
+                paddingRight: insets.right + 20,
             }}>
             <StatusBar barStyle="light-content" backgroundColor="black" />
-            <Text>Settings Screen</Text>
-            <Button title="Go back" onPress={() => navigation.goBack()} />
+            <SettingsList />
         </View>
     );
 }
@@ -29,3 +27,12 @@ export default SettingsScreen
 SettingsScreen.propTypes = {
     navigation: PropTypes.object
 }
+
+const styles = StyleSheet.create({
+    mainContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#202020',
+    },
+});

@@ -16,5 +16,7 @@
         "react",
         "react-native"
     ],
-    "rules": {}
+    "rules": {
+        "react/prop-types": "off"
+    }
 }
