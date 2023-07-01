@@ -1,9 +1,9 @@
 import React from 'react';
-import { TouchableOpacity, View, Linking, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const SettingsListItem = (props) => {
-
+    
     const getSecondaryStyle = () => {
         if (props.isFirstElement) {
             return styles.isFirstElement
@@ -17,7 +17,7 @@ export const SettingsListItem = (props) => {
         <TouchableOpacity
             {...props}
             activeOpacity={1}
-            onPress={() => actionForMenuItem(props.item)}
+            onPress={() => actionForMenuItem(props.item, props.navigation)}
             style={{ ...styles.mainContainer, ...getSecondaryStyle() }}
         >
             <Text numberOfLines={1} style={{color: 'white'}}>
@@ -38,18 +38,18 @@ export const SettingsListItem = (props) => {
     );
 };
 
-const actionForMenuItem = (item) => {
+const actionForMenuItem = (item, navigation) => {
     switch (item) {
         case 'aboutMe': {
-            Linking.openURL('https://google.com');
+            navigation.navigate('About')
             break;
         }
         case 'help': {
-            Linking.openURL('https://google.com');
+            navigation.navigate('Theme')
             break;
         }
         case 'spaceAPI': {
-            Linking.openURL('https://google.com');
+            navigation.navigate('Help')
         }
     }
 };

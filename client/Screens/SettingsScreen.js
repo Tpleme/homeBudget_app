@@ -1,23 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View, StatusBar, StyleSheet } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SettingsList from '../Components/Settings/SettingsList';
 
 function SettingsScreen({ navigation }) {
-    const insets = useSafeAreaInsets();
-    
+
     return (
         <View
-            style={{
-                ...styles.mainContainer,
-                paddingTop: insets.top,
-                paddingBottom: insets.bottom,
-                paddingLeft: insets.left + 20,
-                paddingRight: insets.right + 20,
-            }}>
+            style={styles.mainContainer}>
             <StatusBar barStyle="light-content" backgroundColor="black" />
-            <SettingsList />
+            <SettingsList navigation={navigation}/>
         </View>
     );
 }
@@ -34,5 +26,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#202020',
+        paddingLeft: 20,
+        paddingRight: 20
     },
 });

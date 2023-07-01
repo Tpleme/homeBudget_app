@@ -25,11 +25,11 @@ const settingsData = [
     },
 ];
 
-function SettingsList() {
+function SettingsList({ navigation }) {
     return (
         <SectionList
             sections={settingsData}
-            style={{ flex: 1, width: '100%', marginTop: 24 }}
+            style={{ flex: 1, width: '100%' }}
             showsVerticalScrollIndicator={false}
             bounces={false}
             onEndReachedThreshold={0.5}
@@ -44,6 +44,7 @@ function SettingsList() {
                         item={props.item}
                         isFirstElement={isFirstElement}
                         isLastElement={isLastElement}
+                        navigation={navigation}
                     />
                 );
             }}

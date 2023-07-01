@@ -16,7 +16,7 @@ export const SettingsListSectionHeader = (props) => {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        marginTop: 32,
+        marginTop: 24,
         marginBottom: 24,
         width: '100%',
         flexDirection: 'row',
