@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import { View, Text, Button, StatusBar } from 'react-native';
+import { View, Text, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
@@ -21,7 +21,6 @@ function HomeScreen({ navigation }) {
             }}>
             <StatusBar barStyle="light-content" backgroundColor="black" />
             <Text style={{ color: 'white' }}>Home Screen</Text>
-            <Button title='Go to Settings' onPress={() => navigation.navigate('Settings')} />
         </View>
     );
 }

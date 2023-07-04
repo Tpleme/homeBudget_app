@@ -2,7 +2,7 @@ import { View, Text, StatusBar } from 'react-native';
 import React from 'react'
 import NavigateBack from '../../../Misc/NavigateBack';
 
-function About({ navigation }) {
+function Contacts({ navigation }) {
 
     return (
         <View
@@ -14,9 +14,9 @@ function About({ navigation }) {
             }}>
             <NavigateBack navigation={navigation}/>
             <StatusBar barStyle="light-content" backgroundColor="black" />
-            <Text style={{ color: 'white' }}>About Screen</Text>
+            <Text style={{ color: 'white' }}>Contacts Screen</Text>
         </View>
     )
 }
 
-export default About
+export default Contacts

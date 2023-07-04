@@ -6,13 +6,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const settingsData = [
     {
-        title: 'About',
+        title: 'General',
         icon: (
             <View style={{ padding: 10, borderRadius: 8, backgroundColor: 'tomato' }}>
                 <Ionicons name='home' size={25} color='white' />
             </View>
         ),
-        data: ['aboutMe', 'spaceAPI', 'theme'],
+        data: [
+            { route: 'theme', title: 'Theme' },
+        ],
     },
     {
         title: 'Feedback and Help',
@@ -21,7 +23,13 @@ const settingsData = [
                 <Ionicons name='home' size={25} color='white' />
             </View>
         ),
-        data: ['help', 'review'],
+        data: [
+            { route: 'about', title: 'About' },
+            { route: 'help', title: 'Help' },
+            { route: 'review', title: 'Review' },
+            { route: 'feedback', title: 'Feedback' },
+            { route: 'contacts', title: 'Contacts' },
+        ],
     },
 ];
 

@@ -3,27 +3,30 @@ import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export const SettingsListItem = (props) => {
-    
+
     const getSecondaryStyle = () => {
+        let itemStyle = {}
+
         if (props.isFirstElement) {
-            return styles.isFirstElement
+            itemStyle = { ...itemStyle, ...styles.isFirstElement }
         }
         if (props.isLastElement) {
-            return styles.isLastElement
+            itemStyle = { ...itemStyle, ...styles.isLastElement }
         }
+
+        return itemStyle
     }
 
     return (
         <TouchableOpacity
             {...props}
             activeOpacity={1}
-            onPress={() => actionForMenuItem(props.item, props.navigation)}
+            onPress={() => props.navigation.navigate(props.item.route)}
             style={{ ...styles.mainContainer, ...getSecondaryStyle() }}
         >
-            <Text numberOfLines={1} style={{color: 'white'}}>
-                {props.item}
+            <Text numberOfLines={1} style={{ color: 'white' }}>
+                {props.item.title}
             </Text>
-
             <View
                 style={{
                     flex: 1,
@@ -36,22 +39,6 @@ export const SettingsListItem = (props) => {
             </View>
         </TouchableOpacity>
     );
-};
-
-const actionForMenuItem = (item, navigation) => {
-    switch (item) {
-        case 'aboutMe': {
-            navigation.navigate('About')
-            break;
-        }
-        case 'help': {
-            navigation.navigate('Theme')
-            break;
-        }
-        case 'spaceAPI': {
-            navigation.navigate('Help')
-        }
-    }
 };
 
 const styles = StyleSheet.create({
