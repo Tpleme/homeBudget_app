@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         display:'flex',
         alignItems: 'center',
         flexDirection: 'row',
-        gap: 10
+        gap: 10,
     },
     avatar: {
         height: 25,

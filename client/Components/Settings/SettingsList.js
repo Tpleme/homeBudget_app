@@ -42,11 +42,11 @@ function SettingsList({ navigation }) {
             bounces={false}
             onEndReachedThreshold={0.5}
             ItemSeparatorComponent={ListSeparator}
-            keyExtractor={(it) => it}
+            keyExtractor={(it) => it.route}
             renderItem={(props) => {
                 const isFirstElement = props.index === 0;
                 const isLastElement = props.index === props.section.data.length - 1;
-
+                
                 return (
                     <SettingsListItem
                         item={props.item}

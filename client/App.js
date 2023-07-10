@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './Screens/HomeScreen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { setBackgroundColorAsync } from 'expo-navigation-bar'
+// import { setBackgroundColorAsync } from 'expo-navigation-bar'
 import AddRecord from './Screens/AddRecord';
 import TopBar from './Components/Panels/TopBar';
 import SettingsNavigation from './Components/Settings/SettingsNavigation';
@@ -13,7 +13,7 @@ import SettingsNavigation from './Components/Settings/SettingsNavigation';
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-	setBackgroundColorAsync('black')
+	// setBackgroundColorAsync('black')
 
 	return (
 		<SafeAreaProvider>
@@ -21,12 +21,14 @@ export default function App() {
 			<NavigationContainer>
 				<Tab.Navigator
 					initialRouteName="Home"
-					barStyle={{ backgroundColor: 'black' }}
 					screenOptions={{
 						headerShown: false,
 						tabBarActiveTintColor: 'tomato',
-						tabBarInactiveTintColor: 'white',
-						tabBarStyle: { backgroundColor: 'black', border: 'none'},
+						tabBarStyle: { 
+							backgroundColor: 'black', 
+							borderTopWidth:0, 
+							borderTopColor: 'transparent',
+						},
 					}}
 				>
 					<Tab.Screen name="Home" component={HomeScreen} options={{

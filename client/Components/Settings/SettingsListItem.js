@@ -19,10 +19,10 @@ export const SettingsListItem = (props) => {
 
     return (
         <TouchableOpacity
-            {...props}
             activeOpacity={1}
             onPress={() => props.navigation.navigate(props.item.route)}
             style={{ ...styles.mainContainer, ...getSecondaryStyle() }}
+            {...props}
         >
             <Text numberOfLines={1} style={{ color: 'white' }}>
                 {props.item.title}
