@@ -2,7 +2,7 @@ import 'react-native-gesture-handler';
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from './Screens/HomeScreen';
+import HomeNavigator from './Components/HomeComponents/HomeNavigator';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // import { setBackgroundColorAsync } from 'expo-navigation-bar'
@@ -31,7 +31,7 @@ export default function App() {
 						},
 					}}
 				>
-					<Tab.Screen name="Home" component={HomeScreen} options={{
+					<Tab.Screen name="Home" component={HomeNavigator} options={{
 						tabBarIcon: ({ focused, color, size }) => {
 							let iconName = focused
 								? 'home'

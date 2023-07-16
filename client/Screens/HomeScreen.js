@@ -1,61 +1,48 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-import { ScrollView, View, Text, StatusBar, StyleSheet } from 'react-native';
+import { ScrollView, View, Text, StatusBar, StyleSheet, Pressable } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Activity from '../Components/HomeComponents/Activity';
 
 const activityMock = [
-    { user: "Leandro Melo", cat: "Groceries", amount: 32.56 },
-    { user: "Leandro Melo", cat: "Groceries", amount: 32.56 },
-    { user: "Leandro Melo", cat: "Groceries", amount: 32.56 },
-    { user: "Leandro Melo", cat: "Groceries", amount: 32.56 },
-    { user: "Leandro Melo", cat: "Groceries", amount: 32.56 },
-    { user: "Ana Quaresma asdasdasd", cat: "Groceries", amount: 32.56 },
+    { user: "Leandro Melo", cat: "Groceries", amount: 32.56, date: '02-31-2023 14:35' },
+    { user: "Leandro Melo", cat: "Groceries", amount: 32.56, date: '02-31-2023 14:35' },
+    { user: "Leandro Melo", cat: "Groceries", amount: 32.56, date: '02-31-2023 14:35' },
+    { user: "Leandro Melo", cat: "Groceries", amount: 32.56, date: '02-31-2023 14:35' },
+    { user: "Leandro Melo", cat: "Groceries", amount: 32.56, date: '02-31-2023 14:35' },
+    { user: "Ana Quaresma", cat: "Groceries", amount: 32.56, date: '02-31-2023 14:35' },
 ]
 
 function HomeScreen({ navigation }) {
-
+    console.log(navigation)
     const homeShortcuts = [
-        { title: "Add Record" },
-        { title: "View history" },
-        { title: "View history" },
-        { title: "View history" },
-        { title: "View history" },
-        { title: "View history" },
-        { title: "View history" },
+        { title: "Add Record", route: 'addRecordScreen' },
+        { title: "View history", route: 'addRecordScreen' },
+        { title: "View history", route: 'addRecordScreen' },
+        { title: "View history", route: 'addRecordScreen' },
+        { title: "View history", route: 'addRecordScreen' },
+        { title: "View history", route: 'addRecordScreen' },
+        { title: "View history", route: 'addRecordScreen' },
     ]
 
     return (
         <ScrollView
             style={styles.mainContainer}
-            contentContainerStyle={{ justifyContent: 'flex-start', rowGap: 20, paddingBottom: 20 }}
+            contentContainerStyle={{ justifyContent: 'flex-start', rowGap: 25, paddingBottom: 20 }}
         >
             <StatusBar barStyle="light-content" backgroundColor="black" />
             <View style={styles.chartView}>
 
             </View>
             <View style={styles.shortcutsView}>
-                {homeShortcuts.map((shortcuts, index) => (
-                    <View key={index} style={styles.shortcut}>
+                {homeShortcuts.map((shortcut, index) => (
+                    <Pressable key={index} style={styles.shortcut} onPress={() => navigation.navigate(shortcut.route)}>
                         <Ionicons style={{ alignSelf: 'center' }} name='home' size={30} color='white' />
-                        <Text style={styles.shortcut.text}>{shortcuts.title}</Text>
-                    </View>
+                        <Text style={styles.shortcut.text}>{shortcut.title}</Text>
+                    </Pressable>
                 ))}
             </View>
-            <View style={styles.activityView}>
-                <View style={styles.activityView.top}>
-                    <Text style={styles.activityView.top.title}>Recent Activity</Text>
-                    <Text style={styles.activityView.top.viewAll}>View all</Text>
-                </View>
-                <View style={styles.activityView.activityItens}>
-                    {activityMock.map((activity, index) => (
-                        <View key={index} style={styles.activityView.activityItens.item}>
-                            <Text numberOfLines={1} style={styles.activityView.activityItens.item.user}>{activity.user}</Text>
-                            <Text numberOfLines={1} style={styles.activityView.activityItens.item.cat}>{activity.cat}</Text>
-                            <Text numberOfLines={1} style={styles.activityView.activityItens.item.amount}>{activity.amount} €</Text>
-                        </View>
-                    ))}
-                </View>
-            </View>
+            <Activity data={activityMock} onViewMore={() => navigation.navigate('activityScreen')} />
         </ScrollView>
     );
 }
@@ -102,58 +89,6 @@ const styles = StyleSheet.create({
         text: {
             textAlign: 'center',
             color: 'white'
-        }
-    },
-    activityView: {
-        width: '100%',
-        borderColor: 'tomato',
-        borderWidth: 1,
-        borderRadius: 10,
-        padding: 10,
-        top: {
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItens: 'center',
-            title: {
-                color: 'white',
-                fontSize: 16,
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: 1
-            },
-            viewAll: {
-                color: 'tomato',
-                fontSize: 13
-            }
-        },
-        activityItens: {
-            marginTop: 10,
-            rowGap: 5,
-            item: {
-                borderColor: "black",
-                borderWidth: 1,
-                height: 30,
-                borderRadius: 5,
-                flexDirection: 'row',
-                alignItens: 'center',
-                justifyContent: 'space-between',
-                padding: 5,
-                user: {
-                    color: 'white',
-                    width: '30%',
-                    textAlign: 'left'
-                },
-                cat: {
-                    color: 'white',
-                    width: '30%',
-                    textAlign: 'center'
-                },
-                amount: {
-                    color: 'white',
-                    width: '30%',
-                    textAlign: 'right'
-                }
-            }
         }
     },
 });
