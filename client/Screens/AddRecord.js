@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, StatusBar } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import NavigateBack from '../Misc/NavigateBack';
 
 function AddRecord({ navigation }) {
     const insets = useSafeAreaInsets();
@@ -19,6 +20,7 @@ function AddRecord({ navigation }) {
                 backgroundColor:'#202020'
             }}>
             <StatusBar barStyle="light-content" backgroundColor="black" />
+            <NavigateBack navigation={navigation} />
             <Text style={{color:'white'}}>Add record</Text>
         </View>
     );
