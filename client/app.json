@@ -6,7 +6,6 @@
 		"orientation": "portrait",
 		"icon": "./assets/icon.png",
 		"userInterfaceStyle": "light",
-		"entryPoint": "./index.js",
 		"splash": {
 			"image": "./assets/splash.png",
 			"resizeMode": "contain",
@@ -16,7 +15,10 @@
 			"**/*"
 		],
 		"ios": {
-			"supportsTablet": true
+			"supportsTablet": true,
+			"config": {
+				"usesNonExemptEncryption": false
+			}
 		},
 		"android": {
 			"adaptiveIcon": {
@@ -28,7 +30,7 @@
 			"favicon": "./assets/favicon.png"
 		},
 		"androidNavigationBar": {
-			"backgroundColor": "#000000"
+			// "backgroundColor": "#000000"
 		}
 	}
 }

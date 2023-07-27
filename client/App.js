@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import Dashboard from './Screens/Dashboard'
 import LoginScreen from './Screens/LoginScreen';
@@ -9,6 +9,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 const Stack = createStackNavigator();
 
 function App() {
+    const [userSignIn, setUserSignIn] = useState(false)
+
     return (
         <SafeAreaProvider>
             <NavigationContainer>
@@ -17,9 +19,14 @@ function App() {
                     gestureEnabled: true,
                     headerShown: false
                 }} >
-                    <Stack.Screen name="dashboard" component={Dashboard} />
-                    <Stack.Screen name="forgotPass" component={ForgotPasswordScreen} />
-                    <Stack.Screen name="login" component={LoginScreen} />
+                    {userSignIn ?
+                        <Stack.Screen name="dashboard" component={Dashboard} />
+                        :
+                        <>
+                            <Stack.Screen name="login" component={LoginScreen} />
+                            <Stack.Screen name="forgotPass" component={ForgotPasswordScreen} />
+                        </>
+                    }
                 </Stack.Navigator>
             </NavigationContainer>
         </SafeAreaProvider>

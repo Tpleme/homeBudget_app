@@ -6,11 +6,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AddRecord from './AddRecord';
 import TopBar from '../Components/Panels/TopBar';
 import SettingsNavigation from '../Components/Settings/SettingsNavigation';
+import { setBackgroundColorAsync } from 'expo-navigation-bar';
 
 const Tab = createBottomTabNavigator();
 
 export default function Dashboard() {
-	// setBackgroundColorAsync('black')
+	setBackgroundColorAsync('black')
 
 	return (
 		<>

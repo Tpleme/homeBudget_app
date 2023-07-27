@@ -14,7 +14,6 @@ const activityMock = [
 ]
 
 function HomeScreen({ navigation }) {
-    console.log(navigation)
     const homeShortcuts = [
         { title: "Add Record", route: 'addRecord', icon:'add-outline' },
         { title: "Groceries Lists", route: 'groceries', icon:'list-outline' },
