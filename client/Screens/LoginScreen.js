@@ -1,65 +1,79 @@
 import React, { useState } from 'react'
-import { Button, View, StyleSheet, StatusBar, Image } from 'react-native'
-import { TextInput } from 'react-native-paper'
+import { View, StyleSheet, StatusBar, Image } from 'react-native'
 import * as SecureStore from 'expo-secure-store'
-import { setBackgroundColorAsync } from 'expo-navigation-bar'
+import { TextInput, PasswordTextInput } from '../Components/Inputs/TextInputs'
+import CustomButton from '../Components/Buttons/CustomButton'
+import { useForm, Controller } from 'react-hook-form'
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
 import Logo from '../assets/Logo/loginLogo.png'
+import { loginUser } from '../API/requests'
 
-function LoginScreen({ navigation }) {
-    setBackgroundColorAsync('#202020')
+function LoginScreen({ navigation, ...props }) {
+    const { control, handleSubmit, formState: { errors } } = useForm()
+    const [loading, setLoading] = useState(false)
+    const insets = useSafeAreaInsets();
 
-    const [user, setUser] = useState('')
-    const [pass, setPass] = useState('')
-    const [showPass, setShowPass] = useState(false)
-
-    const onSubmit = async () => {
-        console.log(user, pass)
-        const token = 'teste token'
-        const userId = '999'
-
-        await SecureStore.setItemAsync('token', token)
-        await SecureStore.setItemAsync('userId', userId)
-        //Set user signin true automaticamente navega para o dashboard
-    }
-
-    const test = async () => {
-        const token = await SecureStore.getItemAsync('token')
-        const userId = await SecureStore.getItemAsync('userId')
-        alert(`Token: ${token}, User ID: ${userId}`)
+    const onSubmit = async (data) => {
+        console.log(data)
+        setLoading(true)
+        
+        loginUser(data.email, data.password).then(async res => {
+            console.log(res.data)
+            // await SecureStore.setItemAsync('token', res.headers.key)
+            // await SecureStore.setItemAsync('id', res.headers.id)
+            // props.setToken(res.headers.key)
+            setLoading(false)
+        }, err => {
+            alert(err)
+            console.log(err)
+            setLoading(false)
+        })
     }
 
     return (
-        <View style={styles.view}>
+        <View style={{ ...styles.view, paddingTop: insets.top, paddingBottom: insets.bottom }}>
             <View style={styles.imgWrapper}>
-                <Image alt='Leandro' source={Logo} style={styles.logo} />
+                <Image alt='logo' source={Logo} style={styles.logo} />
             </View>
-            <TextInput
-                style={styles.input}
-                onChangeText={setUser}
-                value={user}
-                placeholder='Email'
-                placeholderTextColor='tomato'
-                keyboardType="email-address"
-                mode="outlined"
-                theme={{ colors: { text: 'white' } }}
-                activeOutlineColor='tomato'
-                outlineColor='grey'
-
+            <Controller
+                control={control}
+                name="email"
+                defaultValue=''
+                rules={{
+                    required: 'Email required',
+                    pattern: { value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: 'Invalid email format' }
+                }}
+                render={({ field: { onChange, value } }) => (
+                    <TextInput
+                        placeholder='Email'
+                        value={value}
+                        type="email-address"
+                        onChange={onChange}
+                        error={Boolean(errors.email)}
+                        helperText={errors.email?.message}
+                    />
+                )}
             />
-            <TextInput
-                style={styles.input}
-                onChangeText={setPass}
-                value={pass}
-                placeholder='Password'
-                placeholderTextColor='tomato'
-                secureTextEntry={true}
-                mode="outlined"
-                activeOutlineColor='tomato'
-                outlineColor='grey'
-                theme={{ colors: { text: 'white' } }}
+            <Controller
+                control={control}
+                name="password"
+                defaultValue=''
+                rules={{
+                    required: 'Password required',
+                }}
+                render={({ field: { onChange, value } }) => (
+                    <PasswordTextInput
+                        value={value}
+                        type="password"
+                        onChange={onChange}
+                        error={Boolean(errors.password)}
+                        helperText={errors.password?.message}
+                    />
+                )}
             />
-            <Button onPress={onSubmit} title='Log in' />
-            <Button onPress={test} title='test' />
+            <CustomButton onPress={handleSubmit(onSubmit)} label='Log in' loading={loading} style={{ marginTop: 20 }} />
+            <CustomButton onPress={() => navigation.navigate('forgotPass')} label='Forgot Password' mode='text' style={{ marginTop: 'auto' }} />
             <StatusBar barStyle="light-content" backgroundColor="#202020" />
         </View>
     )
@@ -73,14 +87,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         backgroundColor: '#202020',
-        padding: 40,
+        paddingHorizontal: 40,
+        paddingVertical: 20,
         gap: 10
-    },
-    input: {
-        width: "100%",
-        padding: 10,
-        backgroundColor: '#202020',
-        height: 25
     },
     imgWrapper: {
         flexDirection: 'row',

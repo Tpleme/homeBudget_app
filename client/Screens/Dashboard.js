@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeNavigator from '../Components/HomeComponents/HomeNavigator';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -11,7 +11,9 @@ import { setBackgroundColorAsync } from 'expo-navigation-bar';
 const Tab = createBottomTabNavigator();
 
 export default function Dashboard() {
-	setBackgroundColorAsync('black')
+	useEffect(() => {
+		setBackgroundColorAsync('black')
+	}, [])
 
 	return (
 		<>

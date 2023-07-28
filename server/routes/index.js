@@ -1,0 +1,58 @@
+const express = require("express");
+const cors = require('cors')
+
+const AddImageId = require('../middleware/ImageId')
+const { FOendPointAuth } = require('../middleware/EndpointAuth')
+const { AppUserImageUploader } = require('../middleware/ImageUploader')
+const { StandardLimiter } = require('../middleware/RateLimiter')
+
+const FoAuthRoute = require('./FoAuth')
+const AppUsersRoute = require('./AppUsers')
+
+const routes = {
+    app_users: AppUsersRoute,
+}
+
+module.exports = app => {
+    app.use(express.json());
+
+    const makeHandlerAwareOfAsyncError = (handler) => {
+        return async (req, res, next) => {
+            try {
+                await handler(req, res);
+            } catch (error) {
+                next(error);
+            }
+        }
+    }
+
+
+    for (const [routeName, routeController] of Object.entries(routes)) {
+        if (routeController.getAll) {
+            app.get(`/api/${routeName}`, [cors(), StandardLimiter, FOendPointAuth], makeHandlerAwareOfAsyncError(routeController.getAll))
+        }
+    
+        if (routeController.getByID) {
+            app.get(`/api/${routeName}/:id`, [cors(), StandardLimiter, FOendPointAuth], makeHandlerAwareOfAsyncError(routeController.getByID))
+        }
+    
+        if (routeController.create) {
+            app.post(`/api/${routeName}`, [cors(), StandardLimiter, FOendPointAuth, AddImageId, AppUserImageUploader], makeHandlerAwareOfAsyncError(routeController.create))
+        }
+    
+        if (routeController.update) {
+            app.put(`/api/${routeName}/:id`, [cors(), StandardLimiter, FOendPointAuth], makeHandlerAwareOfAsyncError(routeController.update))
+        }
+    
+        if (routeController.remove) {
+            app.delete(`/api/${routeName}/:id`, [cors(), FOendPointAuth], makeHandlerAwareOfAsyncError(routeController.remove))
+        }
+    }
+
+    app.get('/', (req, res) => {
+        res.status(200).send('Server is up and running')
+    })
+    
+    app.post('/api/app_users/auth', [cors()], makeHandlerAwareOfAsyncError(FoAuthRoute.auth))
+    
+}
