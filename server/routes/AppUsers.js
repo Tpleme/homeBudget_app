@@ -21,7 +21,6 @@ const getAll = async (req, res) => {
 
     if (requestingUserType === 'fo') {
         const users = await models.app_users.findAll({
-            where: { profileComplete: true },
             attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] },
         })
         res.status(200).json(users)

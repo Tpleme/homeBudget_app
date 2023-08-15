@@ -31,7 +31,7 @@ function TopBarModal(props) {
                     <Pressable>
                         <Text style={styles.buttonText}>My Profile</Text>
                     </Pressable>
-                    <Pressable>
+                    <Pressable onPress={props.logOutUser}>
                         <Text style={styles.buttonText}>Log Out</Text>
                     </Pressable>
                 </View>

@@ -22,7 +22,7 @@ const onDisconnect = async (io, socket) => {
 
     console.log('User disconnected ' + socket.id)
 
-    await logOutUser(socket.handshake.auth.uuid)
+    // await logOutUser(socket.handshake.auth.uuid)
 }
 
 module.exports = {

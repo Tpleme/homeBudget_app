@@ -3,8 +3,7 @@ import * as SecureStore from 'expo-secure-store'
 
 export default function useToken() {
     const getToken = async () => {
-        // const tokenString = await SecureStore.getItemAsync('token')
-        const tokenString = localStorage.getItem('token')
+        const tokenString = await SecureStore.getItemAsync('token')
         console.log(tokenString)
         if (isJsonParsable(tokenString)) {
             const userToken = JSON.parse(tokenString)
@@ -17,12 +16,10 @@ export default function useToken() {
 
     const saveToken = async userToken => {
         if (userToken === null) {
-            // await SecureStore.deleteItemAsync('token')
-            localStorage.removeItem('token')
+            await SecureStore.deleteItemAsync('token')
             setToken(null)
         } else {
-            // await SecureStore.setItemAsync('token', JSON.stringify(userToken))
-            localStorage.setItem('token', JSON.stringify(userToken))
+            await SecureStore.setItemAsync('token', JSON.stringify(userToken))
             setToken(userToken.token)
         }
     }

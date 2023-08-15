@@ -10,14 +10,14 @@ import { setBackgroundColorAsync } from 'expo-navigation-bar';
 
 const Tab = createBottomTabNavigator();
 
-export default function Dashboard() {
+export default function Dashboard(props) {
 	useEffect(() => {
 		setBackgroundColorAsync('black')
 	}, [])
 
 	return (
 		<>
-			<TopBar />
+			<TopBar goToLogin={props.logOutUser} />
 			<Tab.Navigator
 				initialRouteName="Home"
 				screenOptions={{

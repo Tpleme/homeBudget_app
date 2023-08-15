@@ -1,10 +1,9 @@
 const express = require("express");
-const cors = require('cors')
 
 const AddImageId = require('../middleware/ImageId')
 const { FOendPointAuth } = require('../middleware/EndpointAuth')
 const { AppUserImageUploader } = require('../middleware/ImageUploader')
-const { StandardLimiter } = require('../middleware/RateLimiter')
+const { StandardLimiter, ChangePassLimiter } = require('../middleware/RateLimiter')
 
 const FoAuthRoute = require('./FoAuth')
 const AppUsersRoute = require('./AppUsers')
@@ -26,33 +25,35 @@ module.exports = app => {
         }
     }
 
-
     for (const [routeName, routeController] of Object.entries(routes)) {
         if (routeController.getAll) {
-            app.get(`/api/${routeName}`, [cors(), StandardLimiter, FOendPointAuth], makeHandlerAwareOfAsyncError(routeController.getAll))
+            app.get(`/api/${routeName}`, [StandardLimiter, FOendPointAuth], makeHandlerAwareOfAsyncError(routeController.getAll))
         }
-    
+
         if (routeController.getByID) {
-            app.get(`/api/${routeName}/:id`, [cors(), StandardLimiter, FOendPointAuth], makeHandlerAwareOfAsyncError(routeController.getByID))
+            app.get(`/api/${routeName}/:id`, [StandardLimiter, FOendPointAuth], makeHandlerAwareOfAsyncError(routeController.getByID))
         }
-    
+
         if (routeController.create) {
-            app.post(`/api/${routeName}`, [cors(), StandardLimiter, FOendPointAuth, AddImageId, AppUserImageUploader], makeHandlerAwareOfAsyncError(routeController.create))
+            app.post(`/api/${routeName}`, [StandardLimiter, FOendPointAuth, AddImageId, AppUserImageUploader], makeHandlerAwareOfAsyncError(routeController.create))
         }
-    
+
         if (routeController.update) {
-            app.put(`/api/${routeName}/:id`, [cors(), StandardLimiter, FOendPointAuth], makeHandlerAwareOfAsyncError(routeController.update))
+            app.put(`/api/${routeName}/:id`, [StandardLimiter, FOendPointAuth], makeHandlerAwareOfAsyncError(routeController.update))
         }
-    
+
         if (routeController.remove) {
-            app.delete(`/api/${routeName}/:id`, [cors(), FOendPointAuth], makeHandlerAwareOfAsyncError(routeController.remove))
+            app.delete(`/api/${routeName}/:id`, FOendPointAuth, makeHandlerAwareOfAsyncError(routeController.remove))
         }
     }
 
     app.get('/', (req, res) => {
         res.status(200).send('Server is up and running')
     })
-    
-    app.post('/api/app_users/auth', [cors()], makeHandlerAwareOfAsyncError(FoAuthRoute.auth))
-    
+
+    app.post('/api/app_users/auth', [], makeHandlerAwareOfAsyncError(FoAuthRoute.auth))
+
+    app.post('/api/app_users/forgot-pass', [ChangePassLimiter], makeHandlerAwareOfAsyncError(routes.app_users.requestPassReset))
+    app.post('/api/app_users/reset-pass', [ChangePassLimiter], makeHandlerAwareOfAsyncError(routes.app_users.resetPassword))
+
 }

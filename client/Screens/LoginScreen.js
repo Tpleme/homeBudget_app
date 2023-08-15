@@ -15,18 +15,16 @@ function LoginScreen({ navigation, ...props }) {
     const insets = useSafeAreaInsets();
 
     const onSubmit = async (data) => {
-        console.log(data)
         setLoading(true)
         
         loginUser(data.email, data.password).then(async res => {
-            console.log(res.data)
-            // await SecureStore.setItemAsync('token', res.headers.key)
-            // await SecureStore.setItemAsync('id', res.headers.id)
-            // props.setToken(res.headers.key)
+            await SecureStore.setItemAsync('token', res.headers.key)
+            await SecureStore.setItemAsync('id', res.headers.id)
+            props.setToken(res.headers.key)
             setLoading(false)
         }, err => {
-            alert(err)
-            console.log(err)
+            alert(err.response.data)
+            console.log(err.response.data)
             setLoading(false)
         })
     }

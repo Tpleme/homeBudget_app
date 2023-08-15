@@ -1,11 +1,15 @@
 import axios from 'axios'
 import { SERVER_URL } from '@env'
+import { getItemAsync } from 'expo-secure-store'
 
 
 const getHeaders = async () => {
+    const key = await getItemAsync('token');
+    const id = await getItemAsync('id')
+
     return {
-        "Authorization": JSON.parse(sessionStorage.getItem('token'))?.token,
-        "requesting-user": `fo_${sessionStorage.getItem('id')}`,
+        "Authorization": key,
+        "requesting-user": `fo_${id}`,
     }
 }
 

@@ -4,9 +4,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TopBarAvatar from '../../Misc/TopBarAvatar';
 import TopBarModal from '../Modals/TopBarModal';
 
-function TopBar() {
+function TopBar(props) {
     const insets = useSafeAreaInsets();
     const [openUserProfile, setOpenUserProfile] = useState(false)
+
 
     return (
         <View style={{
@@ -15,9 +16,9 @@ function TopBar() {
         }}>
             <Text style={{ color: 'white' }}>Home Budget</Text>
             <Pressable onPress={() => setOpenUserProfile(true)}>
-                <TopBarAvatar />
+                <TopBarAvatar/>
             </Pressable>
-            <TopBarModal open={openUserProfile} close={() => setOpenUserProfile(false)} />
+            <TopBarModal open={openUserProfile} close={() => setOpenUserProfile(false)} logOutUser={props.goToLogin} />
         </View>
     )
 }

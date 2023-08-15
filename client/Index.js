@@ -29,36 +29,37 @@ function Index() {
     }, [])
 
     useEffect(() => {
-
-        (async () => {
+        console.log('------------here')
+        console.log(token)
+        const checkToken = async () => {
             if (!token) {
                 const savedToken = await SecureStore.getItemAsync('token')
-                console.log(savedToken)
                 if (savedToken) {
                     setToken(savedToken)
                 }
                 return;
             }
             connectSocket()
-        })
-
+        }
+        checkToken()
     }, [token])
 
 
     const connectSocket = async () => {
+        const uuid = token.split('/')[0];
+
         if (socket.connected) {
-            getUser();
+            getUser(uuid);
             return;
         }
 
-        const uuid = token.split('/')[0];
-
-        socket.auth = { uuid, token: token, location }
+        socket.auth = { uuid, token: token }
         socket.connect();
     }
 
-    const getUser = async () => {
-        await getEntity('app_users', token.split('/')[0]).then(res => {
+    const getUser = async (uuid) => {
+
+        await getEntity('app_users', uuid).then(res => {
             setUserInfo({ ...res.data, token })
             setReady(true)
         }, err => {
@@ -67,8 +68,20 @@ function Index() {
         })
     }
 
+    const logOutUser = async () => {
+        await SecureStore.deleteItemAsync('token')
+        await SecureStore.deleteItemAsync('id')
+        setToken(null)
+        console.log('here')
+        //TODO: quando se faz set ao token aqui, não faz trigger ao useEffect
+    }
+
     const LoginWithProps = (props) => { //para poder passar props para o login component, por alguma razão stack não aceita diretamente em component
         return <LoginScreen setToken={setToken} {...props} />
+    }
+
+    const DashboardWidthProps = (props) => { //para poder passar props para o login component, por alguma razão stack não aceita diretamente em component
+        return <Dashboard logOutUser={logOutUser} {...props} />
     }
 
     return (
@@ -79,7 +92,7 @@ function Index() {
                 headerShown: false
             }} >
                 {ready ?
-                    <Stack.Screen name="dashboard" component={Dashboard} />
+                    <Stack.Screen name="dashboard" component={DashboardWidthProps} />
                     :
                     <>
                         <Stack.Screen name="login" component={LoginWithProps} />
