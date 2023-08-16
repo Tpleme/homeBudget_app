@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, Pressable, View, Image } from 'react-native';
 import Modal from 'react-native-modal'
 import WomanPortrait from '../../assets/placeholders/woman_portrait.jpeg'
+import ProfileModal from './ProfileModal';
+import { useUserInfo } from '../../Hooks/useUser';
 
 function TopBarModal(props) {
+    const [openProfile, setOpenProfile] = useState(false)
+    const { userInfo } = useUserInfo()
+
     return (
         <Modal
             animationIn="slideInDown"
@@ -11,8 +16,6 @@ function TopBarModal(props) {
             style={styles.modal}
             isVisible={props.open}
             backdropOpacity={0}
-            onSwipeComplete={props.close}
-            swipeDirection="up"
             onBackButtonPress={() => {
                 props.close();
             }}
@@ -23,12 +26,12 @@ function TopBarModal(props) {
             <View style={styles.modalView}>
                 <View style={styles.avatarView}>
                     <View style={styles.avatar}>
-                        <Image alt='Leandro' source={WomanPortrait} style={styles.image} />
+                        <Image alt='portrait' source={WomanPortrait} style={styles.image} />
                     </View>
-                    <Text style={styles.avatarText}>Leandro Melo</Text>
+                    <Text style={styles.avatarText}>{userInfo.name}</Text>
                 </View>
                 <View style={styles.actionView}>
-                    <Pressable>
+                    <Pressable onPress={() => { setOpenProfile(true) }}>
                         <Text style={styles.buttonText}>My Profile</Text>
                     </Pressable>
                     <Pressable onPress={props.logOutUser}>
@@ -36,6 +39,7 @@ function TopBarModal(props) {
                     </Pressable>
                 </View>
             </View>
+            <ProfileModal open={openProfile} close={() => setOpenProfile(false)} />
         </Modal>
     )
 }

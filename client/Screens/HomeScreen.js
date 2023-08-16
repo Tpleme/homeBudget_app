@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { ScrollView, View, Text, StatusBar, StyleSheet, Pressable } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Activity from '../Components/HomeComponents/Activity';
+import HomePageChart from '../Components/Charts/HomePageChart';
 
 const activityMock = [
     { user: "Leandro Melo", cat: "Groceries", amount: 32.56, date: '02-31-2023 14:35' },
@@ -28,7 +29,7 @@ function HomeScreen({ navigation }) {
         >
             <StatusBar barStyle="light-content" backgroundColor="black" />
             <View style={styles.chartView}>
-
+                <HomePageChart />
             </View>
             <View style={styles.shortcutsView}>
                 {homeShortcuts.map((shortcut, index) => (

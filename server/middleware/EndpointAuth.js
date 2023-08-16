@@ -4,7 +4,6 @@ const FOendPointAuth = async (req, res, next) => {
 
     const key = req.headers['authorization'];
     const userId = req.headers['requesting-user']?.split('_')[1]
-    console.log(req.headers)
 
     try {
         if (!req.headers['authorization'] || !req.headers['requesting-user']) throw { code: 401, message: 'Unauthorized' }

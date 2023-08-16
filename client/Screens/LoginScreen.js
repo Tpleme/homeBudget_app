@@ -16,7 +16,6 @@ function LoginScreen({ navigation, ...props }) {
 
     const onSubmit = async (data) => {
         setLoading(true)
-        
         loginUser(data.email, data.password).then(async res => {
             await SecureStore.setItemAsync('token', res.headers.key)
             await SecureStore.setItemAsync('id', res.headers.id)
@@ -70,7 +69,7 @@ function LoginScreen({ navigation, ...props }) {
                     />
                 )}
             />
-            <CustomButton onPress={handleSubmit(onSubmit)} label='Log in' loading={loading} style={{ marginTop: 20 }} />
+            <CustomButton onPress={handleSubmit(onSubmit)} label={loading ? 'Logging you in' : 'Log in'} loading={loading} style={{ marginTop: 20 }} />
             <CustomButton onPress={() => navigation.navigate('forgotPass')} label='Forgot Password' mode='text' style={{ marginTop: 'auto' }} />
             <StatusBar barStyle="light-content" backgroundColor="#202020" />
         </View>

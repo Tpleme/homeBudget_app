@@ -29,8 +29,6 @@ function Index() {
     }, [])
 
     useEffect(() => {
-        console.log('------------here')
-        console.log(token)
         const checkToken = async () => {
             if (!token) {
                 const savedToken = await SecureStore.getItemAsync('token')
@@ -49,7 +47,7 @@ function Index() {
         const uuid = token.split('/')[0];
 
         if (socket.connected) {
-            getUser(uuid);
+            getUser();
             return;
         }
 
@@ -57,10 +55,11 @@ function Index() {
         socket.connect();
     }
 
-    const getUser = async (uuid) => {
+    const getUser = async () => {
+        const userId = await SecureStore.getItemAsync('id')
 
-        await getEntity('app_users', uuid).then(res => {
-            setUserInfo({ ...res.data, token })
+        await getEntity('app_users', userId).then(res => {
+            setUserInfo(res.data)
             setReady(true)
         }, err => {
             console.log(err)
@@ -72,8 +71,7 @@ function Index() {
         await SecureStore.deleteItemAsync('token')
         await SecureStore.deleteItemAsync('id')
         setToken(null)
-        console.log('here')
-        //TODO: quando se faz set ao token aqui, não faz trigger ao useEffect
+        setReady(false)
     }
 
     const LoginWithProps = (props) => { //para poder passar props para o login component, por alguma razão stack não aceita diretamente em component

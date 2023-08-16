@@ -60,14 +60,14 @@ const styles = StyleSheet.create({
     },
     activityItem: {
         backgroundColor: '#2a2a2a',
-        shadowColor: 'black',
-        shadowOffset: {
-            width: 2,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
+        // shadowColor: 'black',
+        // shadowOffset: {
+        //     width: 2,
+        //     height: 2,
+        // },
+        // shadowOpacity: 0.25,
+        // shadowRadius: 4,
+        elevation: 2,
         borderRadius: 5,
         flexDirection: 'row',
         alignItens: 'center',

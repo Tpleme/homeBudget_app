@@ -1,14 +1,18 @@
 import React from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 import WomanPortrait from '../assets/placeholders/woman_portrait.jpeg'
+import { useUserInfo } from '../Hooks/useUser'
+import { SERVER_URL } from '@env'
 
 function TopBarAvatar() {
+    const { userInfo } = useUserInfo()
+
     return (
         <View style={styles.mainContainer}>
             <View style={styles.avatar}>
-                <Image alt='Leandro' source={WomanPortrait} style={styles.image}/>
+                <Image alt='portrait' source={userInfo.picture ? `${SERVER_URL}/resources/images/app_users/${userInfo.picture}` : WomanPortrait} style={styles.image}/>
             </View>
-            <Text style={styles.userName}>Leandro</Text>
+            <Text style={styles.userName}>{userInfo.name}</Text>
         </View>
     )
 }
