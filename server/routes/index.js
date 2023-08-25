@@ -56,4 +56,6 @@ module.exports = app => {
     app.post('/api/app_users/forgot-pass', [ChangePassLimiter], makeHandlerAwareOfAsyncError(routes.app_users.requestPassReset))
     app.post('/api/app_users/reset-pass', [ChangePassLimiter], makeHandlerAwareOfAsyncError(routes.app_users.resetPassword))
 
+    app.post('/api/app_users/change-pass/:id', [ChangePassLimiter], makeHandlerAwareOfAsyncError(routes.app_users.changePassword))
+
 }

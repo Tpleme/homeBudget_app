@@ -15,7 +15,6 @@ require('dotenv').config()
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 app.use(helmet())
-// app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }))
 app.use(compression())
 app.use(morgan('common'))
 app.use('/resources', express.static('resources'))
@@ -27,12 +26,7 @@ const startServer = async () => {
     server.listen(process.env.SERVER_PORT || 3000)
 }
 
-const io = new Server(server, {
-    maxHttpBufferSize: 1e8,
-    // cors: {
-    //     origin: [process.env.CLIENT_URL],
-    // }
-})
+const io = new Server(server)
 
 io.of('/app').on('connection', socket => handleWsFo(socket, io))
 

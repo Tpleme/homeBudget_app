@@ -38,7 +38,7 @@ const auth = async (req, res) => {
 
 const logOutUser = async (userId) => {
     
-    await models.app_users.update({ online: false, location: null }, { where: { id: userId } }).then(() => {
+    await models.app_users.update({ online: false }, { where: { id: userId } }).then(() => {
         revokeKey(userId)
     })
 }

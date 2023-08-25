@@ -10,6 +10,7 @@ const getHeaders = async () => {
     return {
         "Authorization": key,
         "requesting-user": `fo_${id}`,
+        "lang": 'en'
     }
 }
 
@@ -23,4 +24,8 @@ export const getEntity = async (entity, id) => {
 
 export const editEntity = async (entity, id, data) => {
     return await axios.put(`${SERVER_URL}/api/${entity}${id ? `/${id}` : ''}`, data, { headers: await getHeaders() })
+}
+
+export const changePassword = async (data, id) => {
+    return await axios.post(`${SERVER_URL}/api/app_users/change-pass/${id}`, data, { headers: await getHeaders() })
 }

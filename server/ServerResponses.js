@@ -5,7 +5,7 @@ const responses = {
         PASS_RESET_REQ: { pt: 'Foi enviado um email com as instruções de recuperação de password para o seu email', en: 'An email was sent, to the indicated email, with instructions how to reset your password' },
     },
     auth: {
-        INCORRECT_CREDENTIALS: { pt: 'Credenciais incorretas', en: 'Incorrect credentials' },
+        INCORRECT_CREDENTIALS: { pt: 'As suas credenciais estão incorretas!', en: 'Your credentials are incorrect!' },
         NO_AUTH: { pt: 'Não autorizado', en: 'Non authorized' },
         LOGIN_SUCCESS: { pt: 'Fez login com sucesso', en: 'Logged in successfully' },
         NO_PASS: { pt: 'Falta palavra passe', en: 'Missing password'},

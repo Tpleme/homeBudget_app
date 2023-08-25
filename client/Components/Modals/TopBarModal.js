@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, Text, Pressable, View, Image } from 'react-native';
 import Modal from 'react-native-modal'
 import WomanPortrait from '../../assets/placeholders/woman_portrait.jpeg'
-import ProfileModal from './ProfileModal';
+import ProfileModal from './ProfileModals/ProfileModal';
 import { useUserInfo } from '../../Hooks/useUser';
 
 function TopBarModal(props) {

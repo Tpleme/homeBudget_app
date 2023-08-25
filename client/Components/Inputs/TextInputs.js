@@ -20,7 +20,7 @@ export const TextInput = ({ onChange, value, placeholder, type, error, helperTex
                 {...props}
             />
             {helperText?.length > 0 &&
-                <HelperText type="error" visible={error}>
+                <HelperText style={{color: 'darkgrey'}} type="info" visible={error}>
                     {helperText}
                 </HelperText>
             }
@@ -54,7 +54,7 @@ export const PasswordTextInput = ({ onChange, value, placeholder, error, helperT
                 {...props}
             />
             {helperText?.length > 0 &&
-                <HelperText type="error" visible={error}>
+                <HelperText style={{color: 'darkgrey'}} type="info" visible={error}>
                     {helperText}
                 </HelperText>
             }

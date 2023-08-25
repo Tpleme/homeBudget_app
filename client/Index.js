@@ -45,7 +45,6 @@ function Index() {
 
     const connectSocket = async () => {
         const uuid = token.split('/')[0];
-
         if (socket.connected) {
             getUser();
             return;
@@ -72,6 +71,7 @@ function Index() {
         await SecureStore.deleteItemAsync('id')
         setToken(null)
         setReady(false)
+        if (socket.connected) socket.disconnect()
     }
 
     const LoginWithProps = (props) => { //para poder passar props para o login component, por alguma razão stack não aceita diretamente em component
