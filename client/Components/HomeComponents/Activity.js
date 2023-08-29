@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     topTitle: {
         color: 'white',
         fontSize: 16,
-        fontWeight: 700,
+        fontWeight: '700',
         textTransform: 'uppercase',
         letterSpacing: 1
     },
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
         color: 'tomato',
         textAlign: 'right',
         fontSize: 16,
-        fontWeight: 700,
+        fontWeight: '700',
         alignSelf: 'center'
     }
 });

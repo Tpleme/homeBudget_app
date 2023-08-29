@@ -2,44 +2,69 @@ import React, { useState, useEffect } from 'react'
 import Modal from 'react-native-modal'
 import { StyleSheet, View, Text, Image } from 'react-native';
 import { useUserInfo } from '../../../Hooks/useUser';
-import { SERVER_URL } from '@env'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import WomanPortrait from '../../../assets/placeholders/woman_portrait.jpeg'
 import CustomButton from '../../Buttons/CustomButton';
 import ChangePassword from './ChangePassword';
 import EditProfile from './EditProfile';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import backgroundImage from '../../../assets/backgrounds/banner.jpg'
 import * as ImagePicker from 'expo-image-picker';
+import { changePortrait, removePortrait } from '../../../API/requests';
+import UserAvatar from '../../../Misc/UserAvatar';
+
 
 function ProfileModal(props) {
     const insets = useSafeAreaInsets();
     const { userInfo, setUserInfo } = useUserInfo()
     const [openChangePass, setOpenChangePass] = useState(false)
     const [openEditProfile, setOpenEditProfile] = useState(false)
-    const [protrait, setPortrait] = useState(null)
+    const [portrait, setPortrait] = useState(null)
 
     useEffect(() => {
         if (props.open) {
-            console.log(userInfo)
+            if (userInfo.picture) {
+                setPortrait(userInfo.picture)
+            } else {
+                setPortrait(null)
+            }
         }
 
-    }, [props])
+    }, [props, userInfo])
 
     const pickPortrait = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
             quality: 1,
-            base64: true
+            aspect: [1, 1],
         });
         if (!result.canceled) {
-            console.log(result);
-            setPortrait(result.assets[0].uri);
+
+            const formData = new FormData()
+            formData.append('picture', {
+                uri: result.assets[0].uri,
+                type: 'image/jpeg',
+                name: 'file_name.jpeg'
+            })
+
+            changePortrait(userInfo.id, formData).then(res => {
+                setUserInfo({ ...userInfo, picture: res.data.portrait })
+                alert(res.data.message);
+            }, err => {
+                console.log(err)
+            })
         } else {
             alert('You did not select any image.');
         }
     }
 
+    const removePicture = () => {
+        removePortrait(userInfo.id).then(res => {
+            setUserInfo({ ...userInfo, picture: null })
+            alert(res.data);
+        }, err => {
+            console.log(err)
+        })
+    }
 
     return (
         <Modal
@@ -58,9 +83,9 @@ function ProfileModal(props) {
                     <Ionicons name='arrow-back-outline' size={32} color='white' onPress={() => props.close()} />
                 </View>
                 <View style={styles.portraitWrapper}>
-                    <Image alt='portrait' source={userInfo.picture ? `${SERVER_URL}/resources/images/app_users/${userInfo.picture}` : WomanPortrait} style={styles.portrait} />
+                    <UserAvatar user={{ ...userInfo, picture: portrait }} style={styles.portrait} />
                     <CustomButton icon='pencil' label='Change Portrait' onPress={pickPortrait} />
-                    <CustomButton icon='delete' label='Remove Portrait' />
+                    <CustomButton icon='delete' label='Remove Portrait' onPress={removePicture} />
                 </View>
                 <View style={styles.userInfoView} >
                     <Text style={{ color: 'tomato', fontSize: 26, textAlign: 'center' }}>{userInfo.name}</Text>

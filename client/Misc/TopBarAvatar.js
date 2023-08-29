@@ -1,8 +1,7 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
-import WomanPortrait from '../assets/placeholders/woman_portrait.jpeg'
+import { View, Text, StyleSheet } from 'react-native'
 import { useUserInfo } from '../Hooks/useUser'
-import { SERVER_URL } from '@env'
+import UserAvatar from './UserAvatar'
 
 function TopBarAvatar() {
     const { userInfo } = useUserInfo()
@@ -10,7 +9,7 @@ function TopBarAvatar() {
     return (
         <View style={styles.mainContainer}>
             <View style={styles.avatar}>
-                <Image alt='portrait' source={userInfo.picture ? `${SERVER_URL}/resources/images/app_users/${userInfo.picture}` : WomanPortrait} style={styles.image}/>
+                <UserAvatar user={userInfo} style={styles.image} />
             </View>
             <Text style={styles.userName}>{userInfo.name}</Text>
         </View>
@@ -21,7 +20,7 @@ export default TopBarAvatar
 
 const styles = StyleSheet.create({
     mainContainer: {
-        display:'flex',
+        display: 'flex',
         alignItems: 'center',
         flexDirection: 'row',
         gap: 10,
@@ -36,7 +35,7 @@ const styles = StyleSheet.create({
     },
     userName: {
         color: 'white',
-        fontWeight: 700,
+        fontWeight: '700',
     },
     image: {
         height: '100%',

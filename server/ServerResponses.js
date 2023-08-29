@@ -40,6 +40,11 @@ const responses = {
         REMOVED: { pt: 'Cargo removido com sucesso', en: 'Role successfully removed' },
         BEING_USED: { pt: 'Ainda existe utilizadores com este cargo', en: 'There are still users with this role ' }
     },
+    records: {
+        CREATED: { pt: 'Registo criado com sucesso', en: 'Record successfully created'},
+        UPDATED: { pt: 'Registo alterado com sucesso', en: 'Record successfully updated'},
+        REMOVED: { pt: 'Registo removido com sucesso', en: 'Record successfully removed'},
+    }
 }
 
 module.exports = {

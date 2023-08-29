@@ -30,6 +30,10 @@ const AppUsersModel = database.define('app_users', {
         type: DataTypes.STRING,
         allowNull: false
     },
+    gender: {
+        type: DataTypes.ENUM('M', 'F'),
+        allowNull: false 
+    }
 })
 
 module.exports = AppUsersModel

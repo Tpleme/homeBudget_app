@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import { View, Text, StyleSheet, Pressable } from 'react-native'
+import { View, StyleSheet, Pressable, Image } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TopBarAvatar from '../../Misc/TopBarAvatar';
 import TopBarModal from '../Modals/TopBarModal';
+import TextLogo from '../../assets/Logo/logo_text.png'
 
 function TopBar(props) {
     const insets = useSafeAreaInsets();
@@ -14,7 +15,7 @@ function TopBar(props) {
             ...styles.mainContainer,
             paddingTop: insets.top + 10,
         }}>
-            <Text style={{ color: 'white' }}>Home Budget</Text>
+            <Image alt='text logo' source={TextLogo} style={styles.textLogo}/>
             <Pressable onPress={() => setOpenUserProfile(true)}>
                 <TopBarAvatar/>
             </Pressable>
@@ -36,4 +37,8 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         height:45
     },
+    textLogo: {
+        height: 15,
+        width: 150
+    }
 });

@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, Pressable, View, Image } from 'react-native';
+import { StyleSheet, Text, Pressable, View } from 'react-native';
 import Modal from 'react-native-modal'
-import WomanPortrait from '../../assets/placeholders/woman_portrait.jpeg'
 import ProfileModal from './ProfileModals/ProfileModal';
 import { useUserInfo } from '../../Hooks/useUser';
+import UserAvatar from '../../Misc/UserAvatar';
 
 function TopBarModal(props) {
     const [openProfile, setOpenProfile] = useState(false)
@@ -26,7 +26,7 @@ function TopBarModal(props) {
             <View style={styles.modalView}>
                 <View style={styles.avatarView}>
                     <View style={styles.avatar}>
-                        <Image alt='portrait' source={WomanPortrait} style={styles.image} />
+                        <UserAvatar user={userInfo} style={styles.image} />
                     </View>
                     <Text style={styles.avatarText}>{userInfo.name}</Text>
                 </View>

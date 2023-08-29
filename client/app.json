@@ -11,6 +11,15 @@
 			"resizeMode": "contain",
 			"backgroundColor": "#202020"
 		},
+		"plugins": [
+			[
+				"expo-image-picker",
+				{
+					"photosPermission": "The app accesses your photos to be able to upload a portrait.",
+					"cameraPermission": "The app accesses your camera to be able to take a photo and upload as your portrait"
+				}
+			]
+		],
 		"assetBundlePatterns": [
 			"**/*"
 		],

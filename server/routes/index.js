@@ -7,9 +7,11 @@ const { StandardLimiter, ChangePassLimiter } = require('../middleware/RateLimite
 
 const FoAuthRoute = require('./FoAuth')
 const AppUsersRoute = require('./AppUsers')
+const RecordRoute = require('./Records')
 
 const routes = {
     app_users: AppUsersRoute,
+    records: RecordRoute
 }
 
 module.exports = app => {
@@ -57,5 +59,7 @@ module.exports = app => {
     app.post('/api/app_users/reset-pass', [ChangePassLimiter], makeHandlerAwareOfAsyncError(routes.app_users.resetPassword))
 
     app.post('/api/app_users/change-pass/:id', [ChangePassLimiter], makeHandlerAwareOfAsyncError(routes.app_users.changePassword))
+    app.post('/api/app_users/remove-picture/:id', [StandardLimiter, FOendPointAuth], makeHandlerAwareOfAsyncError(routes.app_users.removePicture))
+    app.post('/api/app_users/add-picture/:id', [StandardLimiter, FOendPointAuth, AddImageId, AppUserImageUploader], makeHandlerAwareOfAsyncError(routes.app_users.addPicture))
 
 }

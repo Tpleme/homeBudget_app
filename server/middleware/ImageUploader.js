@@ -16,8 +16,8 @@ const fileStorageEngine = multer.diskStorage({
         }
     },
     filename: (req, file, next) => {
-        const fileExt = `.jpg`
-
+        const fileExt = `.jpeg`
+    
         next(null, `${req.res.locals.image_id}_${file.fieldname}${fileExt}`)
     }
 })

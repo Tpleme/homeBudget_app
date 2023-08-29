@@ -5,7 +5,7 @@ const StandardLimiter = rateLimit({
     max: 100,
     message:'To many requests in a short period of time',
     keyGenerator: (req, res) => {
-        return req.clientIp
+         return req.clientIp
     }
 })
 
