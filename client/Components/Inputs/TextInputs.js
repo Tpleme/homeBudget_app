@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { TextInput as PaperInput, HelperText } from 'react-native-paper'
 
-export const TextInput = ({ onChange, value, placeholder, type, error, helperText, ...props }) => {
+export const TextInput = ({ label, onChange, value, placeholder, type, error, helperText, ...props }) => {
     return (
         <View style={{ width: '100%' }}>
+            <Text style={styles.label}>{label}</Text>
             <PaperInput
                 style={styles.input}
                 onChangeText={onChange}
@@ -20,7 +21,7 @@ export const TextInput = ({ onChange, value, placeholder, type, error, helperTex
                 {...props}
             />
             {helperText?.length > 0 &&
-                <HelperText style={{color: 'darkgrey'}} type="info" visible={error}>
+                <HelperText style={{ color: 'darkgrey' }} type="info" visible={error}>
                     {helperText}
                 </HelperText>
             }
@@ -28,11 +29,12 @@ export const TextInput = ({ onChange, value, placeholder, type, error, helperTex
     )
 }
 
-export const PasswordTextInput = ({ onChange, value, placeholder, error, helperText, ...props }) => {
+export const PasswordTextInput = ({ label, onChange, value, placeholder, error, helperText, ...props }) => {
     const [showPass, setShowPass] = useState(false)
 
     return (
         <View style={{ width: '100%' }}>
+            <Text style={styles.label}>{label ?? 'password'}</Text>
             <PaperInput
                 style={styles.input}
                 onChangeText={onChange}
@@ -54,7 +56,7 @@ export const PasswordTextInput = ({ onChange, value, placeholder, error, helperT
                 {...props}
             />
             {helperText?.length > 0 &&
-                <HelperText style={{color: 'darkgrey'}} type="info" visible={error}>
+                <HelperText style={{ color: 'darkgrey' }} type="info" visible={error}>
                     {helperText}
                 </HelperText>
             }
@@ -71,5 +73,9 @@ const styles = StyleSheet.create({
     },
     inputIcon: {
         top: 5,
+    },
+    label: {
+        color: 'white',
+        marginBottom: 5
     }
 });

@@ -1,7 +1,9 @@
 import axios from 'axios'
-import { SERVER_URL } from '@env'
+// import { SERVER_URL } from '@env'
 import { getItemAsync } from 'expo-secure-store'
 
+//TODO: env vars acting funny, had to place url right here 
+const SERVER_URL = 'http://192.168.1.100:3000'
 
 const getHeaders = async () => {
     const key = await getItemAsync('token');
@@ -14,7 +16,7 @@ const getHeaders = async () => {
     }
 }
 
-const getFileHeaders = async (data) => {
+const getFileHeaders = async () => {
     const key = await getItemAsync('token');
     const id = await getItemAsync('id')
     

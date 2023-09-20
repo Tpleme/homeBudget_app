@@ -38,7 +38,7 @@ function Index() {
                 if (savedToken) {
                     setToken(savedToken)
                 } else {
-                    setReady(true) //to set logic is hover and display screen
+                    setReady(true) //to set logic is over and display screen
                 }
                 return;
             }
@@ -60,7 +60,7 @@ function Index() {
 
     const getUser = async () => {
         const userId = await SecureStore.getItemAsync('id')
-
+        
         await getEntity('app_users', userId).then(res => {
             setUserInfo(res.data)
             setAuth(true)

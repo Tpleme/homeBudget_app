@@ -84,8 +84,10 @@ function ProfileModal(props) {
                 </View>
                 <View style={styles.portraitWrapper}>
                     <UserAvatar user={{ ...userInfo, picture: portrait }} style={styles.portrait} />
-                    <CustomButton icon='pencil' label='Change Portrait' onPress={pickPortrait} />
-                    <CustomButton icon='delete' label='Remove Portrait' onPress={removePicture} />
+                    <CustomButton icon='pencil' label={portrait ? 'Change Portrait' : 'Add portrait'} onPress={pickPortrait} />
+                    {portrait &&
+                        <CustomButton icon='delete' label='Remove Portrait' onPress={removePicture} />
+                    }
                 </View>
                 <View style={styles.userInfoView} >
                     <Text style={{ color: 'tomato', fontSize: 26, textAlign: 'center' }}>{userInfo.name}</Text>

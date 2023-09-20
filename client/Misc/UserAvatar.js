@@ -1,8 +1,11 @@
 import React from 'react'
 import { Image } from 'react-native'
-import { SERVER_URL } from '@env'
+// import { SERVER_URL } from '@env'
 import WomanPortrait from '../assets/placeholders/woman_portrait.jpeg'
 import ManPortrait from '../assets/placeholders/man_portrait.png'
+
+//TODO: env vars acting funny, had to place url right here 
+const SERVER_URL = 'http://192.168.1.100:3000'
 
 function UserAvatar({ user, style, alt }) {
     return (

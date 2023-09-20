@@ -8,10 +8,12 @@ const { StandardLimiter, ChangePassLimiter } = require('../middleware/RateLimite
 const FoAuthRoute = require('./FoAuth')
 const AppUsersRoute = require('./AppUsers')
 const RecordRoute = require('./Records')
+const CategoriesRoute = require('./Categories')
 
 const routes = {
     app_users: AppUsersRoute,
-    records: RecordRoute
+    records: RecordRoute,
+    categories: CategoriesRoute
 }
 
 module.exports = app => {
