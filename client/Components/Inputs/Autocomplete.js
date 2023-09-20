@@ -5,7 +5,7 @@ import UserAvatar from '../../Misc/UserAvatar';
 
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 
-function Autocomplete({ label, onChange, value, dataset, helperText, error, placeholder, itemLabel, disabled, renderItemType, ...props }) {
+function Autocomplete({ label, onChange, dataset, helperText, error, placeholder, disabled, renderItemType, ...props }) {
     const [inputFocus, setInputFocus] = useState(false)
 
     const getBorderColor = () => {
@@ -16,15 +16,15 @@ function Autocomplete({ label, onChange, value, dataset, helperText, error, plac
     }
 
     const getRenderItem = (item) => {
-        if(renderItemType === 'withAvatar') {
+        if (renderItemType === 'withAvatar') {
             return (
                 <View style={styles.userAvatarView}>
-                    <UserAvatar user={item} style={styles.userAvatar}/>
-                    <Text style={{ padding: 15 }}>{item[itemLabel]}</Text>
+                    <UserAvatar user={item} style={styles.userAvatar} />
+                    <Text style={{ padding: 15 }}>{item.title}</Text>
                 </View>
             )
         }
-        return (<Text style={{ padding: 15 }}>{item[itemLabel]}</Text>)
+        return (<Text style={{ padding: 15 }}>{item.title}</Text>)
     }
 
     return (
@@ -52,7 +52,6 @@ function Autocomplete({ label, onChange, value, dataset, helperText, error, plac
                     autoCapitalize: 'none',
                     style: { color: '#fff' },
                     placeholderTextColor: disabled ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.8)',
-                    // value: value ? value[itemLabel] : '',
                     editable: !disabled
                 }}
                 inputHeight={50}
@@ -79,7 +78,7 @@ const styles = new StyleSheet.create({
     },
     userAvatarView: {
         flex: 1,
-        flexDirection:'row',
+        flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 10
     },

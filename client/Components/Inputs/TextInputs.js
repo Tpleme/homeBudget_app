@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { TextInput as PaperInput, HelperText } from 'react-native-paper'
+import CurrencyInput from 'react-native-currency-input'
 
 export const TextInput = ({ label, onChange, value, placeholder, type, error, helperText, ...props }) => {
+
     return (
         <View style={{ width: '100%' }}>
             <Text style={styles.label}>{label}</Text>
@@ -64,6 +66,41 @@ export const PasswordTextInput = ({ label, onChange, value, placeholder, error, 
     )
 }
 
+export const InputCurrency = ({ label, onChange, value, placeholder, error, helperText, ...props }) => {
+
+    return (
+        <View style={{ width: '100%', alignItems: 'center', marginVertical: 20 }}>
+            <Text style={styles.currencyLabel}>{label}</Text>
+            <CurrencyInput
+                value={value}
+                onChangeValue={onChange}
+                placeholder={placeholder ?? '0.00 €'}
+                placeholderTextColor='tomato'
+                suffix=" €"
+                delimiter="."
+                separator=","
+                precision={2}
+                minValue={0}
+                renderTextInput={textInputProps =>
+                    <PaperInput
+                        style={styles.currencyInput}
+                        // mode="outlined"
+                        activeUnderlineColor='tomato'
+                        theme={{ colors: { text: 'tomato' } }}
+                        error={error}
+                        {...textInputProps}
+                    />}
+                {...props}
+            />
+            {helperText?.length > 0 &&
+                <HelperText style={{ color: 'darkgrey' }} type="info" visible={error}>
+                    {helperText}
+                </HelperText>
+            }
+        </View>
+    )
+}
+
 const styles = StyleSheet.create({
     input: {
         width: "100%",
@@ -77,5 +114,17 @@ const styles = StyleSheet.create({
     label: {
         color: 'white',
         marginBottom: 5
+    },
+    currencyLabel: {
+        fontSize: 18,
+        color: 'white',
+    },
+    currencyInput: {
+        backgroundColor: '#202020',
+        width: '60%',
+        fontSize: 36,
+        textAlign: 'center',
+        height: 65,
+        lineHeight: 60,
     }
 });

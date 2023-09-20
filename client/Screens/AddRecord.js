@@ -4,9 +4,9 @@ import { View, Text, StatusBar, StyleSheet, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import NavigateBack from '../Misc/NavigateBack';
 import { useForm, Controller } from 'react-hook-form'
-import { TextInput } from '../Components/Inputs/TextInputs';
 import CustomButton from '../Components/Buttons/CustomButton';
 import { getEntity } from '../API/requests'
+import { InputCurrency } from '../Components/Inputs/TextInputs';
 import Autocomplete from '../Components/Inputs/Autocomplete';
 
 function AddRecord({ navigation }) {
@@ -34,8 +34,7 @@ function AddRecord({ navigation }) {
 
     useEffect(() => {
         if (selectedCategory) {
-            setSubCategoriesData(selectedCategory.subcategories)
-            console.log(selectedCategory.subcategories)
+            setSubCategoriesData(selectedCategory.subcategories.map(el => ({ ...el, title: el.name })))
             return;
         }
         setSubCategoriesData(null)
@@ -76,10 +75,9 @@ function AddRecord({ navigation }) {
                             required: 'Value required',
                         }}
                         render={({ field: { onChange, value } }) => (
-                            <TextInput
+                            <InputCurrency
                                 label='Value'
                                 value={value}
-                                type="number-pad"
                                 onChange={onChange}
                                 error={Boolean(errors.value)}
                                 helperText={errors.value?.message}
@@ -92,10 +90,9 @@ function AddRecord({ navigation }) {
                         rules={{
                             required: 'Please Pick a category',
                         }}
-                        render={({ field: { onChange, value } }) => (
+                        render={({ field: { onChange } }) => (
                             <Autocomplete
                                 label='Category'
-                                value={value}
                                 itemLabel='name'
                                 dataSet={categoriesData}
                                 onChange={(e) => { onChange(e); setSelectedCategory(e) }}
@@ -111,10 +108,9 @@ function AddRecord({ navigation }) {
                         rules={{
                             required: 'Please pick a subcategory',
                         }}
-                        render={({ field: { onChange, value } }) => (
+                        render={({ field: { onChange } }) => (
                             <Autocomplete
                                 label='Subcategory'
-                                value={value}
                                 itemLabel='name'
                                 disabled={Boolean(!selectedCategory)}
                                 dataSet={subCategoriesData}
@@ -131,10 +127,9 @@ function AddRecord({ navigation }) {
                         rules={{
                             required: 'Please pick a person',
                         }}
-                        render={({ field: { onChange, value } }) => (
+                        render={({ field: { onChange } }) => (
                             <Autocomplete
                                 label='Paid By'
-                                value={value}
                                 itemLabel='name'
                                 dataSet={usersData}
                                 onChange={onChange}
