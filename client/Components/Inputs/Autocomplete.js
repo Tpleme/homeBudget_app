@@ -5,7 +5,7 @@ import UserAvatar from '../../Misc/UserAvatar';
 
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
 
-function Autocomplete({ label, onChange, dataset, helperText, error, placeholder, disabled, renderItemType, ...props }) {
+function Autocomplete({ label, onChange, dataset, helperText, error, placeholder, disabled, renderItemType, textInputAdditionalProps, ...props }) {
     const [inputFocus, setInputFocus] = useState(false)
 
     const getBorderColor = () => {
@@ -52,7 +52,8 @@ function Autocomplete({ label, onChange, dataset, helperText, error, placeholder
                     autoCapitalize: 'none',
                     style: { color: '#fff' },
                     placeholderTextColor: disabled ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.8)',
-                    editable: !disabled
+                    editable: !disabled,
+                    ...textInputAdditionalProps
                 }}
                 inputHeight={50}
                 {...props}

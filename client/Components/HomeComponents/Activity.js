@@ -1,8 +1,20 @@
-import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native';
-import WomanPortrait from '../../assets/placeholders/woman_portrait.jpeg'
+import React, { useEffect, useState } from 'react'
+import { View, Text, StyleSheet } from 'react-native';
+import { getEntity } from '../../API/requests';
+import UserAvatar from '../../Misc/UserAvatar';
+import moment from 'moment'
 
-function Activity({ data, onViewMore }) {
+function Activity({ onViewMore }) {
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        getEntity({ entity: 'records', query: { limit: 10 } }).then(res => {
+            setData(res.data)
+        }, err => {
+            console.log(err)
+        })
+    }, [])
+
     return (
         <View style={styles.activityView}>
             <View style={styles.topView}>
@@ -10,19 +22,19 @@ function Activity({ data, onViewMore }) {
                 <Text onPress={onViewMore} style={styles.topButton}>View all</Text>
             </View>
             <View style={styles.activityItens}>
-                {data.map((activity, index) => (
+                {data.map((record, index) => (
                     <View key={index} style={styles.activityItem}>
                         <View style={styles.leftView}>
                             <View style={styles.avatar}>
-                                <Image alt='Leandro' source={WomanPortrait} style={styles.image} />
-                                <Text numberOfLines={1} style={styles.userName}>{activity.user}</Text>
+                                <UserAvatar user={record.payer} style={styles.image} />
+                                <Text numberOfLines={1} style={styles.userName}>{record.payer.name}</Text>
                             </View>
                             <View style={styles.bottomView}>
-                                <Text numberOfLines={1} style={styles.catText}>{activity.cat}</Text>
-                                <Text numberOfLines={1} style={styles.dateText}>{activity.date}</Text>
+                                <Text numberOfLines={1} style={styles.catText}>{record.subcategory.name}</Text>
+                                <Text numberOfLines={1} style={styles.dateText}>{moment(record.createdAt).format('DD MMM YYYY hh:mm')}</Text>
                             </View>
                         </View>
-                        <Text numberOfLines={1} style={styles.amountText}>{activity.amount} €</Text>
+                        <Text numberOfLines={1} style={styles.amountText}>{record.value} €</Text>
                     </View>
                 ))}
             </View>
@@ -60,13 +72,6 @@ const styles = StyleSheet.create({
     },
     activityItem: {
         backgroundColor: '#2a2a2a',
-        // shadowColor: 'black',
-        // shadowOffset: {
-        //     width: 2,
-        //     height: 2,
-        // },
-        // shadowOpacity: 0.25,
-        // shadowRadius: 4,
         elevation: 2,
         borderRadius: 5,
         flexDirection: 'row',
@@ -105,7 +110,7 @@ const styles = StyleSheet.create({
     dateText: {
         color: 'grey',
         fontSize: 12,
-        alignSelf:'flex-end'
+        alignSelf: 'flex-end'
     },
     amountText: {
         color: 'tomato',

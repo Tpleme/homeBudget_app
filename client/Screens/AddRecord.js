@@ -8,6 +8,8 @@ import CustomButton from '../Components/Buttons/CustomButton';
 import { getEntity } from '../API/requests'
 import { InputCurrency } from '../Components/Inputs/TextInputs';
 import Autocomplete from '../Components/Inputs/Autocomplete';
+import { useUserInfo } from '../Hooks/useUser'
+import { createEntity } from '../API/requests';
 
 function AddRecord({ navigation }) {
     const insets = useSafeAreaInsets();
@@ -16,17 +18,18 @@ function AddRecord({ navigation }) {
     const [selectedCategory, setSelectedCategory] = useState(null)
     const [subCategoriesData, setSubCategoriesData] = useState(null)
     const [usersData, setUsersData] = useState(null)
-
     const [loading, setLoading] = useState(false)
+
+    const { userInfo } = useUserInfo()
     const { control, handleSubmit, setValue, formState: { errors } } = useForm()
 
 
     useEffect(() => {
-        getEntity('categories').then(res => {
+        getEntity({ entity: 'categories' }).then(res => {
             setCategoriesData(res.data.map(el => ({ ...el, title: el.name })))
         })
 
-        getEntity('app_users').then(res => {
+        getEntity({ entity: 'app_users' }).then(res => {
             setUsersData(res.data.map(el => ({ ...el, title: el.name })))
         })
     }, [])
@@ -44,12 +47,22 @@ function AddRecord({ navigation }) {
 
     const onSubmit = data => {
         setLoading(true)
-        console.log(data)
-        setLoading(false)
-        //createdBy
-        //paidBy
-        //subcategoryId
-        //value
+
+        const sendData = {
+            createdBy: userInfo.id,
+            paidBy: data.paidBy.id,
+            subcategoryId: data.subcategory.id,
+            value: data.value
+        }
+
+        createEntity('records', sendData).then(res => {
+            setLoading(false)
+            setValue('value', null)
+            alert(res.data)
+        }, err => {
+            setLoading(false)
+            alert(err)
+        })
     }
 
     return (
@@ -70,10 +83,7 @@ function AddRecord({ navigation }) {
                     <Controller
                         control={control}
                         name="value"
-                        rules={{
-                            min: { value: 1, message: 'Only positive numbers' },
-                            required: 'Value required',
-                        }}
+                        rules={{ required: 'Value required' }}
                         render={({ field: { onChange, value } }) => (
                             <InputCurrency
                                 label='Value'
@@ -124,13 +134,16 @@ function AddRecord({ navigation }) {
                     <Controller
                         control={control}
                         name="paidBy"
+                        defaultValue={{ ...userInfo, title: userInfo.name }}
                         rules={{
                             required: 'Please pick a person',
                         }}
-                        render={({ field: { onChange } }) => (
+                        render={({ field: { onChange, value } }) => (
                             <Autocomplete
                                 label='Paid By'
+                                initialValue={userInfo}
                                 itemLabel='name'
+                                textInputAdditionalProps={{ value: value?.title }} //necessary to have a initial value
                                 dataSet={usersData}
                                 onChange={onChange}
                                 placeholder='Select a person'

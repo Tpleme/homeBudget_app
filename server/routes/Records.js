@@ -3,14 +3,22 @@ const { responses } = require('../ServerResponses')
 const { getIdParam } = require('../utils')
 
 const getAll = async (req, res) => {
-    const records = await models.records.findAll({
-        include: [
-            { model: models.app_users, as: 'payer', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
-            { model: models.app_users, as: 'creator', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
-            { model: models.subcategories }
-        ],
-    })
-    res.status(200).json(records)
+
+    try {
+        const records = await models.records.findAll({
+            order: [['createdAt', 'DESC']],
+            limit: req.query.limit ? parseInt(req.query.limit) : null,
+            include: [
+                { model: models.app_users, as: 'payer', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
+                { model: models.app_users, as: 'creator', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
+                { model: models.subcategories }
+            ],
+        })
+        res.status(200).json(records)
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
+    }
 
 }
 

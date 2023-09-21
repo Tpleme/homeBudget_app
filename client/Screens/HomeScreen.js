@@ -5,16 +5,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Activity from '../Components/HomeComponents/Activity';
 import HomePageChart from '../Components/Charts/HomePageChart';
 
-const activityMock = [
-    { user: "Leandro Melo", cat: "Groceries", amount: 32.56, date: '02-31-2023 14:35' },
-    { user: "Leandro Melo", cat: "Groceries", amount: 32.56, date: '02-31-2023 14:35' },
-    { user: "Leandro Melo", cat: "Groceries", amount: 32.56, date: '02-31-2023 14:35' },
-    { user: "Leandro Melo", cat: "Groceries", amount: 32.56, date: '02-31-2023 14:35' },
-    { user: "Leandro Melo", cat: "Groceries", amount: 32.56, date: '02-31-2023 14:35' },
-    { user: "Ana Quaresma", cat: "Groceries", amount: 32.56, date: '02-31-2023 14:35' },
-]
-
 function HomeScreen({ navigation }) {
+
     const homeShortcuts = [
         { title: "Add Record", route: 'addRecord', icon:'add-outline' },
         { title: "Groceries Lists", route: 'groceries', icon:'list-outline' },
@@ -39,7 +31,7 @@ function HomeScreen({ navigation }) {
                     </Pressable>
                 ))}
             </View>
-            <Activity data={activityMock} onViewMore={() => navigation.navigate('activityScreen')} />
+            <Activity onViewMore={() => navigation.navigate('activityScreen')} />
         </ScrollView>
     );
 }

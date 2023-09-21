@@ -60,8 +60,8 @@ function Index() {
 
     const getUser = async () => {
         const userId = await SecureStore.getItemAsync('id')
-        
-        await getEntity('app_users', userId).then(res => {
+
+        await getEntity({ entity: 'app_users', id: userId }).then(res => {
             setUserInfo(res.data)
             setAuth(true)
             setReady(true)

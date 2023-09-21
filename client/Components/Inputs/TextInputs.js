@@ -81,10 +81,10 @@ export const InputCurrency = ({ label, onChange, value, placeholder, error, help
                 separator=","
                 precision={2}
                 minValue={0}
+                maxLength={12}
                 renderTextInput={textInputProps =>
                     <PaperInput
                         style={styles.currencyInput}
-                        // mode="outlined"
                         activeUnderlineColor='tomato'
                         theme={{ colors: { text: 'tomato' } }}
                         error={error}
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     },
     currencyInput: {
         backgroundColor: '#202020',
-        width: '60%',
+        width: '65%',
         fontSize: 36,
         textAlign: 'center',
         height: 65,
