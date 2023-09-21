@@ -14,7 +14,7 @@ function HomeNavigator() {
     return (
         <Stack.Navigator initialRouteName='HomeScreen' screenOptions={{
             ...TransitionPresets.BottomSheetAndroid,
-            gestureEnabled: true,
+            // gestureEnabled: true,
             headerShown: false
         }} >
             <Stack.Screen name="homeScreen" component={HomeScreen} />

@@ -3,6 +3,8 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { UserProvider } from './Context/User'
 import { SocketContext, socket } from './Context/Socket/socket'
 import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown'
+import { enGB, registerTranslation } from 'react-native-paper-dates'
+registerTranslation('en-GB', enGB)
 import Index from './Index';
 
 function App() {

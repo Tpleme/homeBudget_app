@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         position: 'absolute',
         top: 10,
-        width: '100%',
+        left: 0,
         zIndex: 500
     },
 });

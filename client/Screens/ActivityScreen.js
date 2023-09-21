@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { View, Text, StatusBar, StyleSheet } from 'react-native';
+import { View, Text, StatusBar, StyleSheet, ScrollView } from 'react-native';
 import NavigateBack from '../Misc/NavigateBack';
 import { getEntity } from '../API/requests';
 import UserAvatar from '../Misc/UserAvatar';
 import moment from 'moment'
+import CustomButton from '../Components/Buttons/CustomButton';
+import DateRangePicker from '../Components/Inputs/DateRangePicker';
+
 function ActivityScreen({ navigation }) {
     const [data, setData] = useState([])
+    const [dateRange, setDateRange] = useState({ startDate: undefined, endDate: undefined })
+    const [openDatePicker, setOpenDatePicker] = useState(false)
 
     useEffect(() => {
         getEntity({ entity: 'records' }).then(res => {
@@ -16,6 +21,11 @@ function ActivityScreen({ navigation }) {
         })
     }, [])
 
+    const onDatePick = ({ startDate, endDate }) => {
+        setOpenDatePicker(false)
+        console.log(startDate, endDate)
+    }
+
     return (
         <View
             style={{
@@ -23,28 +33,39 @@ function ActivityScreen({ navigation }) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#202020',
+                paddingTop: 60
             }}>
             <NavigateBack navigation={navigation} />
             <StatusBar barStyle="light-content" backgroundColor="black" />
-            <Text style={{ color: 'white' }}>ActivityScreen</Text>
-            <View style={styles.activityItens}>
-                {data.map((record, index) => (
-                    <View key={index} style={styles.activityItem}>
-                        <View style={styles.leftView}>
-                            <View style={styles.avatar}>
-                                <UserAvatar user={record.payer} style={styles.image} />
-                                <Text numberOfLines={1} style={styles.userName}>{record.payer.name}</Text>
+            <View style={styles.activityMainView}>
+                <View style={styles.filterView}>
+                    <CustomButton label='Filter by date' onPress={() => setOpenDatePicker(true)} />
+                    <DateRangePicker
+                        visible={openDatePicker}
+                        onDismiss={() => setOpenDatePicker(false)}
+                        startDate={dateRange.startDate}
+                        endDate={dateRange.endDate}
+                        onConfirm={onDatePick}
+                    />
+                </View>
+                <ScrollView style={styles.activityItensView}>
+                    {data.map((record, index) => (
+                        <View key={index} style={styles.activityItem}>
+                            <View style={styles.leftView}>
+                                <View style={styles.avatar}>
+                                    <UserAvatar user={record.payer} style={styles.image} />
+                                    <Text numberOfLines={1} style={styles.userName}>{record.payer.name}</Text>
+                                </View>
+                                <View style={styles.bottomView}>
+                                    <Text numberOfLines={1} style={styles.catText}>{record.subcategory.name}</Text>
+                                    <Text numberOfLines={1} style={styles.dateText}>{moment(record.createdAt).format('DD MMM YYYY hh:mm')}</Text>
+                                </View>
                             </View>
-                            <View style={styles.bottomView}>
-                                <Text numberOfLines={1} style={styles.catText}>{record.subcategory.name}</Text>
-                                <Text numberOfLines={1} style={styles.dateText}>{moment(record.createdAt).format('DD MMM YYYY hh:mm')}</Text>
-                            </View>
+                            <Text numberOfLines={1} style={styles.amountText}>{record.value} €</Text>
                         </View>
-                        <Text numberOfLines={1} style={styles.amountText}>{record.value} €</Text>
-                    </View>
-                ))}
+                    ))}
+                </ScrollView>
             </View>
-
         </View>
     );
 }
@@ -52,29 +73,22 @@ function ActivityScreen({ navigation }) {
 export default ActivityScreen
 
 const styles = StyleSheet.create({
-    activityView: {
+    activityMainView: {
+        flex: 1,
+        width: '100%',
+        gap: 10
+    },
+    filterView: {
+        height: 200,
+        display: 'flex',
+        flexDirection: 'column',
+        padding: 20
+    },
+    activityItensView: {
+        flex: 1,
         width: '100%',
         padding: 10,
-    },
-    topView: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItens: 'center',
-    },
-    topTitle: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: '700',
-        textTransform: 'uppercase',
-        letterSpacing: 1
-    },
-    topButton: {
-        color: 'tomato',
-        fontSize: 13
-    },
-    activityItens: {
-        marginTop: 10,
-        rowGap: 10,
+        marginBottom: 10
     },
     activityItem: {
         backgroundColor: '#2a2a2a',
@@ -85,6 +99,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingVertical: 5,
         paddingHorizontal: 10,
+        marginVertical: 7
     },
     leftView: {
         flex: 1,
@@ -124,7 +139,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '700',
         alignSelf: 'center'
-    }
+    },
 });
 
 ActivityScreen.propTypes = {
