@@ -50,11 +50,8 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     chartView: {
-        borderColor: 'tomato',
-        borderWidth: 1,
-        borderRadius: 10,
         width: "100%",
-        height: 200,
+        height: 280,
     },
     shortcutsView: {
         display: 'flex',
