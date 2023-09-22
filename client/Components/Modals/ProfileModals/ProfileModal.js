@@ -86,7 +86,7 @@ function ProfileModal(props) {
                     <UserAvatar user={{ ...userInfo, picture: portrait }} style={styles.portrait} />
                     <CustomButton icon='pencil' label={portrait ? 'Change Portrait' : 'Add portrait'} onPress={pickPortrait} />
                     {portrait &&
-                        <CustomButton icon='delete' label='Remove Portrait' onPress={removePicture} />
+                        <CustomButton icon='delete' color='darkgrey' label='Remove Portrait' onPress={removePicture} />
                     }
                 </View>
                 <View style={styles.userInfoView} >

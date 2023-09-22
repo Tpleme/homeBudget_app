@@ -10,6 +10,8 @@ import { InputCurrency } from '../Components/Inputs/TextInputs';
 import Autocomplete from '../Components/Inputs/Autocomplete';
 import { useUserInfo } from '../Hooks/useUser'
 import { createEntity } from '../API/requests';
+import { DatePickerInput } from 'react-native-paper-dates'
+import moment from 'moment'
 
 function AddRecord({ navigation }) {
     const insets = useSafeAreaInsets();
@@ -52,7 +54,8 @@ function AddRecord({ navigation }) {
             createdBy: userInfo.id,
             paidBy: data.paidBy.id,
             subcategoryId: data.subcategory.id,
-            value: data.value
+            value: data.value,
+            date: data.date
         }
 
         createEntity('records', sendData).then(res => {
@@ -150,6 +153,26 @@ function AddRecord({ navigation }) {
                                 renderItemType='withAvatar'
                                 error={Boolean(errors.paidBy)}
                                 helperText={errors.paidBy?.message}
+                            />
+                        )}
+                    />
+                    <Controller
+                        control={control}
+                        name="date"
+                        defaultValue={moment().toDate()}
+                        rules={{
+                            required: 'Please pick a date',
+                        }}
+                        render={({ field: { onChange, value } }) => (
+                            <DatePickerInput
+                                locale="pt"
+                                value={value}
+                                onChange={onChange}
+                                inputMode="start"
+                                mode="outlined"
+                                withDateFormatInLabel={false}
+                                style={{ backgroundColor: '#202020' }}
+                                outlineStyle={{ borderRadius: 5 }}
                             />
                         )}
                     />

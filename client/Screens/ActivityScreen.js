@@ -1,29 +1,52 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { View, Text, StatusBar, StyleSheet, ScrollView } from 'react-native';
+import { View, StatusBar, StyleSheet, ScrollView, Text, Image } from 'react-native';
 import NavigateBack from '../Misc/NavigateBack';
 import { getEntity } from '../API/requests';
-import UserAvatar from '../Misc/UserAvatar';
-import moment from 'moment'
 import CustomButton from '../Components/Buttons/CustomButton';
 import DateRangePicker from '../Components/Inputs/DateRangePicker';
+import RecordsCard from '../Components/Cards/RecordsCard';
+import moment from 'moment';
+import { Banner } from 'react-native-paper';
+import { useTheme } from 'react-native-paper'
+
+import filterIcon from '../assets/Icons/filter.png'
 
 function ActivityScreen({ navigation }) {
     const [data, setData] = useState([])
+    const [filteredData, setFilteredData] = useState([])
     const [dateRange, setDateRange] = useState({ startDate: undefined, endDate: undefined })
     const [openDatePicker, setOpenDatePicker] = useState(false)
+    const theme = useTheme()
 
     useEffect(() => {
         getEntity({ entity: 'records' }).then(res => {
             setData(res.data)
+            setFilteredData(res.data)
         }, err => {
             console.log(err)
         })
     }, [])
 
     const onDatePick = ({ startDate, endDate }) => {
+        if (!startDate || !endDate) {
+            alert('Make sure you select both dates')
+            return;
+        }
+
         setOpenDatePicker(false)
-        console.log(startDate, endDate)
+        const momentStartDate = moment(startDate)
+        const momentEndDate = moment(endDate)
+
+        const filter = data.filter(el => moment(el.createdAt).isBetween(momentStartDate, momentEndDate, 'day', '[]'))
+        setDateRange({ startDate: momentStartDate, endDate: momentEndDate })
+        setFilteredData(filter)
+
+    }
+
+    const resetFilter = () => {
+        setDateRange({ startDate: undefined, endDate: undefined })
+        setFilteredData(data)
     }
 
     return (
@@ -38,34 +61,42 @@ function ActivityScreen({ navigation }) {
             <NavigateBack navigation={navigation} />
             <StatusBar barStyle="light-content" backgroundColor="black" />
             <View style={styles.activityMainView}>
+                <Banner
+                    style={{ backgroundColor: theme.colors.surfaceVariant }}
+                    visible={dateRange.startDate && dateRange.endDate}
+                    actions={[{ label: 'Clear filter', onPress: () => resetFilter() }]}
+                    icon={({ size }) => (
+                        <Image
+                            source={filterIcon}
+                            style={{ width: size, height: size, tintColor: theme.colors.primary }}
+                        />
+                    )}>
+                    {(dateRange.startDate && dateRange.endDate) &&
+                        <Text>{`From: ${dateRange.startDate.format('DD MMMM YYYY')}\nTo: ${dateRange.endDate.format('DD MMMM YYYY')}`}</Text>
+                    }
+                </Banner>
                 <View style={styles.filterView}>
                     <CustomButton label='Filter by date' onPress={() => setOpenDatePicker(true)} />
-                    <DateRangePicker
-                        visible={openDatePicker}
-                        onDismiss={() => setOpenDatePicker(false)}
-                        startDate={dateRange.startDate}
-                        endDate={dateRange.endDate}
-                        onConfirm={onDatePick}
-                    />
                 </View>
-                <ScrollView style={styles.activityItensView}>
-                    {data.map((record, index) => (
-                        <View key={index} style={styles.activityItem}>
-                            <View style={styles.leftView}>
-                                <View style={styles.avatar}>
-                                    <UserAvatar user={record.payer} style={styles.image} />
-                                    <Text numberOfLines={1} style={styles.userName}>{record.payer.name}</Text>
-                                </View>
-                                <View style={styles.bottomView}>
-                                    <Text numberOfLines={1} style={styles.catText}>{record.subcategory.name}</Text>
-                                    <Text numberOfLines={1} style={styles.dateText}>{moment(record.createdAt).format('DD MMM YYYY hh:mm')}</Text>
-                                </View>
-                            </View>
-                            <Text numberOfLines={1} style={styles.amountText}>{record.value} €</Text>
-                        </View>
-                    ))}
+                <ScrollView style={styles.activityItensView} contentContainerStyle={{ rowGap: 12 }}>
+                    {filteredData.length > 0 ?
+                        filteredData.map((record, index) => (
+                            <RecordsCard key={index} record={record} />
+                        ))
+                        :
+                        <Text style={{color:'white', textAlign: 'center'}}>No data found</Text>
+                    }
+                    {/*cant put margin on bottom of scrollView, so here it is*/}
+                    <View style={{ height: 20 }} />
                 </ScrollView>
             </View>
+            <DateRangePicker
+                visible={openDatePicker}
+                onDismiss={() => setOpenDatePicker(false)}
+                startDate={dateRange.startDate}
+                endDate={dateRange.endDate}
+                onConfirm={onDatePick}
+            />
         </View>
     );
 }
@@ -76,69 +107,16 @@ const styles = StyleSheet.create({
     activityMainView: {
         flex: 1,
         width: '100%',
-        gap: 10
     },
     filterView: {
-        height: 200,
         display: 'flex',
         flexDirection: 'column',
-        padding: 20
+        padding: 20,
     },
     activityItensView: {
         flex: 1,
         width: '100%',
         padding: 10,
-        marginBottom: 10
-    },
-    activityItem: {
-        backgroundColor: '#2a2a2a',
-        elevation: 2,
-        borderRadius: 5,
-        flexDirection: 'row',
-        alignItens: 'center',
-        justifyContent: 'space-between',
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-        marginVertical: 7
-    },
-    leftView: {
-        flex: 1,
-        gap: 5,
-    },
-    avatar: {
-        flexDirection: 'row',
-        alignItens: 'center',
-        gap: 5,
-    },
-    image: {
-        height: 25,
-        width: 25,
-        resizeMode: 'cover',
-        borderRadius: 5,
-    },
-    userName: {
-        color: 'white',
-        fontSize: 17,
-        alignSelf: 'center'
-    },
-    bottomView: {
-        flexDirection: 'row',
-        gap: 10,
-    },
-    catText: {
-        color: 'tomato',
-    },
-    dateText: {
-        color: 'grey',
-        fontSize: 12,
-        alignSelf: 'flex-end'
-    },
-    amountText: {
-        color: 'tomato',
-        textAlign: 'right',
-        fontSize: 16,
-        fontWeight: '700',
-        alignSelf: 'center'
     },
 });
 

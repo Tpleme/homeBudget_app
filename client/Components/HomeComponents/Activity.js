@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native';
 import { getEntity } from '../../API/requests';
-import UserAvatar from '../../Misc/UserAvatar';
-import moment from 'moment'
+import RecordsCard from '../Cards/RecordsCard';
 
+//TODO: tentar atualizar esta lista quando é criado um novo record
 function Activity({ onViewMore }) {
     const [data, setData] = useState([])
 
@@ -23,19 +23,7 @@ function Activity({ onViewMore }) {
             </View>
             <View style={styles.activityItens}>
                 {data.map((record, index) => (
-                    <View key={index} style={styles.activityItem}>
-                        <View style={styles.leftView}>
-                            <View style={styles.avatar}>
-                                <UserAvatar user={record.payer} style={styles.image} />
-                                <Text numberOfLines={1} style={styles.userName}>{record.payer.name}</Text>
-                            </View>
-                            <View style={styles.bottomView}>
-                                <Text numberOfLines={1} style={styles.catText}>{record.subcategory.name}</Text>
-                                <Text numberOfLines={1} style={styles.dateText}>{moment(record.createdAt).format('DD MMM YYYY hh:mm')}</Text>
-                            </View>
-                        </View>
-                        <Text numberOfLines={1} style={styles.amountText}>{record.value} €</Text>
-                    </View>
+                   <RecordsCard key={index} record={record} /> 
                 ))}
             </View>
         </View>
@@ -68,55 +56,6 @@ const styles = StyleSheet.create({
     },
     activityItens: {
         marginTop: 10,
-        rowGap: 10,
-    },
-    activityItem: {
-        backgroundColor: '#2a2a2a',
-        elevation: 2,
-        borderRadius: 5,
-        flexDirection: 'row',
-        alignItens: 'center',
-        justifyContent: 'space-between',
-        paddingVertical: 5,
-        paddingHorizontal: 10,
-    },
-    leftView: {
-        flex: 1,
-        gap: 5,
-    },
-    avatar: {
-        flexDirection: 'row',
-        alignItens: 'center',
-        gap: 5,
-    },
-    image: {
-        height: 25,
-        width: 25,
-        resizeMode: 'cover',
-        borderRadius: 5,
-    },
-    userName: {
-        color: 'white',
-        fontSize: 17,
-        alignSelf: 'center'
-    },
-    bottomView: {
-        flexDirection: 'row',
-        gap: 10,
-    },
-    catText: {
-        color: 'tomato',
-    },
-    dateText: {
-        color: 'grey',
-        fontSize: 12,
-        alignSelf: 'flex-end'
-    },
-    amountText: {
-        color: 'tomato',
-        textAlign: 'right',
-        fontSize: 16,
-        fontWeight: '700',
-        alignSelf: 'center'
+        rowGap: 12,
     }
 });

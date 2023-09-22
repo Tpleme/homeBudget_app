@@ -5,6 +5,10 @@ const RecordsModel = database.define('records', {
     value: {
         type: DataTypes.DOUBLE,
         allowNull: false
+    },
+    date: {
+        type: DataTypes.DATE,
+        allowNull: false
     }
 })
 

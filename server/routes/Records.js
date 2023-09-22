@@ -11,7 +11,7 @@ const getAll = async (req, res) => {
             include: [
                 { model: models.app_users, as: 'payer', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
                 { model: models.app_users, as: 'creator', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
-                { model: models.subcategories }
+                { model: models.subcategories, include: [models.categories] }
             ],
         })
         res.status(200).json(records)
@@ -31,7 +31,7 @@ const getByID = async (req, res) => {
             include: [
                 { model: models.app_users, as: 'payer', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
                 { model: models.app_users, as: 'creator', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
-                { model: models.subcategories }
+                { model: models.subcategories, include: [models.categories] }
             ],
         })
 
