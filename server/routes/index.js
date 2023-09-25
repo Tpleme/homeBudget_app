@@ -9,11 +9,13 @@ const FoAuthRoute = require('./FoAuth')
 const AppUsersRoute = require('./AppUsers')
 const RecordRoute = require('./Records')
 const CategoriesRoute = require('./Categories')
+const ShoppingListRoute = require('./ShoppingLists')
 
 const routes = {
     app_users: AppUsersRoute,
     records: RecordRoute,
-    categories: CategoriesRoute
+    categories: CategoriesRoute,
+    shopping_list: ShoppingListRoute
 }
 
 module.exports = app => {

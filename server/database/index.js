@@ -5,6 +5,7 @@ const AppKeysModel = require('./models/AppKeys')
 const CategoriesModel = require('./models/CategoriesModel')
 const SubcategoriesModel = require('./models/SubcategoriesModel')
 const RecordsModel = require('./models/RecordsModel')
+const ShoppingListsModel = require('./models/ShoppingLists')
 
 const refreshDB = false;
 
@@ -23,6 +24,8 @@ const initializeDB = async () => {
 
     SubcategoriesModel.hasMany(RecordsModel)
     RecordsModel.belongsTo(SubcategoriesModel)
+
+    ShoppingListsModel(database)
 
     database.authenticate().then(() => {
         console.log('connection to database has been established')

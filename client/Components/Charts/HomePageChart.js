@@ -3,53 +3,78 @@ import { View, StyleSheet, Text } from 'react-native'
 import { LineChart } from "react-native-gifted-charts";
 
 
-//a espera de compatibilidade do react-native-gifted-charts com expo https://github.com/Abhinandan-Kushwaha/react-native-gifted-charts/issues/359
 function HomePageChart() {
+
+    const customDataPoint = () => {
+        return (
+            <View
+                style={{
+                    width: 17,
+                    height: 17,
+                    backgroundColor: '#202020',
+                    borderWidth: 3,
+                    borderRadius: 10,
+                    borderColor: 'tomato',
+                }}
+            />
+        );
+    };
+
+    const customLabel = val => {
+        return (
+            <View style={{ marginLeft: 20 }}>
+                <Text style={{ color: 'white', fontWeight: 'bold' }}>{val}</Text>
+            </View>
+        );
+    };
+
     const data1 = [
-        {value: 160, date: '1 Apr 2022'},
-        {value: 180, date: '2 Apr 2022'},
-        {value: 190, date: '3 Apr 2022'},
-        {value: 180, date: '4 Apr 2022'},
-        {value: 400, date: '5 Apr 2022'},
-        {value: 145, date: '6 Apr 2022'},
-        {value: 160, date: '7 Apr 2022'},
-        {value: 200, date: '8 Apr 2022'},
+        { value: 160, date: 'January', labelComponent: () => customLabel('Jav') },
+        { value: 180, date: '2 Apr 2022', labelComponent: () => customLabel('Fev') },
+        { value: 190, date: '3 Apr 2022', labelComponent: () => customLabel('Mar') },
+        { value: 180, date: '4 Apr 2022', labelComponent: () => customLabel('Apr') },
+        { value: 400, date: '5 Apr 2022', labelComponent: () => customLabel('Mai') },
+        { value: 145, date: '6 Apr 2022', labelComponent: () => customLabel('Jun') },
     ];
+
 
     return (
         <View style={styles.homeChartMainView}>
             <LineChart
+                thickness1={3}
                 areaChart
                 curved
                 data={data1}
-                hideDataPoints
                 isAnimated
-                height={250}
+                height={220}
                 color1="tomato"
                 startFillColor1="tomato"
                 endFillColor1="transparent"
                 startOpacity={0.9}
                 endOpacity={0.2}
-                initialSpacing={0}
                 noOfSections={4}
+                hideRules
                 yAxisThickness={0}
+                customDataPoint={customDataPoint}
+                hideYAxisText
                 xAxisColor='transparent'
-                rulesType="solid"
-                rulesColor="gray"
-                yAxisTextStyle={{ color: 'gray' }}
-                yAxisLabelSuffix="€"
                 adjustToWidth={true}
-                endSpacing={0}
                 pointerConfig={{
                     pointerStripHeight: 160,
                     pointerStripColor: 'lightgray',
                     pointerStripWidth: 2,
-                    pointerColor: 'lightgray',
                     radius: 6,
                     pointerLabelWidth: 100,
                     pointerLabelHeight: 90,
                     activatePointersOnLongPress: true,
                     autoAdjustPointerLabelPosition: false,
+                    pointerComponent: () => <View style={{ 
+                        width: 17, 
+                        height: 17, 
+                        backgroundColor: 'tomato',
+                        borderRadius: 20,
+                        marginLeft: -5
+                    }}/>,
                     pointerLabelComponent: items => {
                         return (
                             <View
@@ -66,7 +91,7 @@ function HomePageChart() {
 
                                 <View style={{ paddingHorizontal: 14, paddingVertical: 6, borderRadius: 16, backgroundColor: 'white' }}>
                                     <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
-                                        {'$' + items[0].value + '.0'}
+                                        {'€' + items[0].value + '.0'}
                                     </Text>
                                 </View>
                             </View>

@@ -8,10 +8,10 @@ import HomePageChart from '../Components/Charts/HomePageChart';
 function HomeScreen({ navigation }) {
 
     const homeShortcuts = [
-        { title: "Add Record", route: 'addRecord', icon:'add-outline' },
-        { title: "Groceries Lists", route: 'groceries', icon:'list-outline' },
-        { title: "Activity", route: 'activityScreen', icon:'calendar-outline' },
-        { title: "View history", route: 'historyScreen', icon:'reader-outline' },
+        { title: "Add Record", route: 'addRecord', icon: 'add-outline' },
+        { title: "Groceries Lists", route: 'groceries', icon: 'list-outline' },
+        { title: "Activity", route: 'activityScreen', icon: 'calendar-outline' },
+        { title: "View history", route: 'historyScreen', icon: 'reader-outline' },
     ]
 
     return (
@@ -23,15 +23,17 @@ function HomeScreen({ navigation }) {
             <View style={styles.chartView}>
                 <HomePageChart />
             </View>
-            <View style={styles.shortcutsView}>
-                {homeShortcuts.map((shortcut, index) => (
-                    <Pressable key={index} style={styles.shortcut} onPress={() => navigation.navigate(shortcut.route)}>
-                        <Ionicons style={{ alignSelf: 'center' }} name={shortcut.icon} size={30} color='white' />
-                        <Text style={styles.shortcut.text}>{shortcut.title}</Text>
-                    </Pressable>
-                ))}
+            <View style={{ padding: 10 }}>
+                <View style={styles.shortcutsView}>
+                    {homeShortcuts.map((shortcut, index) => (
+                        <Pressable key={index} style={styles.shortcut} onPress={() => navigation.navigate(shortcut.route)}>
+                            <Ionicons style={{ alignSelf: 'center' }} name={shortcut.icon} size={30} color='white' />
+                            <Text style={styles.shortcut.text}>{shortcut.title}</Text>
+                        </Pressable>
+                    ))}
+                </View>
+                <Activity onViewMore={() => navigation.navigate('activityScreen')} />
             </View>
-            <Activity onViewMore={() => navigation.navigate('activityScreen')} />
         </ScrollView>
     );
 }
@@ -45,9 +47,8 @@ HomeScreen.propTypes = {
 const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: '#202020',
-        display: 'flex',
         height: "100%",
-        padding: 10,
+        // padding: 10,
     },
     chartView: {
         width: "100%",
@@ -59,6 +60,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         gap: 15,
+        marginBottom: 20
     },
     shortcut: {
         width: 80,
