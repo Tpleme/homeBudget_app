@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from 'react-native'
 import { TextInput as PaperInput, HelperText } from 'react-native-paper'
 import CurrencyInput from 'react-native-currency-input'
 
-export const TextInput = ({ label, onChange, value, placeholder, type, error, helperText, ...props }) => {
+export const TextInput = ({ label, onChange, value, placeholder, type, error, helperText, mode, ...props }) => {
 
     return (
         <View style={{ width: '100%' }}>
@@ -15,8 +15,8 @@ export const TextInput = ({ label, onChange, value, placeholder, type, error, he
                 placeholder={placeholder}
                 placeholderTextColor='tomato'
                 keyboardType={type}
-                mode="outlined"
-                theme={{ colors: { text: 'white' } }}
+                mode={mode ?? "outlined"}
+                theme={{ roundness: 10, colors: { text: 'white' } }}
                 activeOutlineColor='tomato'
                 outlineColor='grey'
                 error={error}
@@ -36,7 +36,7 @@ export const PasswordTextInput = ({ label, onChange, value, placeholder, error, 
 
     return (
         <View style={{ width: '100%' }}>
-            <Text style={styles.label}>{label ?? 'password'}</Text>
+            <Text style={styles.label}>{label}</Text>
             <PaperInput
                 style={styles.input}
                 onChangeText={onChange}
@@ -47,7 +47,7 @@ export const PasswordTextInput = ({ label, onChange, value, placeholder, error, 
                 mode="outlined"
                 activeOutlineColor='tomato'
                 outlineColor='grey'
-                theme={{ colors: { text: 'white' } }}
+                theme={{ roundness: 10, colors: { text: 'white' } }}
                 error={error}
                 right={<PaperInput.Icon
                     icon={showPass ? 'eye-off' : 'eye'}
@@ -104,12 +104,12 @@ export const InputCurrency = ({ label, onChange, value, placeholder, error, help
 const styles = StyleSheet.create({
     input: {
         width: "100%",
-        padding: 10,
+        paddingVertical: 10,
         backgroundColor: '#202020',
-        height: 25
+        height: 25,
     },
     inputIcon: {
-        top: 5,
+
     },
     label: {
         color: 'white',

@@ -172,7 +172,7 @@ function AddRecord({ navigation }) {
                                 mode="outlined"
                                 withDateFormatInLabel={false}
                                 style={{ backgroundColor: '#202020' }}
-                                outlineStyle={{ borderRadius: 5 }}
+                                outlineStyle={{ borderRadius: 10 }}
                             />
                         )}
                     />

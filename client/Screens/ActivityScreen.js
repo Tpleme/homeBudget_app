@@ -78,7 +78,7 @@ function ActivityScreen({ navigation }) {
                 <View style={styles.filterView}>
                     <CustomButton label='Filter by date' onPress={() => setOpenDatePicker(true)} />
                 </View>
-                <ScrollView style={styles.activityItensView} contentContainerStyle={{ rowGap: 12 }}>
+                <ScrollView style={styles.activityItensView} contentContainerStyle={{ rowGap: 12, marginBottom: 20 }}>
                     {filteredData.length > 0 ?
                         filteredData.map((record, index) => (
                             <RecordsCard key={index} record={record} />
@@ -86,8 +86,6 @@ function ActivityScreen({ navigation }) {
                         :
                         <Text style={{color:'white', textAlign: 'center'}}>No data found</Text>
                     }
-                    {/*cant put margin on bottom of scrollView, so here it is*/}
-                    <View style={{ height: 20 }} />
                 </ScrollView>
             </View>
             <DateRangePicker

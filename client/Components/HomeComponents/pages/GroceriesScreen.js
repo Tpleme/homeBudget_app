@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { View, Text, StatusBar, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { View, StatusBar, StyleSheet, ScrollView } from 'react-native';
 import NavigateBack from '../../../Misc/NavigateBack';
 import { getEntity } from '../../../API/requests'
+import ShoppingListCard from '../../Cards/ShoppingListCard';
 
 function GroceriesScreen({ navigation }) {
     const [lists, setLists] = useState([])
@@ -28,17 +29,7 @@ function GroceriesScreen({ navigation }) {
             <StatusBar barStyle="light-content" backgroundColor="black" />
             <View style={styles.shoppingMainView}>
                 <ScrollView style={styles.listsScrollView} contentContainerStyle={{ gap: 20 }}>
-                    {lists.map(list => (
-                        <Pressable 
-                        key={list.id} 
-                        style={styles.listView} 
-                        onLongPress={() => console.log('aparecer context menu')}
-                        // em vez de longpress podemos colocar 3 pontinhos para abrir um menu
-                        onPress={() => console.log('abrir lista')}
-                        >
-                            <Text style={styles.listCardText}>{list.name ?? list.createdAt}</Text>
-                        </Pressable>
-                    ))}
+                    {lists.map(list => <ShoppingListCard key={list.id} list={list} />)}
                 </ScrollView>
             </View>
         </View>
@@ -56,21 +47,6 @@ const styles = StyleSheet.create({
     listsScrollView: {
         flexDirection: 'column',
         padding: 20,
-        borderWidth: 1,
-        borderColor: 'red'
-    },
-    listView: {
-        width: '100%',
-        borderWidth: 1,
-        borderColor: 'white',
-        height: 70,
-        borderRadius: 20,
-        paddingHorizontal: 20,
-        justifyContent: 'center',
-    },
-    listCardText: {
-        color: 'white',
-        fontSize: 16,
     }
 })
 

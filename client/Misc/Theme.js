@@ -5,10 +5,13 @@ export const DarkTheme = {
     roundness: 1,
     colors: {
         ...MD3DarkTheme.colors,
-        primary: 'tomato',
+        primary: '#FF6347',
         onPrimary: '#ffffff',
         primaryContainer: '#ffdad3',
-        onPrimaryContainer: 'tomato'
+        onPrimaryContainer: '#FF6347',
+        elevation: {
+            level2: '#373737'
+        }
     }
 }
 
@@ -17,6 +20,6 @@ export const LightTheme = {
     roundness: 1,
     colors: {
         ...MD3LightTheme.colors,
-        primary: 'tomato',
+        primary: '#FF6347',
     }
 }

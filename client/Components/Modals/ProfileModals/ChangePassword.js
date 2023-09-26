@@ -41,7 +41,6 @@ function ChangePassword(props) {
                 <View style={styles.modalView}>
                     <Text style={styles.title}>Use the following form to change your password</Text>
                     <View style={styles.form}>
-                        <Text style={{ color: 'white', marginTop: 10 }}>New Password</Text>
                         <Controller
                             control={control}
                             name="newPassword"
@@ -54,6 +53,7 @@ function ChangePassword(props) {
                                 <PasswordTextInput
                                     value={value}
                                     type="password"
+                                    label='New Password'
                                     placeholder=''
                                     onChange={onChange}
                                     error={Boolean(errors.newPassword)}
@@ -62,7 +62,6 @@ function ChangePassword(props) {
                             )}
                         />
 
-                        <Text style={{ color: 'white', marginTop: 20 }}>Confirm New Password</Text>
                         <Controller
                             control={control}
                             name="confirmPassword"
@@ -79,6 +78,7 @@ function ChangePassword(props) {
                                 <PasswordTextInput
                                     value={value}
                                     placeholder=''
+                                    label='Confirm New Password'
                                     type="password"
                                     onChange={onChange}
                                     error={Boolean(errors.confirmPassword)}
@@ -87,7 +87,6 @@ function ChangePassword(props) {
                             )}
                         />
 
-                        <Text style={{ color: 'white', marginTop: 20 }}>Your current Password</Text>
                         <Controller
                             control={control}
                             name="authPassword"
@@ -98,6 +97,7 @@ function ChangePassword(props) {
                             render={({ field: { onChange, value } }) => (
                                 <PasswordTextInput
                                     value={value}
+                                    label='Your current Password'
                                     type="password"
                                     placeholder=''
                                     onChange={onChange}
@@ -138,7 +138,8 @@ const styles = StyleSheet.create({
     },
     form: {
         width: '100%',
-        marginTop: 20
+        marginTop: 20,
+        gap: 20
     },
     actionsView: {
         marginTop: 'auto',

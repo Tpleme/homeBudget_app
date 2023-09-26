@@ -43,7 +43,8 @@ function Autocomplete({ label, onChange, dataset, helperText, error, placeholder
                 inputContainerStyle={{
                     backgroundColor: '#202020',
                     borderWidth: 1,
-                    borderColor: getBorderColor()
+                    borderColor: getBorderColor(),
+                    borderRadius: 10,
                 }}
                 containerStyle={styles.container}
                 textInputProps={{
