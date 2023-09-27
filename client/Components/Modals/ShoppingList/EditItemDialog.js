@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Button, Dialog, useTheme } from 'react-native-paper'
 import { TextInput } from '../../Inputs/TextInputs'
 import { useForm, Controller } from 'react-hook-form'
@@ -7,16 +7,18 @@ import WheelPicker from '../../WheelPicker/WheelPicker'
 
 const measureData = ['lt', 'uni', 'kg', 'gr']
 
-function AddItemDialog({ open, close, onAdd }) {
-    const { control, handleSubmit, reset, formState: { errors } } = useForm()
+function EditItemDialog({ open, close, onSubmit, item }) {
+    const { control, handleSubmit, setValue, formState: { errors } } = useForm()
     const theme = useTheme()
 
+    useEffect(() => {
+        setValue('name', item.data.name)
+        setValue('quantity', item.data.quantity)
+        setValue('measure', item.data.measure)
+    }, [item])
+
     const submit = (data) => {
-        onAdd({ ...data, checked: false })
-        reset({
-            name: '',
-            quantity: '1',
-        })
+        onSubmit({ item: { ...data, checked: false }, index: item.index })
         close()
     }
 
@@ -27,11 +29,11 @@ function AddItemDialog({ open, close, onAdd }) {
                 <Controller
                     control={control}
                     name="name"
+                    defaultValue={item.data.name}
                     rules={{ required: 'Value required' }}
                     render={({ field: { onChange, value } }) => (
                         <View style={{ flex: 1 }}>
                             <TextInput
-                                autoFocus={true}
                                 label='Product'
                                 value={value}
                                 onChange={onChange}
@@ -44,7 +46,7 @@ function AddItemDialog({ open, close, onAdd }) {
                 <Controller
                     control={control}
                     name="quantity"
-                    defaultValue='1'
+                    defaultValue={item.data.quantity}
                     rules={{ required: 'Value required' }}
                     render={({ field: { onChange, value } }) => (
                         <View style={{ width: '15%' }}>
@@ -63,12 +65,12 @@ function AddItemDialog({ open, close, onAdd }) {
                 <Controller
                     control={control}
                     name="measure"
-                    rules={{ required: 'Value required' }}
+                    defaultValue={item.data.measure}
                     render={({ field: { onChange } }) => (
                         <WheelPicker
                             width='10%'
                             itemHeight={30}
-                            defaultValue='uni'
+                            defaultValue={item.data.measure}
                             items={measureData}
                             onChange={onChange}
                         />
@@ -77,11 +79,11 @@ function AddItemDialog({ open, close, onAdd }) {
 
             </Dialog.Content>
             <Dialog.Actions>
-                <Button onPress={handleSubmit(submit)}>Add</Button>
+                <Button onPress={handleSubmit(submit)}>Submit</Button>
                 <Button onPress={close}>Cancel</Button>
             </Dialog.Actions>
         </Dialog>
     )
 }
 
-export default AddItemDialog
+export default EditItemDialog

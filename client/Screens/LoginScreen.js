@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#202020',
         paddingHorizontal: 40,
         paddingVertical: 20,
-        gap: 10
     },
     imgWrapper: {
         flexDirection: 'row',

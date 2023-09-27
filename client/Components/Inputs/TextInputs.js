@@ -5,16 +5,24 @@ import CurrencyInput from 'react-native-currency-input'
 
 export const TextInput = ({ label, onChange, value, placeholder, type, error, helperText, mode, ...props }) => {
 
+    const handleInput = value => {
+        if (type === 'numeric' || type === 'number-pad' || type === 'decimal-pad') {
+                onChange(value.replace(/[^0-9.]/g, ""))
+            return;
+        }
+        onChange(value)
+    }
+
     return (
         <View style={{ width: '100%' }}>
             <Text style={styles.label}>{label}</Text>
             <PaperInput
                 style={styles.input}
-                onChangeText={onChange}
+                onChangeText={handleInput}
                 value={value}
                 placeholder={placeholder}
                 placeholderTextColor='tomato'
-                keyboardType={type}
+                keyboardType={type ?? 'default'}
                 mode={mode ?? "outlined"}
                 theme={{ roundness: 10, colors: { text: 'white' } }}
                 activeOutlineColor='tomato'

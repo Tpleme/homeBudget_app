@@ -3,12 +3,12 @@ import { Button } from 'react-native-paper'
 import { useTheme } from 'react-native-paper'
 
 function CustomButton({ label, mode, onPress, loading, color, ...props }) {
-    const theme = useTheme()
+    // const theme = useTheme()
 
     return (
         <Button
             mode={mode ?? 'contained'}
-            buttonColor={color ?? theme.colors.primary}
+            buttonColor={color ?? null}
             onPress={loading ? null : onPress}
             loading={loading}
             {...props}

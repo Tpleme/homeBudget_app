@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { View, StatusBar, StyleSheet, ScrollView } from 'react-native';
+import { View, StatusBar, StyleSheet, ScrollView, Text } from 'react-native';
+import { FAB } from 'react-native-paper';
 import NavigateBack from '../../../Misc/NavigateBack';
-import { getEntity } from '../../../API/requests'
+import { createEntity, getEntity } from '../../../API/requests'
 import ShoppingListCard from '../../Cards/ShoppingListCard';
+import ListModal from '../../Modals/ShoppingList/ListModal';
 
 function GroceriesScreen({ navigation }) {
     const [lists, setLists] = useState([])
+    const [refresh, setRefresh] = useState(false)
+    // for new created list
+    const [openNewCreatedList, setOpenNewCreateList] = useState(false)
+    const [newList, setNewList] = useState(null)
 
     useEffect(() => {
         getEntity({ entity: 'shopping_list' }).then(res => {
@@ -14,8 +20,17 @@ function GroceriesScreen({ navigation }) {
         }, err => {
             console.error(err)
         })
-    }, [])
+    }, [refresh])
 
+    const addNewList = () => {
+        createEntity({ entity: 'shopping_list', data: {} }).then(res => {
+            setRefresh(!refresh)
+            setNewList(res.data.list)
+            setOpenNewCreateList(true)
+        }, err => {
+            console.log(err)
+        })
+    }
 
     return (
         <View
@@ -27,11 +42,23 @@ function GroceriesScreen({ navigation }) {
             }}>
             <NavigateBack navigation={navigation} />
             <StatusBar barStyle="light-content" backgroundColor="black" />
+            <FAB size='small' mode='flat' icon='plus' style={styles.addButton} onPress={() => addNewList()} />
             <View style={styles.shoppingMainView}>
-                <ScrollView style={styles.listsScrollView} contentContainerStyle={{ gap: 20 }}>
-                    {lists.map(list => <ShoppingListCard key={list.id} list={list} />)}
+                <Text style={styles.title}>Groceries Lists</Text>
+                <ScrollView style={styles.listsScrollView} contentContainerStyle={{ gap: 15 }}>
+                    {lists.map(list => <ShoppingListCard key={list.id} list={list} refresh={() => setRefresh(!refresh)} />)}
                 </ScrollView>
             </View>
+            {/* For when we create a new list */}
+            {newList &&
+                <ListModal
+                    open={openNewCreatedList}
+                    close={() => setOpenNewCreateList(false)}
+                    displayMode={'edit'}
+                    list={newList}
+                    refresh={() => setRefresh(!refresh)}
+                />
+            }
         </View>
     );
 }
@@ -42,11 +69,23 @@ const styles = StyleSheet.create({
     shoppingMainView: {
         flex: 1,
         width: '100%',
-        paddingTop: 60
+        paddingTop: 18
+    },
+    title: {
+        textAlign: 'center',
+        color: 'white',
+        fontSize: 22,
+        paddingBottom: 10
     },
     listsScrollView: {
         flexDirection: 'column',
         padding: 20,
+    },
+    addButton: {
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
+        zIndex: 10
     }
 })
 

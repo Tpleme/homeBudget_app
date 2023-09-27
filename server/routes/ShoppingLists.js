@@ -2,7 +2,9 @@ const { models } = require('../database/index')
 const { getIdParam } = require('../utils')
 
 const getAll = async (req, res) => {
-    const lists = await models.shopping_list.findAll()
+    const lists = await models.shopping_list.findAll({
+        order: [['createdAt', 'DESC']]
+    })
     res.status(200).json(lists)
 
 }
@@ -19,8 +21,8 @@ const getByID = async (req, res) => {
 
 const create = async (req, res) => {
     try {
-        await models.shopping_list.create(req.body)
-        res.status(201).send('List created')
+        const newList = await models.shopping_list.create(req.body)
+        res.status(201).send({ message: 'List created', list: newList })
 
     } catch (err) {
         console.log(err)
@@ -36,7 +38,7 @@ const update = async (req, res) => {
 
         if (!list) return res.status(404).send('List not found')
 
-        await models.shopping_list.update(req.body)
+        await models.shopping_list.update(req.body, { where: { id } })
 
         res.status(200).send('List Updated')
 
@@ -45,8 +47,6 @@ const update = async (req, res) => {
         console.log(err)
         res.status(500).send(err)
     }
-
-    res.status(501).send('Not implemented')
 }
 
 const remove = async (req, res) => {

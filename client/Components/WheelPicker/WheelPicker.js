@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import {
     Animated,
     StyleSheet,
@@ -9,10 +9,23 @@ import {
 
 //onMomentumScrollBegin e canMomentum são workarround para um problema do onMomentumScrollEnd ser invokado varias vezes
 
-function WheelPicker({ items, onChange, itemHeight, ...props }) {
+function WheelPicker({ items, onChange, itemHeight, defaultValue, ...props }) {
 
     const scrollY = useRef(new Animated.Value(0)).current;
     const canMomentum = useRef(false);
+    const flatRef = useRef(false);
+
+    useEffect(() => {
+        if (flatRef.current) {
+            if (defaultValue) {
+                const defaultValueIndex = items.findIndex((item) => item === defaultValue)
+                if(defaultValueIndex > 0) {
+                    flatRef.current.scrollToIndex({ index: defaultValueIndex })
+                    onChange(items[defaultValueIndex])
+                }
+            }
+        }
+    }, [defaultValue])
 
     const onMomentumScrollBegin = () => {
         canMomentum.current = true;
@@ -28,13 +41,18 @@ function WheelPicker({ items, onChange, itemHeight, ...props }) {
 
         const scale = scrollY.interpolate({
             inputRange,
-            outputRange: [0.8, 1, 0.8],
+            outputRange: [0.7, 1, 0.7],
+        });
+
+        const opacity = scrollY.interpolate({
+            inputRange,
+            outputRange: [0.7, 1, 0.7],
         });
 
         return (
             <Animated.View
                 style={[
-                    { height: itemHeight, lineHeight: itemHeight, transform: [{ scale }] },
+                    { height: itemHeight, lineHeight: itemHeight, transform: [{ scale }], opacity },
                     styles.animatedContainer,
                 ]}>
                 <Text style={styles.pickerItem}>{item}</Text>
@@ -54,6 +72,7 @@ function WheelPicker({ items, onChange, itemHeight, ...props }) {
     return (
         <View style={{ ...styles.flatListWrapper, height: itemHeight * 3, width: props.width }}>
             <Animated.FlatList
+                ref={flatRef}
                 data={['', ...items, '']}
                 renderItem={renderItem}
                 showsVerticalScrollIndicator={false}
@@ -83,15 +102,11 @@ function WheelPicker({ items, onChange, itemHeight, ...props }) {
 const styles = StyleSheet.create({
     flatListWrapper: {
         top: 10,
-        // borderWidth: 1,
-        // borderColor: 'red'
     },
     pickerItem: {
         fontSize: 18,
         textAlign: 'center',
         color: 'white',
-        // borderWidth: 1,
-        // borderColor: 'red',
     },
     indicatorHolder: {
         position: 'absolute',

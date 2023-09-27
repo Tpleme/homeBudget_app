@@ -12,6 +12,7 @@ import { useTheme } from 'react-native-paper'
 
 import filterIcon from '../assets/Icons/filter.png'
 
+//TODO: margin bottom no scrollview não está a funcionar
 function ActivityScreen({ navigation }) {
     const [data, setData] = useState([])
     const [filteredData, setFilteredData] = useState([])

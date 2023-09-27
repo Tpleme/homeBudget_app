@@ -41,13 +41,18 @@ export const getEntity = async ({ entity, id, query }) => {
     return await axios.get(`${SERVER_URL}/api/${entity}${url}`, { headers: await getHeaders() })
 }
 
-export const editEntity = async (entity, id, data) => {
+export const createEntity = async ({ entity, data }) => {
+    return await axios.post(`${SERVER_URL}/api/${entity}`, data, { headers: await getHeaders() })
+}
+
+export const editEntity = async ({ entity, id, data }) => {
     return await axios.put(`${SERVER_URL}/api/${entity}${id ? `/${id}` : ''}`, data, { headers: await getHeaders() })
 }
 
-export const createEntity = async (entity, data) => {
-    return await axios.post(`${SERVER_URL}/api/${entity}`, data, { headers: await getHeaders() })
+export const deleteEntity = async ({ entity, id }) => {
+    return await axios.delete(`${SERVER_URL}/api/${entity}/${id}`, { headers: await getHeaders() })
 }
+
 
 export const changePassword = async (data, id) => {
     return await axios.post(`${SERVER_URL}/api/app_users/change-pass/${id}`, data, { headers: await getHeaders() })
