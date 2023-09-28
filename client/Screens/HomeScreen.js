@@ -10,8 +10,8 @@ function HomeScreen({ navigation }) {
     const homeShortcuts = [
         { title: "Add Record", route: 'addRecord', icon: 'add-outline' },
         { title: "Groceries Lists", route: 'groceries', icon: 'list-outline' },
-        { title: "Activity", route: 'activityScreen', icon: 'calendar-outline' },
-        { title: "View history", route: 'historyScreen', icon: 'reader-outline' },
+        { title: "View Activity", route: 'activityScreen', icon: 'calendar-outline' },
+        { title: "View Balance", route: 'balanceScreen', icon: 'reader-outline' },
     ]
 
     return (

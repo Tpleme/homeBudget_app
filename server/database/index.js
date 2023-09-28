@@ -5,6 +5,7 @@ const AppKeysModel = require('./models/AppKeys')
 const CategoriesModel = require('./models/CategoriesModel')
 const SubcategoriesModel = require('./models/SubcategoriesModel')
 const RecordsModel = require('./models/RecordsModel')
+const BalancesModel = require('./models/Balances')
 const ShoppingListsModel = require('./models/ShoppingLists')
 
 const refreshDB = false;
@@ -12,6 +13,9 @@ const refreshDB = false;
 const initializeDB = async () => {
 
     AppUsersModel.hasOne(AppKeysModel)
+
+    AppUsersModel.hasOne(BalancesModel, { as: 'createdBy'})
+    BalancesModel.belongsTo(AppUsersModel, { as: 'createdBy'})
 
     CategoriesModel.hasMany(SubcategoriesModel)
     SubcategoriesModel.belongsTo(CategoriesModel)

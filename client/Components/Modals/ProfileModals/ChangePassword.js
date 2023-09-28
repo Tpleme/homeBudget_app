@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import Modal from 'react-native-modal'
 import { StyleSheet, View, Text, Image } from 'react-native';
 import CustomButton from '../../Buttons/CustomButton';
@@ -6,21 +6,23 @@ import { useForm, Controller } from 'react-hook-form'
 import { PasswordTextInput } from '../../Inputs/TextInputs'
 import { changePassword } from '../../../API/requests';
 import backgroundImage from '../../../assets/backgrounds/banner.jpg'
+import FlashMessage from 'react-native-flash-message';
 
 function ChangePassword(props) {
     const [loading, setLoading] = useState(false)
     const { control, handleSubmit, watch, formState: { errors } } = useForm()
+    const flashMessageRef = useRef()
 
     const onSubmit = data => {
         setLoading(true)
 
         changePassword(data, props.user.id).then(res => {
-            alert(res.data)
             setLoading(false)
-            props.close()
+            props.showMessage({ message: res.data, type: 'success' })
+            props.closeParent()
         }, err => {
             console.log(err)
-            alert(err.response.data)
+            flashMessageRef.current.showMessage({ message: err.response.data, type: 'danger' })
             setLoading(false)
         })
     }
@@ -112,6 +114,7 @@ function ChangePassword(props) {
                         <CustomButton disabled={loading} color='darkgrey' label='Cancel' onPress={() => props.close()} />
                     </View>
                 </View>
+                <FlashMessage ref={flashMessageRef} position='bottom' icon='auto' duration={3000} floating={true} />
             </View>
         </Modal>
     )

@@ -6,6 +6,7 @@ import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-d
 import { en, registerTranslation } from 'react-native-paper-dates'
 import { PaperProvider } from 'react-native-paper';
 import { DarkTheme, LightTheme } from './Misc/Theme';
+import FlashMessage from "react-native-flash-message";
 
 registerTranslation('pt', en) //pt para dar o formato dd/mm/yyyy, mas assim aparece algumas coisas traduzidas para pt :S
 import Index from './Index';
@@ -20,6 +21,7 @@ function App() {
                     <UserProvider>
                         <SocketContext.Provider value={socket}>
                             <Index />
+                            <FlashMessage position='bottom' floating={true} duration={3000} icon='auto' />
                         </SocketContext.Provider>
                     </UserProvider>
                 </SafeAreaProvider>

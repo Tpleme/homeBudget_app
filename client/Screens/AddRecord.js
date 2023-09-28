@@ -12,6 +12,7 @@ import { useUserInfo } from '../Hooks/useUser'
 import { createEntity } from '../API/requests';
 import { DatePickerInput } from 'react-native-paper-dates'
 import moment from 'moment'
+import { showMessage } from 'react-native-flash-message'
 
 function AddRecord({ navigation }) {
     const insets = useSafeAreaInsets();
@@ -58,13 +59,14 @@ function AddRecord({ navigation }) {
             date: data.date
         }
 
-        createEntity('records', sendData).then(res => {
+        createEntity({ entity: 'records', data: sendData }).then(res => {
+            showMessage({ message: res.data, type: 'success' })
             setLoading(false)
             setValue('value', null)
-            alert(res.data)
         }, err => {
+            console.log(err)
+            showMessage({ message: 'Error adding new record', type: 'danger' })
             setLoading(false)
-            alert(err)
         })
     }
 

@@ -39,7 +39,7 @@ function TopBarModal(props) {
                     </Pressable>
                 </View>
             </View>
-            <ProfileModal open={openProfile} close={() => setOpenProfile(false)} />
+            <ProfileModal open={openProfile} close={() => setOpenProfile(false)} closeParent={props.close} />
         </Modal>
     )
 }

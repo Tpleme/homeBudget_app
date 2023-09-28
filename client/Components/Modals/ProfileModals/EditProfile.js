@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import Modal from 'react-native-modal'
 import { StyleSheet, View, Text, Image } from 'react-native';
 import CustomButton from '../../Buttons/CustomButton';
@@ -6,18 +6,20 @@ import { useForm, Controller } from 'react-hook-form'
 import { TextInput } from '../../Inputs/TextInputs'
 import { editEntity } from '../../../API/requests';
 import backgroundImage from '../../../assets/backgrounds/banner.jpg'
+import FlashMessage from 'react-native-flash-message';
 
 function EditProfile(props) {
     const [loading, setLoading] = useState(false)
     const { control, handleSubmit, formState: { errors, dirtyFields } } = useForm(
         { defaultValues: { name: props.user.name, email: props.user.email } }
     )
+    const flashMessageRef = useRef()
 
     const onSubmit = data => {
         const modifiedValues = {}
 
         if (Object.keys(dirtyFields).length === 0) {
-            alert('No info modified');
+            flashMessageRef.current.showMessage({ message: 'No info modified', type: 'info' })
             return;
         }
 
@@ -26,13 +28,13 @@ function EditProfile(props) {
             modifiedValues[key] = data[key]
         }
 
-        editEntity('app_users', props.user.id, modifiedValues).then(res => {
-            alert(res.data)
+        editEntity({entity: 'app_users', id: props.user.id, data: modifiedValues}).then(res => {
             setLoading(false)
             props.setUserInfo({ ...props.user, ...modifiedValues })
+            props.showMessage({message: res.data, type: 'success'})
         }, err => {
             console.log(err)
-            alert(err.response.data)
+            flashMessageRef.current.showMessage({ message: err.response.data, type: 'danger' })
             setLoading(false)
         })
     }
@@ -48,7 +50,7 @@ function EditProfile(props) {
                 props.close();
             }}
         >
-            <View style={{flexDirection: 'column', height: '100%'}}>
+            <View style={{ flexDirection: 'column', height: '100%' }}>
                 <Image style={styles.image} source={backgroundImage} />
                 <View style={styles.modalView}>
                     <Text style={styles.title}>Use the following form to update your profile information</Text>
@@ -91,6 +93,7 @@ function EditProfile(props) {
                         <CustomButton disabled={loading} color='darkgrey' label='Cancel' onPress={() => props.close()} />
                     </View>
                 </View>
+                <FlashMessage ref={flashMessageRef} position='bottom' icon='auto' duration={3000} floating={true} />
             </View>
         </Modal>
     )

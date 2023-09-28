@@ -10,12 +10,14 @@ const AppUsersRoute = require('./AppUsers')
 const RecordRoute = require('./Records')
 const CategoriesRoute = require('./Categories')
 const ShoppingListRoute = require('./ShoppingLists')
+const BalanceRoute = require('./Balance')
 
 const routes = {
     app_users: AppUsersRoute,
     records: RecordRoute,
     categories: CategoriesRoute,
-    shopping_list: ShoppingListRoute
+    shopping_list: ShoppingListRoute,
+    balance: BalanceRoute
 }
 
 module.exports = app => {

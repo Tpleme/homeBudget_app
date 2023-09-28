@@ -11,7 +11,7 @@ import backgroundImage from '../../../assets/backgrounds/banner.jpg'
 import * as ImagePicker from 'expo-image-picker';
 import { changePortrait, removePortrait } from '../../../API/requests';
 import UserAvatar from '../../../Misc/UserAvatar';
-
+import { showMessage } from 'react-native-flash-message'
 
 function ProfileModal(props) {
     const insets = useSafeAreaInsets();
@@ -48,9 +48,10 @@ function ProfileModal(props) {
 
             changePortrait(userInfo.id, formData).then(res => {
                 setUserInfo({ ...userInfo, picture: res.data.portrait })
-                alert(res.data.message);
+                showMessage({message: res.data.message, type: 'success'})
             }, err => {
                 console.log(err)
+                showMessage({message: 'Error uploading your photo', type: 'danger'})
             })
         } else {
             alert('You did not select any image.');
@@ -60,10 +61,15 @@ function ProfileModal(props) {
     const removePicture = () => {
         removePortrait(userInfo.id).then(res => {
             setUserInfo({ ...userInfo, picture: null })
-            alert(res.data);
+            showMessage({message: res.data, type: 'success'})
         }, err => {
             console.log(err)
+            showMessage({message: 'Error removing your photo', type: 'danger'})
         })
+    }
+
+    const showMessageFromChild = data => {
+        showMessage(data)
     }
 
     return (
@@ -98,8 +104,8 @@ function ProfileModal(props) {
                     <CustomButton label='Change Password' onPress={() => setOpenChangePass(true)} />
                 </View>
             </View>
-            <EditProfile open={openEditProfile} close={() => setOpenEditProfile(false)} user={userInfo} setUserInfo={setUserInfo} />
-            <ChangePassword open={openChangePass} close={() => setOpenChangePass(false)} user={userInfo} />
+            <EditProfile open={openEditProfile} close={() => setOpenEditProfile(false)} user={userInfo} setUserInfo={setUserInfo} showMessage={showMessageFromChild}/>
+            <ChangePassword open={openChangePass} close={() => setOpenChangePass(false)} user={userInfo} showMessage={showMessageFromChild} closeParent={props.closeParent}/>
         </Modal>
     )
 }

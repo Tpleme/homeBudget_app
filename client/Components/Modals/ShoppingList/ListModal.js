@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Modal from 'react-native-modal'
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { Checkbox, FAB, IconButton, Menu, PaperProvider, useTheme } from 'react-native-paper'
@@ -9,7 +9,7 @@ import { editEntity } from '../../../API/requests';
 import NavigateBack from '../../../Misc/NavigateBack';
 import { TextInput } from '../../Inputs/TextInputs';
 import moment from 'moment'
-
+import FlashMessage from "react-native-flash-message";
 
 function ListModal(props) {
     const [displayMode, setDisplayMode] = useState(null)
@@ -19,16 +19,23 @@ function ListModal(props) {
     const [openEditDialog, setOpenEditDialog] = useState(false)
     const [selectedItem, setSelectedItem] = useState(null)
     const theme = useTheme()
+    //Inside modal we have to get a ref for the flash message so it shows on top of the modal
+    const localFlashRef = useRef()
 
     useEffect(() => {
         if (props.open) {
             setListName(props.list.name?.length ? props.list.name : moment(props.list.createdAt).format('DD MMMM YYYY - hh:mm'))
-            setDisplayMode(props.displayMode)
             if (props.list.itens) {
                 setItens(JSON.parse(props.list.itens))
             }
         }
-    }, [props.list, props.open, props.displayMode])
+    }, [props.list, props.open])
+
+    useEffect(() => {
+        if (props.open) {
+            setDisplayMode(props.displayMode)
+        }
+    }, [props.displayMode, props.open])
 
     const onSaveList = () => {
         const stringItens = JSON.stringify(itens)
@@ -38,11 +45,12 @@ function ListModal(props) {
             id: props.list.id,
             data: { ...props.list, name: listName, itens: stringItens }
         }).then(res => {
-            //TODO: add snackbar feedback
+            localFlashRef.current.showMessage({ message: res.data, type: 'success' })
             console.log(res.data)
             props.refresh()
             setDisplayMode('view')
         }, err => {
+            localFlashRef.current.showMessage({ message: 'Error updating list', type: 'danger' })
             console.log(err)
         })
     }
@@ -139,6 +147,7 @@ function ListModal(props) {
                 {selectedItem &&
                     <EditItemDialog open={openEditDialog} close={() => setOpenEditDialog(false)} onSubmit={editItem} item={selectedItem} />
                 }
+                <FlashMessage ref={localFlashRef} position='bottom' icon='auto' duration={3000} floating={true} />
             </PaperProvider>
         </Modal>
     )
@@ -202,7 +211,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#373737',
         paddingHorizontal: 10,
-        borderRadius: 10
+        borderRadius: 10,
     },
     itemName: {
         flex: 1,

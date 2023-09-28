@@ -5,7 +5,7 @@ import ActivityScreen from '../../Screens/ActivityScreen';
 import AddRecord from '../../Screens/AddRecord';
 import { TransitionPresets } from '@react-navigation/stack';
 import GroceriesScreen from './pages/GroceriesScreen';
-import HistoryScreen from './pages/HistoryScreen';
+import BalanceScreen from './pages/BalanceScreen';
 
 const Stack = createStackNavigator();
 
@@ -21,7 +21,7 @@ function HomeNavigator() {
             <Stack.Screen name="activityScreen" component={ActivityScreen} />
             <Stack.Screen name="addRecord" component={AddRecord} />
             <Stack.Screen name="groceries" component={GroceriesScreen   } />
-            <Stack.Screen name="historyScreen" component={HistoryScreen   } />
+            <Stack.Screen name="balanceScreen" component={BalanceScreen   } />
         </Stack.Navigator>
     )
 }

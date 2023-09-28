@@ -6,6 +6,7 @@ import NavigateBack from '../../../Misc/NavigateBack';
 import { createEntity, getEntity } from '../../../API/requests'
 import ShoppingListCard from '../../Cards/ShoppingListCard';
 import ListModal from '../../Modals/ShoppingList/ListModal';
+import { showMessage } from 'react-native-flash-message';
 
 function GroceriesScreen({ navigation }) {
     const [lists, setLists] = useState([])
@@ -28,6 +29,7 @@ function GroceriesScreen({ navigation }) {
             setNewList(res.data.list)
             setOpenNewCreateList(true)
         }, err => {
+            showMessage({ message: 'Error creating your list', type: 'danger' })
             console.log(err)
         })
     }
@@ -45,7 +47,7 @@ function GroceriesScreen({ navigation }) {
             <FAB size='small' mode='flat' icon='plus' style={styles.addButton} onPress={() => addNewList()} />
             <View style={styles.shoppingMainView}>
                 <Text style={styles.title}>Groceries Lists</Text>
-                <ScrollView style={styles.listsScrollView} contentContainerStyle={{ gap: 15 }}>
+                <ScrollView style={styles.listsScrollView} contentContainerStyle={{ gap: 15, paddingBottom: 10 }}>
                     {lists.map(list => <ShoppingListCard key={list.id} list={list} refresh={() => setRefresh(!refresh)} />)}
                 </ScrollView>
             </View>
