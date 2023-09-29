@@ -8,6 +8,8 @@ import { PaperProvider } from 'react-native-paper';
 import { DarkTheme, LightTheme } from './Misc/Theme';
 import FlashMessage from "react-native-flash-message";
 
+
+//TODO substituir todos os maps por flatlists
 registerTranslation('pt', en) //pt para dar o formato dd/mm/yyyy, mas assim aparece algumas coisas traduzidas para pt :S
 import Index from './Index';
 

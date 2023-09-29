@@ -1,9 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Modal from 'react-native-modal'
 import { StyleSheet, View } from 'react-native';
 import NavigateBack from '../../../Misc/NavigateBack';
+import { getEntity } from '../../../API/requests';
 
 function BalanceModal({ balance, ...props }) {
+
+    useEffect(() => {
+        if (props.open) {
+            getEntity({ entity: 'balance', id: balance.id }).then(res => {
+                console.log(res.data)
+            }, err => {
+                console.log(err)
+            })
+        }
+    }, [props.open])
 
     return (
         <Modal

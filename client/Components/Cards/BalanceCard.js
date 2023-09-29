@@ -13,7 +13,7 @@ function BalanceCard({ balance }) {
         <Pressable style={styles.listView} onPress={() => setOpenInfoModal(true)} >
             <View style={{ ...styles.closedView, backgroundColor: theme.colors.onTertiary }}>
                 <Ionicons style={{position: 'absolute', left: 10}} name='lock-closed-outline' size={20} color='white' />
-                <Text style={{ color: 'white', textAlign: 'center' }}>Closed Balance</Text>
+                <Text style={{ color: 'white', textAlign: 'center', fontSize: 16 }}>Closed Balance</Text>
             </View>
             <View style={styles.infoView}>
                 <View style={styles.textView}>

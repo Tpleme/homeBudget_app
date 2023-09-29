@@ -14,7 +14,8 @@ import filterIcon from '../../../assets/Icons/filter.png'
 import OpenBalanceCard from '../../Cards/OpenBalanceCard';
 
 function BalanceScreen({ navigation }) {
-    const [data, setData] = useState([])
+    const [balances, setBalances] = useState([])
+    const [openBalance, setOpenBalance] = useState([])
     const [filteredData, setFilteredData] = useState([])
     const [dateRange, setDateRange] = useState({ startDate: undefined, endDate: undefined })
     const [openDatePicker, setOpenDatePicker] = useState(false)
@@ -22,9 +23,9 @@ function BalanceScreen({ navigation }) {
 
     useEffect(() => {
         getEntity({ entity: 'balance' }).then(res => {
-            setData(res.data)
-            console.log(res.data)
-            setFilteredData(res.data)
+            setBalances(res.data.balances)
+            setOpenBalance(res.data.openBalance)
+            setFilteredData(res.data.balances)
         }, err => {
             console.log(err)
         })
@@ -40,7 +41,7 @@ function BalanceScreen({ navigation }) {
         const momentStartDate = moment(startDate)
         const momentEndDate = moment(endDate)
 
-        const filter = data.filter(el => moment(el.createdAt).isBetween(momentStartDate, momentEndDate, 'day', '[]'))
+        const filter = balances.filter(el => moment(el.createdAt).isBetween(momentStartDate, momentEndDate, 'day', '[]'))
         setDateRange({ startDate: momentStartDate, endDate: momentEndDate })
         setFilteredData(filter)
 
@@ -48,7 +49,7 @@ function BalanceScreen({ navigation }) {
 
     const resetFilter = () => {
         setDateRange({ startDate: undefined, endDate: undefined })
-        setFilteredData(data)
+        setFilteredData(balances)
     }
 
     return (
@@ -82,7 +83,7 @@ function BalanceScreen({ navigation }) {
                     <CustomButton label='Filter by date' onPress={() => setOpenDatePicker(true)} />
                 </View>
                 <ScrollView style={styles.balanceItensView} contentContainerStyle={{ rowGap: 12, marginBottom: 20 }}>
-                    <OpenBalanceCard />
+                    <OpenBalanceCard data={openBalance}/>
                     {filteredData.length > 0 ?
                         filteredData.map((balance, index) => (
                             <BalanceCard key={index} balance={balance} />

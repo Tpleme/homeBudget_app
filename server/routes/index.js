@@ -68,4 +68,6 @@ module.exports = app => {
     app.post('/api/app_users/remove-picture/:id', [StandardLimiter, FOendPointAuth], makeHandlerAwareOfAsyncError(routes.app_users.removePicture))
     app.post('/api/app_users/add-picture/:id', [StandardLimiter, FOendPointAuth, AddImageId, AppUserImageUploader], makeHandlerAwareOfAsyncError(routes.app_users.addPicture))
 
+    app.post('/api/balance/get-open-balance', [StandardLimiter, FOendPointAuth], makeHandlerAwareOfAsyncError(routes.balance.getOpenBalance))
+
 }

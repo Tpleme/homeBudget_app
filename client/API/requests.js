@@ -53,7 +53,6 @@ export const deleteEntity = async ({ entity, id }) => {
     return await axios.delete(`${SERVER_URL}/api/${entity}/${id}`, { headers: await getHeaders() })
 }
 
-
 export const changePassword = async (data, id) => {
     return await axios.post(`${SERVER_URL}/api/app_users/change-pass/${id}`, data, { headers: await getHeaders() })
 }
@@ -64,4 +63,8 @@ export const changePortrait = async (id, data) => {
 
 export const removePortrait = async (id) => {
     return await axios.post(`${SERVER_URL}/api/app_users/remove-picture/${id}`, {}, { headers: await getHeaders() })
+}
+
+export const getOpenBalance = async ({ data }) => {
+    return await axios.post(`${SERVER_URL}/api/balance/get-open-balance/`, data, { headers: await getHeaders() })
 }

@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
-import {  View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import moment from 'moment'
-import BalanceModal from '../Modals/BalanceModals/BalanceModal'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Menu, IconButton } from 'react-native-paper'
+import OpenBalanceModal from '../Modals/BalanceModals/OpenBalanceModal';
 
-function OpenBalanceCard({ balance }) {
+function OpenBalanceCard({ data }) {
     const [openInfoModal, setOpenInfoModal] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
 
     const closeBalance = () => {
+        setShowMenu(false)
         console.log('closing balance')
     }
 
@@ -30,21 +31,20 @@ function OpenBalanceCard({ balance }) {
                         />
                     }
                 >
-                    <Menu.Item leadingIcon='menu-open' title='Open Info' onPress={() => openInfoModal(true)} />
+                    <Menu.Item leadingIcon='menu-open' title='Open Info' onPress={() => { setOpenInfoModal(true); setShowMenu(false) }} />
                     <Menu.Item leadingIcon='lock' title='Close Balance' onPress={closeBalance} />
                 </Menu>
             </View>
             <View style={styles.infoView}>
                 <View style={styles.textView}>
-                    <Text style={styles.infoText}>To: today</Text>
-                    <Text style={styles.infoText}>From: {moment().format('DD MMM YYYY hh:mm')}</Text>
+                    <Text style={styles.infoText}>From: {moment(data.start_date).format('DD MMM YYYY hh:mm')}</Text>
                 </View>
-                <Text style={styles.totalText}>{10000} €</Text>
+                <Text style={styles.totalText}>{data.total} €</Text>
             </View>
-            <BalanceModal
+            <OpenBalanceModal
                 open={openInfoModal}
                 close={() => setOpenInfoModal(false)}
-            // balance={balance}
+                data={data}
             />
         </View>
     )
