@@ -22,7 +22,7 @@ const getAll = async (req, res) => {
     const recordsAmount = openRecords.reduce((acc, obj) => acc + obj.value, 0)
 
     const openBalance = {
-        total: recordsAmount,
+        total: recordsAmount.toFixed(2),
         start_date: balances[0].end_date,
     }
 
@@ -110,9 +110,9 @@ const formatBalanceDataByUsers = (data) => {
             const foundCatIndex = detailedExpenses.findIndex(el => el.id === expense.subcategory.id)
 
             if (foundCatIndex === -1) {
-                detailedExpenses.push({ ...expense.subcategory, amount: expense.value })
+                detailedExpenses.push({ ...expense.subcategory, totalAmount: expense.value })
             } else {
-                detailedExpenses[foundCatIndex].value += expense.value
+                detailedExpenses[foundCatIndex].totalAmount += expense.value
             }
         })
         user.detailedExpenses = detailedExpenses

@@ -23,11 +23,11 @@ function BalanceUsersHistory(props) {
                 <View style={styles.modalView}>
                     <NavigateBack backFnc={props.close} />
                     <Text style={styles.title}>Expenses history</Text>
-                    {props.user ?
+                    {props.expenses ?
                         <View style={{ width: '100%', padding: 20 }} >
                             <FlatList
                                 contentContainerStyle={{ gap: 10 }}
-                                data={props.user.expenses}
+                                data={props.expenses}
                                 renderItem={({ item }) => <RecordsCard record={item} />}
                                 keyExtractor={(_, index) => index}
                                 ListEmptyComponent={() => <Text>No expenses to display</Text>}
