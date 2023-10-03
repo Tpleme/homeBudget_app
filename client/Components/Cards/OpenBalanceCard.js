@@ -4,14 +4,26 @@ import moment from 'moment'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Menu, IconButton } from 'react-native-paper'
 import OpenBalanceModal from '../Modals/BalanceModals/OpenBalanceModal';
+import { useUserInfo } from '../../Hooks/useUser';
+import { createEntity } from '../../API/requests';
+import { showMessage } from 'react-native-flash-message'
 
-function OpenBalanceCard({ data }) {
+function OpenBalanceCard({ data, refresh }) {
     const [openInfoModal, setOpenInfoModal] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
+    const { userInfo } = useUserInfo()
 
     const closeBalance = () => {
         setShowMenu(false)
-        console.log('closing balance')
+
+        createEntity({ entity: 'balance', data: { ...data, end_date: new Date(), createdById: userInfo.id } }).then(res => {
+            showMessage({ message: res.data, type: 'success' })
+            refresh()
+        }, err => {
+            console.log(err)
+            showMessage({ message: 'Error closing balance', type: 'danger' })
+        })
+
     }
 
     return (
@@ -31,13 +43,20 @@ function OpenBalanceCard({ data }) {
                         />
                     }
                 >
-                    <Menu.Item leadingIcon='menu-open' title='Open Info' onPress={() => { setOpenInfoModal(true); setShowMenu(false) }} />
-                    <Menu.Item leadingIcon='lock' title='Close Balance' onPress={closeBalance} />
+                    {data.total > 0 ?
+                        <>
+                            <Menu.Item leadingIcon='menu-open' title='Open Info' onPress={() => { setOpenInfoModal(true); setShowMenu(false) }} />
+                            <Menu.Item leadingIcon='lock' title='Close Balance' onPress={closeBalance} />
+                        </>
+                        :
+                        <Menu.Item title='No records on open balance'/>
+                    }
                 </Menu>
             </View>
             <View style={styles.infoView}>
                 <View style={styles.textView}>
                     <Text style={styles.infoText}>From: {moment(data.start_date).format('DD MMM YYYY hh:mm')}</Text>
+                    <Text style={styles.infoText}>To: Today</Text>
                 </View>
                 <Text style={styles.totalText}>{data.total} €</Text>
             </View>

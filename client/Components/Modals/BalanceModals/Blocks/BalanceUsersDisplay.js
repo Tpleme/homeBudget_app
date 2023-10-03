@@ -24,22 +24,26 @@ function BalanceUsersDisplay({ data }) {
                         <Text style={{ color: 'white', marginTop: 5 }}>{item.name}</Text>
                         <Text style={{ color: 'white', marginTop: 20 }}>Total Spent:</Text>
                         <Text style={{ color: 'tomato', fontSize: 26, fontWeight: 700 }}>{item.totalSpent} €</Text>
-                        <CustomButton mode='text' style={{ marginTop: 10 }} label='View history' onPress={() => onOpenUserHistory(item)} />
-                        <View style={styles.expensesDetailView}>
-                            <Text style={{ color: 'white', textAlign: 'center', marginBottom: 5 }}>Details:</Text>
-                            <FlatList
-                                style={{ maxHeight: 200 }}
-                                data={item.detailedExpenses}
-                                renderItem={({ item }) => (
-                                    <View style={{ marginVertical: 5 }}>
-                                        <Text style={{ color: 'white', fontWeight: 500, textAlign: 'center', fontSize: 12 }}>{item.category.name} - {item.name}</Text>
-                                        <Text style={{ color: 'tomato', fontWeight: 500, fontSize: 18, textAlign: 'center' }}>{item.totalAmount} €</Text>
-                                    </View>
-                                )}
-                                keyExtractor={(_, index) => index}
-                                ItemSeparatorComponent={() => <Divider style={{ width: '90%', alignSelf: 'center' }} />}
-                            />
-                        </View>
+                        {item.expenses.length > 0 &&
+                            <>
+                                <CustomButton mode='text' style={{ marginTop: 10 }} label='View history' onPress={() => onOpenUserHistory(item)} />
+                                <View style={styles.expensesDetailView}>
+                                    <Text style={{ color: 'white', textAlign: 'center', marginBottom: 5 }}>Details:</Text>
+                                    <FlatList
+                                        style={{ maxHeight: 200 }}
+                                        data={item.detailedExpenses}
+                                        renderItem={({ item }) => (
+                                            <View style={{ marginVertical: 5 }}>
+                                                <Text style={{ color: 'white', fontWeight: 500, textAlign: 'center', fontSize: 12 }}>{item.category.name} - {item.name}</Text>
+                                                <Text style={{ color: 'tomato', fontWeight: 500, fontSize: 18, textAlign: 'center' }}>{item.totalAmount} €</Text>
+                                            </View>
+                                        )}
+                                        keyExtractor={(_, index) => index}
+                                        ItemSeparatorComponent={() => <Divider style={{ width: '90%', alignSelf: 'center' }} />}
+                                    />
+                                </View>
+                            </>
+                        }
                     </View>
                 )}
                 keyExtractor={user => user.id}

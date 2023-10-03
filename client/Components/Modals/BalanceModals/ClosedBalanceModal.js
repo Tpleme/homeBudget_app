@@ -3,14 +3,14 @@ import Modal from 'react-native-modal'
 import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { Divider, useTheme } from 'react-native-paper';
 import NavigateBack from '../../../Misc/NavigateBack';
-import { getOpenBalance } from '../../../API/requests';
+import { getEntity } from '../../../API/requests';
 import BalanceUsersDisplay from './Blocks/BalanceUsersDisplay';
 import BalanceDivision from './Blocks/BalanceDivision';
 import BalanceTopInfo from './Blocks/BalanceTopInfo';
 import CategoriesPieChart from './Blocks/CategoriesPieChart';
 import UsersSpentPieChart from './Blocks/UsersSpentPieChart';
 
-function OpenBalanceModal({ data, ...props }) {
+function ClosedBalanceModal({ data, ...props }) {
     const [balanceData, setBalanceData] = useState(null)
     const [divisionText, setDivisionText] = useState([])
 
@@ -18,7 +18,7 @@ function OpenBalanceModal({ data, ...props }) {
 
     useEffect(() => {
         if (props.open) {
-            getOpenBalance({ data }).then(res => {
+            getEntity({ entity: 'balance', id: data.id }).then(res => {
                 console.log(res.data)
                 setBalanceData(res.data)
                 setDivisionText(getEqualDivision(res.data.dataByUsers))
@@ -68,7 +68,7 @@ function OpenBalanceModal({ data, ...props }) {
         >
             <View style={styles.modalView}>
                 <NavigateBack backFnc={props.close} />
-                <Text style={styles.title}>Current opened balance</Text>
+                <Text style={styles.title}>Closed Balance</Text>
                 {balanceData &&
                     <ScrollView style={styles.mainView} contentContainerStyle={{ gap: 10 }}>
                         <BalanceTopInfo balanceData={balanceData} />
@@ -87,7 +87,7 @@ function OpenBalanceModal({ data, ...props }) {
     )
 }
 
-export default OpenBalanceModal
+export default ClosedBalanceModal
 
 
 const styles = StyleSheet.create({

@@ -32,45 +32,75 @@ const getAll = async (req, res) => {
 const getOpenBalance = async (req, res) => {
     const balanceData = req.body
 
-    const openRecords = await models.records.findAll({
-        where: { date: { [Op.gt]: req.body.start_date } },
-        order: [['date', 'DESC']],
-        include: [
-            { model: models.app_users, as: 'payer', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
-            { model: models.app_users, as: 'creator', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
-            { model: models.subcategories, include: [models.categories] }
-        ],
-    })
+    try {
 
-    const dataByUsers = formatBalanceDataByUsers(JSON.stringify(openRecords))
+        const openRecords = await models.records.findAll({
+            where: { date: { [Op.gt]: req.body.start_date } },
+            order: [['date', 'DESC']],
+            include: [
+                { model: models.app_users, as: 'payer', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
+                { model: models.app_users, as: 'creator', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
+                { model: models.subcategories, include: [models.categories] }
+            ],
+        })
 
-    return res.status(200).send({ records: openRecords, data: balanceData, dataByUsers })
+        const groupedExpensesByCategory = groupRecordByCategories(JSON.stringify(openRecords))
+        const dataByUsers = await formatBalanceDataByUsers(JSON.stringify(openRecords))
+
+        return res.status(200).send({ records: openRecords, data: balanceData, dataByUsers, groupedExpensesByCategory })
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
+    }
 
 }
 
 const getByID = async (req, res) => {
     const id = getIdParam(req)
 
-    await models.balances.findOne({
-        where: { id },
-        include: {
-            model: models.app_users,
-            as: 'createdBy',
-            attributes: {
-                exclude: ['password', 'pass_recovery_key', 'complete_profile_key']
+    try {
+
+        const balance = await models.balances.findOne({
+            where: { id },
+            include: {
+                model: models.app_users,
+                as: 'createdBy',
+                attributes: {
+                    exclude: ['password', 'pass_recovery_key', 'complete_profile_key']
+                }
             }
-        }
-    }).then(list => {
-        res.status(200).send(list)
-    }, err => {
+        })
+
+        const balanceRecords = await models.records.findAll({
+            where: {
+                [Op.and]: [
+                    { date: { [Op.gte]: balance.start_date } },
+                    { date: { [Op.lt]: balance.end_date } },
+                ]
+            },
+            order: [['date', 'DESC']],
+            include: [
+                { model: models.app_users, as: 'payer', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
+                { model: models.app_users, as: 'creator', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
+                { model: models.subcategories, include: [models.categories] }
+            ],
+        })
+
+        const groupedExpensesByCategory = groupRecordByCategories(JSON.stringify(balanceRecords))
+        const dataByUsers = await formatBalanceDataByUsers(JSON.stringify(balanceRecords))
+
+        return res.status(200).send({ records: balanceRecords, data: balance, dataByUsers, groupedExpensesByCategory })
+
+    } catch (err) {
+        console.log(err)
         res.status(500).send(err)
-    })
+    }
 }
 
 const create = async (req, res) => {
     try {
         await models.balances.create(req.body)
-        res.status(201).send({ message: 'Balance Created' })
+        res.status(201).send('Balance closed')
 
     } catch (err) {
         console.log(err)
@@ -88,15 +118,21 @@ const remove = async (req, res) => {
 
 
 //format the data by users
-const formatBalanceDataByUsers = (data) => {
-    const users = []
+const formatBalanceDataByUsers = async (data) => {
+
+    const allUsers = await models.app_users.findAll({
+        attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] }
+    })
+
+    const users = allUsers.map(user => ({ ...user.dataValues, expenses: [] }))
+
     // stringify and parse data removes dataValues 
     const parsedData = JSON.parse(data)
 
     parsedData.forEach(record => {
         const foundUserIndex = users.findIndex(el => el.id === record.payer.id);
 
-        if (foundUserIndex === -1) {
+        if (foundUserIndex === -1) { //Isto aqui não é preciso visto que vamos buscar os users a db mas mesmo assim podemos verificar se existe no array
             users.push({ ...record.payer, expenses: [record] })
         } else {
             users[foundUserIndex].expenses.push(record)
@@ -122,6 +158,25 @@ const formatBalanceDataByUsers = (data) => {
     })
 
     return users
+}
+
+const groupRecordByCategories = (data) => {
+
+    const records = JSON.parse(data)
+    const expensesGroupedByCategories = []
+
+    records.forEach(record => {
+
+        const foundCatIndex = expensesGroupedByCategories.findIndex(el => el.id === record.subcategory.category.id)
+
+        if (foundCatIndex === -1) {
+            expensesGroupedByCategories.push({ ...record.subcategory.category, totalAmount: record.value })
+        } else {
+            expensesGroupedByCategories[foundCatIndex].totalAmount += record.value
+        }
+    })
+    const mappedToFixed = expensesGroupedByCategories.map(el => ({ ...el, totalAmount: parseFloat(el.totalAmount.toFixed(2)) }))
+    return mappedToFixed
 }
 
 module.exports = {

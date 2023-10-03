@@ -1,0 +1,15 @@
+export const chartColors = [
+    { color: '#009FFF' },
+    { color: '#93FCF8' },
+    { color: '#BDB2FA' },
+    { color: '#FFA5BA' },
+    { color: '#fd7f6f' },
+    { color: '#7eb0d5' },
+    { color: '#b2e061' },
+    { color: '#bd7ebe' },
+    { color: '#ffb55a' },
+    { color: '#beb9db' },
+    { color: '#fdcce5' },
+    { color: '#8bd3c7' },
+    { color: '#ffee65' },
+]

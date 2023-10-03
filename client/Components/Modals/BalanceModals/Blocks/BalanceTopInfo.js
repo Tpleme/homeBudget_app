@@ -11,6 +11,8 @@ function BalanceTopInfo({ balanceData }) {
         <View style={styles.topView}>
             <Text style={{ color: 'tomato' }}>From</Text>
             <Text style={{ color: 'white', fontSize: 16 }}>{moment(balanceData.data.start_date).format('DD MMM YYYY - hh:mm')}</Text>
+            <Text style={{ color: 'tomato' }}>To</Text>
+            <Text style={{ color: 'white', fontSize: 16 }}>{moment(balanceData.data.end_date).format('DD MMM YYYY - hh:mm')}</Text>
             <Text style={{ ...styles.amountText, fontWeight: 700 }}>{balanceData.data.total} €</Text>
             <CustomButton mode='text' style={{ marginTop: 10 }} label='View history' onPress={() => setOpenHistory(true)}/>
             <BalanceUsersHistory open={openHistory} close={() => setOpenHistory(false)} expenses={balanceData.records} />

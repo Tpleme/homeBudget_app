@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { Pressable, View, Text, StyleSheet } from 'react-native'
 import moment from 'moment'
-import BalanceModal from '../Modals/BalanceModals/BalanceModal'
+import ClosedBalanceModal from '../Modals/BalanceModals/ClosedBalanceModal'
 import { useTheme } from 'react-native-paper'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-function BalanceCard({ balance }) {
+function ClosedBalanceCard({ balance }) {
     const [openInfoModal, setOpenInfoModal] = useState(false)
     const theme = useTheme()
 
@@ -22,10 +22,10 @@ function BalanceCard({ balance }) {
                 </View>
                 <Text style={styles.totalText}>{balance.total} €</Text>
             </View>
-            <BalanceModal
+            <ClosedBalanceModal
                 open={openInfoModal}
                 close={() => setOpenInfoModal(false)}
-                balance={balance}
+                data={balance}
             />
         </Pressable>
     )
@@ -68,4 +68,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default BalanceCard
+export default ClosedBalanceCard

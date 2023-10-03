@@ -8,10 +8,10 @@ import DateRangePicker from '../../Inputs/DateRangePicker';
 import moment from 'moment';
 import { Banner } from 'react-native-paper';
 import { useTheme } from 'react-native-paper'
-import BalanceCard from '../../Cards/BalanceCard';
+import ClosedBalanceCard from '../../Cards/ClosedBalanceCard';
+import OpenBalanceCard from '../../Cards/OpenBalanceCard';
 
 import filterIcon from '../../../assets/Icons/filter.png'
-import OpenBalanceCard from '../../Cards/OpenBalanceCard';
 
 function BalanceScreen({ navigation }) {
     const [balances, setBalances] = useState([])
@@ -19,6 +19,7 @@ function BalanceScreen({ navigation }) {
     const [filteredData, setFilteredData] = useState([])
     const [dateRange, setDateRange] = useState({ startDate: undefined, endDate: undefined })
     const [openDatePicker, setOpenDatePicker] = useState(false)
+    const [refresh, setRefresh] = useState(false)
     const theme = useTheme()
 
     useEffect(() => {
@@ -29,7 +30,7 @@ function BalanceScreen({ navigation }) {
         }, err => {
             console.log(err)
         })
-    }, [])
+    }, [refresh])
 
     const onDatePick = ({ startDate, endDate }) => {
         if (!startDate || !endDate) {
@@ -41,7 +42,11 @@ function BalanceScreen({ navigation }) {
         const momentStartDate = moment(startDate)
         const momentEndDate = moment(endDate)
 
-        const filter = balances.filter(el => moment(el.createdAt).isBetween(momentStartDate, momentEndDate, 'day', '[]'))
+        const filter = balances.filter(el => (
+            moment(el.start_date).isBetween(momentStartDate, momentEndDate, 'day', '[]') ||
+            moment(el.end_date).isBetween(momentStartDate, momentEndDate, 'day', '[]')
+        ))
+
         setDateRange({ startDate: momentStartDate, endDate: momentEndDate })
         setFilteredData(filter)
 
@@ -83,10 +88,10 @@ function BalanceScreen({ navigation }) {
                     <CustomButton label='Filter by date' onPress={() => setOpenDatePicker(true)} />
                 </View>
                 <ScrollView style={styles.balanceItensView} contentContainerStyle={{ rowGap: 12, marginBottom: 20 }}>
-                    <OpenBalanceCard data={openBalance}/>
+                    <OpenBalanceCard refresh={() => setRefresh(!refresh)} data={openBalance} />
                     {filteredData.length > 0 ?
                         filteredData.map((balance, index) => (
-                            <BalanceCard key={index} balance={balance} />
+                            <ClosedBalanceCard key={index} balance={balance} />
                         ))
                         :
                         <Text style={{ color: 'white', textAlign: 'center' }}>No data found</Text>
