@@ -70,4 +70,6 @@ module.exports = app => {
 
     app.post('/api/balance/get-open-balance', [StandardLimiter, FOendPointAuth], makeHandlerAwareOfAsyncError(routes.balance.getOpenBalance))
 
+    app.get('/api/records-by-date', [StandardLimiter, FOendPointAuth], makeHandlerAwareOfAsyncError(routes.records.getByDate))
+
 }

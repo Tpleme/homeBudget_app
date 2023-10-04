@@ -68,3 +68,9 @@ export const removePortrait = async (id) => {
 export const getOpenBalance = async ({ data }) => {
     return await axios.post(`${SERVER_URL}/api/balance/get-open-balance/`, data, { headers: await getHeaders() })
 }
+
+export const getRecordsByDate = async ({ startDate, endDate }) => {
+    const queryString = '?' + new URLSearchParams({startDate, endDate}).toString();
+
+    return await axios.get(`${SERVER_URL}/api/records-by-date${queryString}`, { headers: await getHeaders() })
+}

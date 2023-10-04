@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { View, StatusBar, StyleSheet, Text, Image, RefreshControl, FlatList } from 'react-native';
 import NavigateBack from '../Misc/NavigateBack';
-import { getEntity } from '../API/requests';
+import { getEntity, getRecordsByDate } from '../API/requests';
 import CustomButton from '../Components/Buttons/CustomButton';
 import DateRangePicker from '../Components/Inputs/DateRangePicker';
 import RecordsCard from '../Components/Cards/RecordsCard';
@@ -13,7 +13,6 @@ import { useTheme } from 'react-native-paper'
 import filterIcon from '../assets/Icons/filter.png'
 
 //TODO: criar componente separado de flatlist com refresh e pagination
-//TODO filtros tem que ser diretamente ao servidor visto que não temos todos os dados por causa de pagination
 function ActivityScreen({ navigation }) {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
@@ -22,12 +21,22 @@ function ActivityScreen({ navigation }) {
     const [dateRange, setDateRange] = useState({ startDate: undefined, endDate: undefined })
     const [openDatePicker, setOpenDatePicker] = useState(false)
     const [pagination, setPagination] = useState(1)
-    const [ItensCount, setItensCount] = useState(null)
+    const [itensCount, setItensCount] = useState(null)
+    const [filteredItensCount, setFilteredItensCount] = useState(null)
     const theme = useTheme()
 
     useEffect(() => {
         getData()
     }, [])
+
+    const getFilteredRecords = (startDate, endDate) => {
+        getRecordsByDate({ startDate, endDate }).then(res => {
+            setFilteredData(res.data.rows)
+            setFilteredItensCount(res.data.count)
+        }, err => {
+            console.log(err)
+        })
+    }
 
     const getData = () => {
         setLoading(true)
@@ -44,13 +53,12 @@ function ActivityScreen({ navigation }) {
     }
 
     const getMoreData = () => {
-        if (data.length === 0 || ItensCount === data.length) return
+        if (data.length === 0 || filteredItensCount === filteredData.length) return
 
         setLoadingMoreData(true)
         setDateRange({ startDate: undefined, endDate: undefined })
 
         getEntity({ entity: 'records', query: { limit: 10, offset: (pagination * 10) } }).then(res => {
-            console.log(res.data)
             setItensCount(res.data.count)
             setPagination(prev => prev + 1)
             setData(prev => [...prev, ...res.data.rows])
@@ -72,15 +80,20 @@ function ActivityScreen({ navigation }) {
         const momentStartDate = moment(startDate)
         const momentEndDate = moment(endDate)
 
-        const filter = data.filter(el => moment(el.createdAt).isBetween(momentStartDate, momentEndDate, 'day', '[]'))
         setDateRange({ startDate: momentStartDate, endDate: momentEndDate })
-        setFilteredData(filter)
+        getFilteredRecords(startDate, endDate)
 
     }
 
     const resetFilter = () => {
+        setFilteredItensCount(itensCount)
         setDateRange({ startDate: undefined, endDate: undefined })
         setFilteredData(data)
+    }
+
+    const refreshAll = () => {
+        setDateRange({ startDate: undefined, endDate: undefined }) 
+        getData()
     }
 
     return (
@@ -119,12 +132,12 @@ function ActivityScreen({ navigation }) {
                     renderItem={({ item }) => <RecordsCard record={item} />}
                     keyExtractor={(item) => item.id}
                     ListEmptyComponent={<Text style={{ color: 'white', textAlign: 'center' }}>No data found</Text>}
-                    refreshControl={<RefreshControl refreshing={loading} onRefresh={getData} colors={['tomato']} tintColor='tomato' />}
+                    refreshControl={<RefreshControl refreshing={loading} onRefresh={refreshAll} colors={['tomato']} tintColor='tomato' />}
                     ListFooterComponent={
-                        data.length === ItensCount ?
-                        <Text style={{textAlign: 'center', color: 'white'}}>No more records to show</Text>
-                        :
-                        <ActivityIndicator animating={loadingMoreData} colors={['tomato']} />
+                        filteredData.length > 0 && (filteredData.length === filteredItensCount) ?
+                            <Text style={{ textAlign: 'center', color: 'white' }}>No more records to show</Text>
+                            :
+                            <ActivityIndicator animating={loadingMoreData} colors={['tomato']} />
                     }
                     data={filteredData}
                     onEndReached={getMoreData}

@@ -1,6 +1,7 @@
 const { models } = require('../database/index')
 const { responses } = require('../ServerResponses')
 const { getIdParam } = require('../utils')
+const { Op } = require('sequelize')
 
 const getAll = async (req, res) => {
 
@@ -21,6 +22,27 @@ const getAll = async (req, res) => {
         res.status(500).send(err)
     }
 
+}
+
+const getByDate = async (req, res) => {
+    try {
+        console.log(req.query)
+        const record = await models.records.findAndCountAll({
+            where: { date: { [Op.between]: [req.query.startDate, req.query.endDate] } },
+            order: [['date', 'DESC']],
+            include: [
+                { model: models.app_users, as: 'payer', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
+                { model: models.app_users, as: 'creator', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
+                { model: models.subcategories, include: [models.categories] }
+            ],
+        })
+
+        res.status(200).send(record)
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
+    }
 }
 
 const getByID = async (req, res) => {
@@ -70,4 +92,5 @@ module.exports = {
     create,
     update,
     remove,
+    getByDate
 }
