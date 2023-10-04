@@ -1,11 +1,37 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types';
-import { ScrollView, View, Text, StatusBar, StyleSheet, Pressable } from 'react-native';
+import { ScrollView, View, Text, StatusBar, StyleSheet, Pressable, RefreshControl } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Activity from '../Components/HomeComponents/Activity';
 import HomePageChart from '../Components/Charts/HomePageChart';
+import { getEntity } from '../API/requests';
 
 function HomeScreen({ navigation }) {
+    const [loading, setLoading] = useState(false);
+    const [records, setRecords] = useState([])
+    const [chartData, setChartData] = useState([])
+
+    useEffect(() => {
+        getData()
+    }, [])
+
+    const getData = () => {
+        setLoading(true)
+        getEntity({ entity: 'records', query: { limit: 10 } }).then(res => {
+            setRecords(res.data.rows)
+        }, err => {
+            console.log(err)
+        })
+        
+        getEntity({entity: 'balance'}).then(res => {
+            setChartData([...res.data.balances, res.data.openBalance])
+            setLoading(false)
+        }, err => {
+            console.log(err)
+            setLoading(false)
+        })
+    }
+
 
     const homeShortcuts = [
         { title: "Add Record", route: 'addRecord', icon: 'add-outline' },
@@ -16,12 +42,14 @@ function HomeScreen({ navigation }) {
 
     return (
         <ScrollView
+            refreshControl={<RefreshControl refreshing={loading} onRefresh={getData} colors={['tomato']} tintColor='tomato'/>}
             style={styles.mainContainer}
             contentContainerStyle={{ justifyContent: 'flex-start', rowGap: 25, paddingBottom: 20 }}
         >
             <StatusBar barStyle="light-content" backgroundColor="black" />
+            
             <View style={styles.chartView}>
-                <HomePageChart />
+                <HomePageChart data={chartData} />
             </View>
             <View style={{ padding: 10 }}>
                 <View style={styles.shortcutsView}>
@@ -32,7 +60,7 @@ function HomeScreen({ navigation }) {
                         </Pressable>
                     ))}
                 </View>
-                <Activity onViewMore={() => navigation.navigate('activityScreen')} />
+                <Activity records={records} onViewMore={() => navigation.navigate('activityScreen')} />
             </View>
         </ScrollView>
     );
@@ -48,7 +76,6 @@ const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: '#202020',
         height: "100%",
-        // padding: 10,
     },
     chartView: {
         width: "100%",
@@ -68,8 +95,7 @@ const styles = StyleSheet.create({
         padding: 5,
         backgroundColor: 'tomato',
         borderRadius: 10,
-        borderColor: 'black',
-        borderWidth: 1,
+        elevation: 2,
         gap: 5,
         display: 'flex',
         flexDirection: 'column',

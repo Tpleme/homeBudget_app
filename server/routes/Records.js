@@ -5,9 +5,10 @@ const { getIdParam } = require('../utils')
 const getAll = async (req, res) => {
 
     try {
-        const records = await models.records.findAll({
-            order: [['createdAt', 'DESC']],
+        const records = await models.records.findAndCountAll({
+            order: [['date', 'DESC']],
             limit: req.query.limit ? parseInt(req.query.limit) : null,
+            offset: req.query.offset ? parseInt(req.query.offset) : null,
             include: [
                 { model: models.app_users, as: 'payer', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
                 { model: models.app_users, as: 'creator', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },

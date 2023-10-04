@@ -1,19 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet } from 'react-native';
-import { getEntity } from '../../API/requests';
 import RecordsCard from '../Cards/RecordsCard';
 
 //TODO: tentar atualizar esta lista quando é criado um novo record
-function Activity({ onViewMore }) {
-    const [data, setData] = useState([])
-
-    useEffect(() => {
-        getEntity({ entity: 'records', query: { limit: 10 } }).then(res => {
-            setData(res.data)
-        }, err => {
-            console.log(err)
-        })
-    }, [])
+function Activity({ onViewMore, records }) {
 
     return (
         <View style={styles.activityView}>
@@ -22,7 +12,7 @@ function Activity({ onViewMore }) {
                 <Text onPress={onViewMore} style={styles.topButton}>View all</Text>
             </View>
             <View style={styles.activityItens}>
-                {data.map((record, index) => (
+                {records.map((record, index) => (
                    <RecordsCard key={index} record={record} /> 
                 ))}
             </View>
