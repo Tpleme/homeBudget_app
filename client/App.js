@@ -1,6 +1,7 @@
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { UserProvider } from './Context/User'
+import { StoreProvider } from './Context/Store';
 import { SocketContext, socket } from './Context/Socket/socket'
 import { AutocompleteDropdownContextProvider } from 'react-native-autocomplete-dropdown'
 import { en, registerTranslation } from 'react-native-paper-dates'
@@ -20,12 +21,14 @@ function App() {
         <PaperProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
             <AutocompleteDropdownContextProvider>
                 <SafeAreaProvider>
-                    <UserProvider>
-                        <SocketContext.Provider value={socket}>
-                            <Index />
-                            <FlashMessage position='bottom' floating={true} duration={3000} icon='auto' />
-                        </SocketContext.Provider>
-                    </UserProvider>
+                    <StoreProvider>
+                        <UserProvider>
+                            <SocketContext.Provider value={socket}>
+                                <Index />
+                                <FlashMessage position='bottom' floating={true} duration={3000} icon='auto' />
+                            </SocketContext.Provider>
+                        </UserProvider>
+                    </StoreProvider>
                 </SafeAreaProvider>
             </AutocompleteDropdownContextProvider>
         </PaperProvider>

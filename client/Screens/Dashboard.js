@@ -38,7 +38,7 @@ export default function Dashboard(props) {
 						return <Ionicons name={iconName} size={size} color={color} />;
 					}
 				}} />
-				<Tab.Screen name='AddRecord' component={AddRecord} options={{
+				<Tab.Screen name='AddRecord' component={AddRecord}  options={{
 					title: 'Add Record',
 					tabBarIcon: ({ focused, color, size }) => {
 						let iconName = focused

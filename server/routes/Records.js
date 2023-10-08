@@ -26,7 +26,6 @@ const getAll = async (req, res) => {
 
 const getByDate = async (req, res) => {
     try {
-        console.log(req.query)
         const record = await models.records.findAndCountAll({
             where: { date: { [Op.between]: [req.query.startDate, req.query.endDate] } },
             order: [['date', 'DESC']],

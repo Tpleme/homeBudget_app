@@ -2,7 +2,6 @@ import React from 'react'
 import { View, Text, StyleSheet } from 'react-native';
 import RecordsCard from '../Cards/RecordsCard';
 
-//TODO: tentar atualizar esta lista quando é criado um novo record
 function Activity({ onViewMore, records }) {
 
     return (

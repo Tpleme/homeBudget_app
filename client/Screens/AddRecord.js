@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, StatusBar, StyleSheet, ScrollView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -13,10 +13,12 @@ import { createEntity } from '../API/requests';
 import { DatePickerInput } from 'react-native-paper-dates'
 import moment from 'moment'
 import { showMessage } from 'react-native-flash-message'
+import { StoreContext } from '../Context/Store/index'
 
 function AddRecord({ navigation }) {
     const insets = useSafeAreaInsets();
-
+    
+    const [storeState, dispatch] = useContext(StoreContext)
     const [categoriesData, setCategoriesData] = useState(null)
     const [selectedCategory, setSelectedCategory] = useState(null)
     const [subCategoriesData, setSubCategoriesData] = useState(null)
@@ -63,6 +65,7 @@ function AddRecord({ navigation }) {
             showMessage({ message: res.data, type: 'success' })
             setLoading(false)
             setValue('value', null)
+            dispatch({ type: 'setRefreshRecords' });
         }, err => {
             console.log(err)
             showMessage({ message: 'Error adding new record', type: 'danger' })

@@ -1,19 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import PropTypes from 'prop-types';
 import { ScrollView, View, Text, StatusBar, StyleSheet, Pressable, RefreshControl } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Activity from '../Components/HomeComponents/Activity';
 import HomePageChart from '../Components/Charts/HomePageChart';
 import { getEntity } from '../API/requests';
+import { StoreContext } from '../Context/Store';
 
 function HomeScreen({ navigation }) {
     const [loading, setLoading] = useState(false);
     const [records, setRecords] = useState([])
     const [chartData, setChartData] = useState([])
+    const [storeState, dispatch] = useContext(StoreContext)
 
     useEffect(() => {
         getData()
     }, [])
+
+    useEffect(() => { //para quando é adicionado um novo record
+        if (storeState.refreshRecords !== null) {
+            getData()
+        }
+    }, [storeState.refreshRecords])
 
     const getData = () => {
         setLoading(true)
@@ -22,8 +30,8 @@ function HomeScreen({ navigation }) {
         }, err => {
             console.log(err)
         })
-        
-        getEntity({entity: 'balance'}).then(res => {
+
+        getEntity({ entity: 'balance' }).then(res => {
             setChartData([...res.data.balances, res.data.openBalance])
             setLoading(false)
         }, err => {
@@ -42,12 +50,12 @@ function HomeScreen({ navigation }) {
 
     return (
         <ScrollView
-            refreshControl={<RefreshControl refreshing={loading} onRefresh={getData} colors={['tomato']} tintColor='tomato'/>}
+            refreshControl={<RefreshControl refreshing={loading} onRefresh={getData} colors={['tomato']} tintColor='tomato' />}
             style={styles.mainContainer}
             contentContainerStyle={{ justifyContent: 'flex-start', rowGap: 25, paddingBottom: 20 }}
         >
             <StatusBar barStyle="light-content" backgroundColor="black" />
-            
+
             <View style={styles.chartView}>
                 <HomePageChart data={chartData} />
             </View>
