@@ -8,7 +8,7 @@ import { editEntity } from '../../../API/requests';
 import backgroundImage from '../../../assets/backgrounds/banner.jpg'
 import FlashMessage from 'react-native-flash-message';
 
-function EditProfile(props) {
+function EditProfile({ t, ...props }) {
     const [loading, setLoading] = useState(false)
     const { control, handleSubmit, formState: { errors, dirtyFields } } = useForm(
         { defaultValues: { name: props.user.name, email: props.user.email } }
@@ -28,10 +28,10 @@ function EditProfile(props) {
             modifiedValues[key] = data[key]
         }
 
-        editEntity({entity: 'app_users', id: props.user.id, data: modifiedValues}).then(res => {
+        editEntity({ entity: 'app_users', id: props.user.id, data: modifiedValues }).then(res => {
             setLoading(false)
             props.setUserInfo({ ...props.user, ...modifiedValues })
-            props.showMessage({message: res.data, type: 'success'})
+            props.showMessage({ message: res.data, type: 'success' })
         }, err => {
             console.log(err)
             flashMessageRef.current.showMessage({ message: err.response.data, type: 'danger' })
@@ -53,15 +53,15 @@ function EditProfile(props) {
             <View style={{ flexDirection: 'column', height: '100%' }}>
                 <Image style={styles.image} source={backgroundImage} />
                 <View style={styles.modalView}>
-                    <Text style={styles.title}>Use the following form to update your profile information</Text>
+                    <Text style={styles.title}>{t('profile.editProfile.title')}</Text>
                     <View style={styles.form}>
-                        <Text style={{ color: 'white' }}>Name</Text>
+                        <Text style={{ color: 'white' }}>{t('labels.name')}</Text>
                         <Controller
                             control={control}
                             name="name"
                             rules={{
-                                required: 'Name required',
-                                minLength: { value: 3, message: 'Name too short' }
+                                required: t('fieldErrors.name.required'),
+                                minLength: { value: 3, message: t('fieldErrors.name.short') }
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <TextInput
@@ -83,13 +83,13 @@ function EditProfile(props) {
                                     type="email-address"
                                     onChange={onChange}
                                     disabled={true}
-                                    helperText='You cannot change this value'
+                                    helperText={t('profile.editProfile.cannotChange')}
                                 />
                             )}
                         />
                     </View>
                     <View style={styles.actionsView}>
-                        <CustomButton loading={loading} label={loading ? 'Submitting...' : 'Submit'} onPress={handleSubmit(onSubmit)} />
+                        <CustomButton loading={loading} label={loading ? t('common.submitting') : t('common.submit')} onPress={handleSubmit(onSubmit)} />
                         <CustomButton disabled={loading} color='darkgrey' label='Cancel' onPress={() => props.close()} />
                     </View>
                 </View>

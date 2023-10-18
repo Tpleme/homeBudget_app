@@ -1,14 +1,16 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native';
 import RecordsCard from '../Cards/RecordsCard';
+import { useTranslation } from 'react-i18next';
 
 function Activity({ onViewMore, records }) {
+    const { t } = useTranslation()
 
     return (
         <View style={styles.activityView}>
             <View style={styles.topView}>
-                <Text style={styles.topTitle}>Recent Activity</Text>
-                <Text onPress={onViewMore} style={styles.topButton}>View all</Text>
+                <Text style={styles.topTitle}>{t('homeScreen.activity.title')}</Text>
+                <Text onPress={onViewMore} style={styles.topButton}>{t('homeScreen.activity.button')}</Text>
             </View>
             <View style={styles.activityItens}>
                 {records.map((record, index) => (

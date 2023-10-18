@@ -5,7 +5,7 @@ import UserAvatar from '../../../../Misc/UserAvatar'
 import CustomButton from '../../../Buttons/CustomButton'
 import BalanceUsersHistory from '../BalanceUsersHistory'
 
-function BalanceUsersDisplay({ data }) {
+function BalanceUsersDisplay({ data, t }) {
     const [openUserHistory, setOpenUserHistory] = useState(false)
     const [selectedUser, setSelectedUser] = useState(null)
 
@@ -22,13 +22,13 @@ function BalanceUsersDisplay({ data }) {
                     <View style={{ ...styles.userView }}>
                         <UserAvatar user={item} style={styles.userAvatar} />
                         <Text style={{ color: 'white', marginTop: 5 }}>{item.name}</Text>
-                        <Text style={{ color: 'white', marginTop: 20 }}>Total Spent:</Text>
+                        <Text style={{ color: 'white', marginTop: 20 }}>{t('balance.cards.totalSpent')}</Text>
                         <Text style={{ color: 'tomato', fontSize: 26, fontWeight: 700 }}>{item.totalSpent} €</Text>
                         {item.expenses.length > 0 &&
                             <>
-                                <CustomButton mode='text' style={{ marginTop: 10 }} label='View history' onPress={() => onOpenUserHistory(item)} />
+                                <CustomButton mode='text' style={{ marginTop: 10 }} label={t('balance.cards.viewHistory')} onPress={() => onOpenUserHistory(item)} />
                                 <View style={styles.expensesDetailView}>
-                                    <Text style={{ color: 'white', textAlign: 'center', marginBottom: 5 }}>Details:</Text>
+                                    <Text style={{ color: 'white', textAlign: 'center', marginBottom: 5 }}>{t('balance.cards.details')}</Text>
                                     <FlatList
                                         style={{ maxHeight: 200 }}
                                         data={item.detailedExpenses}
@@ -51,7 +51,7 @@ function BalanceUsersDisplay({ data }) {
                 horizontal={true}
             />
             {selectedUser &&
-                <BalanceUsersHistory open={openUserHistory} close={() => setOpenUserHistory(false)} expenses={selectedUser.expenses} />
+                <BalanceUsersHistory open={openUserHistory} close={() => setOpenUserHistory(false)} expenses={selectedUser.expenses} t={t}/>
             }
         </>
     )

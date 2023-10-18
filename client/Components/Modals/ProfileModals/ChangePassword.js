@@ -8,7 +8,7 @@ import { changePassword } from '../../../API/requests';
 import backgroundImage from '../../../assets/backgrounds/banner.jpg'
 import FlashMessage from 'react-native-flash-message';
 
-function ChangePassword(props) {
+function ChangePassword({t, ...props}) {
     const [loading, setLoading] = useState(false)
     const { control, handleSubmit, watch, formState: { errors } } = useForm()
     const flashMessageRef = useRef()
@@ -41,21 +41,21 @@ function ChangePassword(props) {
             <View style={{ flexDirection: 'column', height: '100%' }}>
                 <Image style={styles.image} source={backgroundImage} />
                 <View style={styles.modalView}>
-                    <Text style={styles.title}>Use the following form to change your password</Text>
+                    <Text style={styles.title}>{t('profile.changePass.title')}</Text>
                     <View style={styles.form}>
                         <Controller
                             control={control}
                             name="newPassword"
                             defaultValue=''
                             rules={{
-                                required: 'New Password required',
-                                pattern: { value: /((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20})/, message: 'Password must have at least 8 characters and include, lower, upper case and numbers' },
+                                required: t('profile.changePass.fields.newPass.errors.required'),
+                                pattern: { value: /((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,20})/, message: t('profile.changePass.fields.newPass.errors.invalid') },
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <PasswordTextInput
                                     value={value}
                                     type="password"
-                                    label='New Password'
+                                    label={t('profile.changePass.fields.newPass.label')}
                                     placeholder=''
                                     onChange={onChange}
                                     error={Boolean(errors.newPassword)}
@@ -69,10 +69,10 @@ function ChangePassword(props) {
                             name="confirmPassword"
                             defaultValue=''
                             rules={{
-                                required: 'Confirm Password required',
+                                required: t('profile.changePass.fields.confirmPass.errors.required'),
                                 validate: pass => {
                                     if (watch('newPassword') !== pass) {
-                                        return 'Passwords do not match'
+                                        return t('profile.changePass.fields.confirmPass.errors.match')
                                     }
                                 }
                             }}
@@ -80,7 +80,7 @@ function ChangePassword(props) {
                                 <PasswordTextInput
                                     value={value}
                                     placeholder=''
-                                    label='Confirm New Password'
+                                    label={t('profile.changePass.fields.confirmPass.label')}
                                     type="password"
                                     onChange={onChange}
                                     error={Boolean(errors.confirmPassword)}
@@ -94,12 +94,12 @@ function ChangePassword(props) {
                             name="authPassword"
                             defaultValue=''
                             rules={{
-                                required: 'Current Password required',
+                                required: t('profile.changePass.fields.authPass.errors.required'),
                             }}
                             render={({ field: { onChange, value } }) => (
                                 <PasswordTextInput
                                     value={value}
-                                    label='Your current Password'
+                                    label={t('profile.changePass.fields.authPass.label')}
                                     type="password"
                                     placeholder=''
                                     onChange={onChange}

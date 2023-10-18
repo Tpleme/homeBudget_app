@@ -5,7 +5,7 @@ import ClosedBalanceModal from '../Modals/BalanceModals/ClosedBalanceModal'
 import { useTheme } from 'react-native-paper'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-function ClosedBalanceCard({ balance }) {
+function ClosedBalanceCard({ balance, t }) {
     const [openInfoModal, setOpenInfoModal] = useState(false)
     const theme = useTheme()
 
@@ -13,12 +13,12 @@ function ClosedBalanceCard({ balance }) {
         <Pressable style={styles.listView} onPress={() => setOpenInfoModal(true)} >
             <View style={{ ...styles.closedView, backgroundColor: theme.colors.onTertiary }}>
                 <Ionicons style={{position: 'absolute', left: 10}} name='lock-closed-outline' size={20} color='white' />
-                <Text style={{ color: 'white', textAlign: 'center', fontSize: 16 }}>Closed Balance</Text>
+                <Text style={{ color: 'white', textAlign: 'center', fontSize: 16 }}>{t('balance.cards.closed')}</Text>
             </View>
             <View style={styles.infoView}>
                 <View style={styles.textView}>
-                    <Text style={styles.infoText}>To: {moment(balance.end_date).format('DD MMM YYYY hh:mm')}</Text>
-                    <Text style={styles.infoText}>From: {moment(balance.start_date).format('DD MMM YYYY hh:mm')}</Text>
+                    <Text style={styles.infoText}>{t('common.to')}: {moment(balance.end_date).format('DD MMM YYYY hh:mm')}</Text>
+                    <Text style={styles.infoText}>{t('common.from')}: {moment(balance.start_date).format('DD MMM YYYY hh:mm')}</Text>
                 </View>
                 <Text style={styles.totalText}>{balance.total} €</Text>
             </View>
@@ -26,6 +26,7 @@ function ClosedBalanceCard({ balance }) {
                 open={openInfoModal}
                 close={() => setOpenInfoModal(false)}
                 data={balance}
+                t={t}
             />
         </Pressable>
     )

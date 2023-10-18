@@ -4,10 +4,12 @@ import Modal from 'react-native-modal'
 import ProfileModal from './ProfileModals/ProfileModal';
 import { useUserInfo } from '../../Hooks/useUser';
 import UserAvatar from '../../Misc/UserAvatar';
+import { useTranslation } from 'react-i18next';
 
 function TopBarModal(props) {
     const [openProfile, setOpenProfile] = useState(false)
     const { userInfo } = useUserInfo()
+    const { t } = useTranslation()
 
     return (
         <Modal
@@ -32,10 +34,10 @@ function TopBarModal(props) {
                 </View>
                 <View style={styles.actionView}>
                     <Pressable onPress={() => { setOpenProfile(true) }}>
-                        <Text style={styles.buttonText}>My Profile</Text>
+                        <Text style={styles.buttonText}>{t('topBar.profile')}</Text>
                     </Pressable>
                     <Pressable onPress={props.logOutUser}>
-                        <Text style={styles.buttonText}>Log Out</Text>
+                        <Text style={styles.buttonText}>{t('topBar.logout')}</Text>
                     </Pressable>
                 </View>
             </View>

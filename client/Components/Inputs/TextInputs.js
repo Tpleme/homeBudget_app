@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import { TextInput as PaperInput, HelperText } from 'react-native-paper'
 import CurrencyInput from 'react-native-currency-input'
+import { useTranslation } from 'react-i18next'
 
 export const TextInput = ({ label, onChange, value, placeholder, type, error, helperText, mode, ...props }) => {
 
@@ -41,6 +42,7 @@ export const TextInput = ({ label, onChange, value, placeholder, type, error, he
 
 export const PasswordTextInput = ({ label, onChange, value, placeholder, error, helperText, ...props }) => {
     const [showPass, setShowPass] = useState(false)
+    const { t } = useTranslation()
 
     return (
         <View style={{ width: '100%' }}>
@@ -49,7 +51,7 @@ export const PasswordTextInput = ({ label, onChange, value, placeholder, error, 
                 style={styles.input}
                 onChangeText={onChange}
                 value={value}
-                placeholder={placeholder ?? 'password'}
+                placeholder={placeholder ?? t('labels.password')}
                 placeholderTextColor='tomato'
                 secureTextEntry={!showPass}
                 mode="outlined"

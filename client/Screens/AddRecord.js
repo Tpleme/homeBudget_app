@@ -14,10 +14,11 @@ import { DatePickerInput } from 'react-native-paper-dates'
 import moment from 'moment'
 import { showMessage } from 'react-native-flash-message'
 import { StoreContext } from '../Context/Store/index'
+import { useTranslation } from 'react-i18next';
 
 function AddRecord({ navigation }) {
     const insets = useSafeAreaInsets();
-    
+
     const [storeState, dispatch] = useContext(StoreContext)
     const [categoriesData, setCategoriesData] = useState(null)
     const [selectedCategory, setSelectedCategory] = useState(null)
@@ -25,6 +26,7 @@ function AddRecord({ navigation }) {
     const [usersData, setUsersData] = useState(null)
     const [loading, setLoading] = useState(false)
 
+    const { t } = useTranslation()
     const { userInfo } = useUserInfo()
     const { control, handleSubmit, setValue, formState: { errors } } = useForm()
 
@@ -86,15 +88,15 @@ function AddRecord({ navigation }) {
             <StatusBar barStyle="light-content" backgroundColor="black" />
             <NavigateBack navigation={navigation} />
             <View style={styles.mainContainer}>
-                <Text style={styles.title}>Use the following form to create a new record</Text>
+                <Text style={styles.title}>{t('addRecord.title')}</Text>
                 <View style={styles.form}>
                     <Controller
                         control={control}
                         name="value"
-                        rules={{ required: 'Value required' }}
+                        rules={{ required: t('addRecord.fields.value.errors.required') }}
                         render={({ field: { onChange, value } }) => (
                             <InputCurrency
-                                label='Value'
+                                label={t('addRecord.fields.value.label')}
                                 value={value}
                                 onChange={onChange}
                                 error={Boolean(errors.value)}
@@ -106,15 +108,15 @@ function AddRecord({ navigation }) {
                         control={control}
                         name="category"
                         rules={{
-                            required: 'Please Pick a category',
+                            required: t('addRecord.fields.category.errors.required'),
                         }}
                         render={({ field: { onChange } }) => (
                             <Autocomplete
-                                label='Category'
+                                label={t('addRecord.fields.category.label')}
                                 itemLabel='name'
                                 dataSet={categoriesData}
                                 onChange={(e) => { onChange(e); setSelectedCategory(e) }}
-                                placeholder='Select a Category'
+                                placeholder={t('addRecord.fields.category.placeholder')}
                                 error={Boolean(errors.category)}
                                 helperText={errors.category?.message}
                             />
@@ -124,16 +126,16 @@ function AddRecord({ navigation }) {
                         control={control}
                         name="subcategory"
                         rules={{
-                            required: 'Please pick a subcategory',
+                            required: t('addRecord.fields.subcategory.errors.required'),
                         }}
                         render={({ field: { onChange } }) => (
                             <Autocomplete
-                                label='Subcategory'
+                                label={t('addRecord.fields.subcategory.label')}
                                 itemLabel='name'
                                 disabled={Boolean(!selectedCategory)}
                                 dataSet={subCategoriesData}
                                 onChange={onChange}
-                                placeholder={selectedCategory ? 'Select a subcategory' : 'Select a category first'}
+                                placeholder={selectedCategory ? t('addRecord.fields.subcategory.placeholder1') : t('addRecord.fields.subcategory.placeholder2')}
                                 error={Boolean(errors.subcategory)}
                                 helperText={errors.subcategory?.message}
                             />
@@ -144,17 +146,17 @@ function AddRecord({ navigation }) {
                         name="paidBy"
                         defaultValue={{ ...userInfo, title: userInfo.name }}
                         rules={{
-                            required: 'Please pick a person',
+                            required: t('addRecord.fields.paid.errors.required'),
                         }}
                         render={({ field: { onChange, value } }) => (
                             <Autocomplete
-                                label='Paid By'
+                                label={t('addRecord.fields.paid.label')}
                                 initialValue={userInfo}
                                 itemLabel='name'
                                 textInputAdditionalProps={{ value: value?.title }} //necessary to have a initial value
                                 dataSet={usersData}
                                 onChange={onChange}
-                                placeholder='Select a person'
+                                placeholder={t('addRecord.fields.paid.placeholder')}
                                 renderItemType='withAvatar'
                                 error={Boolean(errors.paidBy)}
                                 helperText={errors.paidBy?.message}
@@ -166,7 +168,7 @@ function AddRecord({ navigation }) {
                         name="date"
                         defaultValue={moment().toDate()}
                         rules={{
-                            required: 'Please pick a date',
+                            required: t('addRecord.fields.date.errors.required'),
                         }}
                         render={({ field: { onChange, value } }) => (
                             <DatePickerInput
@@ -183,7 +185,7 @@ function AddRecord({ navigation }) {
                     />
                 </View>
                 <View style={styles.actionsView}>
-                    <CustomButton loading={loading} label={loading ? 'Submitting...' : 'Submit'} onPress={handleSubmit(onSubmit)} />
+                    <CustomButton loading={loading} label={loading ? t('common.submitting') : t('common.submit')} onPress={handleSubmit(onSubmit)} />
                 </View>
             </View>
         </ScrollView>

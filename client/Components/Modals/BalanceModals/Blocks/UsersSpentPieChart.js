@@ -3,7 +3,7 @@ import { View, Text } from 'react-native'
 import { PieChart } from "react-native-gifted-charts";
 import { chartColors } from '../../../../utils';
 
-function UsersSpentPieChart({ users }) {
+function UsersSpentPieChart({ users, t }) {
     const [data, setData] = useState(null)
     const [selectedUser, setSelectedUser] = useState(null)
 
@@ -27,7 +27,7 @@ function UsersSpentPieChart({ users }) {
     return (
         <View style={{ padding: 20, flex: 1 }}>
             <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
-                Amount spent by User
+                {t('balance.cards.chart1.title')}
             </Text>
             <View style={{ padding: 20, alignItems: 'center' }}>
                 {data &&

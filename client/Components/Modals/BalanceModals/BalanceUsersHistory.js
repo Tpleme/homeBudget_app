@@ -5,7 +5,7 @@ import NavigateBack from '../../../Misc/NavigateBack';
 import RecordsCard from '../../Cards/RecordsCard';
 import { PaperProvider, useTheme } from 'react-native-paper';
 
-function BalanceUsersHistory(props) {
+function BalanceUsersHistory({ t, ...props }) {
     const theme = useTheme()
 
     return (
@@ -22,7 +22,7 @@ function BalanceUsersHistory(props) {
             <PaperProvider theme={theme}>
                 <View style={styles.modalView}>
                     <NavigateBack backFnc={props.close} />
-                    <Text style={styles.title}>Expenses history</Text>
+                    <Text style={styles.title}>{t('balance.cards.expensesHistory')}</Text>
                     {props.expenses ?
                         <View style={{ width: '100%', padding: 20 }} >
                             <FlatList
@@ -30,11 +30,11 @@ function BalanceUsersHistory(props) {
                                 data={props.expenses}
                                 renderItem={({ item }) => <RecordsCard record={item} />}
                                 keyExtractor={(_, index) => index}
-                                ListEmptyComponent={() => <Text>No expenses to display</Text>}
+                                ListEmptyComponent={() => <Text>{t('balance.cards.noExpenses')}</Text>}
                             />
                         </View>
                         :
-                        <Text>No info to display</Text>
+                        <Text>{t('balance.cards.noInfo')}</Text>
                     }
                 </View>
             </PaperProvider>

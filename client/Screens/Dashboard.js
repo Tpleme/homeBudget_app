@@ -7,10 +7,13 @@ import AddRecord from './AddRecord';
 import TopBar from '../Components/Panels/TopBar';
 import SettingsNavigation from '../Components/Settings/SettingsNavigation';
 import { setBackgroundColorAsync } from 'expo-navigation-bar';
+import { useTranslation } from 'react-i18next';
 
 const Tab = createBottomTabNavigator();
 
 export default function Dashboard(props) {
+	const { t } = useTranslation()
+
 	useEffect(() => {
 		setBackgroundColorAsync('black')
 	}, [])
@@ -31,6 +34,7 @@ export default function Dashboard(props) {
 				}}
 			>
 				<Tab.Screen name="Home" component={HomeNavigator} options={{
+					title: t('navBar.home'),
 					tabBarIcon: ({ focused, color, size }) => {
 						let iconName = focused
 							? 'home'
@@ -38,8 +42,8 @@ export default function Dashboard(props) {
 						return <Ionicons name={iconName} size={size} color={color} />;
 					}
 				}} />
-				<Tab.Screen name='AddRecord' component={AddRecord}  options={{
-					title: 'Add Record',
+				<Tab.Screen name='AddRecord' component={AddRecord} options={{
+					title: t('navBar.addRecord'),
 					tabBarIcon: ({ focused, color, size }) => {
 						let iconName = focused
 							? 'add-circle'
@@ -48,6 +52,7 @@ export default function Dashboard(props) {
 					},
 				}} />
 				<Tab.Screen name="Settings" component={SettingsNavigation} options={{
+					title: t('navBar.settings'),
 					tabBarIcon: ({ focused, color, size }) => {
 						let iconName = focused
 							? 'settings'

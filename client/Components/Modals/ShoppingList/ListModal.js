@@ -10,6 +10,7 @@ import NavigateBack from '../../../Misc/NavigateBack';
 import { TextInput } from '../../Inputs/TextInputs';
 import moment from 'moment'
 import FlashMessage from "react-native-flash-message";
+import { useTranslation } from 'react-i18next';
 
 function ListModal(props) {
     const [displayMode, setDisplayMode] = useState(null)
@@ -21,6 +22,7 @@ function ListModal(props) {
     const theme = useTheme()
     //Inside modal we have to get a ref for the flash message so it shows on top of the modal
     const localFlashRef = useRef()
+    const { t } = useTranslation()
 
     useEffect(() => {
         if (props.open) {
@@ -118,6 +120,7 @@ function ListModal(props) {
                         <ScrollView style={styles.listItens} contentContainerStyle={{ gap: 10, paddingBottom: 75 }}>
                             {itens.length > 0 ? itens.map((el, index) => (
                                 <ItemView
+                                    t={t}
                                     key={index}
                                     el={el}
                                     index={index}
@@ -127,7 +130,7 @@ function ListModal(props) {
                                     displayMode={displayMode}
                                 />
                             )) :
-                                <Text style={styles.noItensText}>Your shopping list is empty, start by adding a new product by clicking on the button with a plus sign on the bottom right side</Text>
+                                <Text style={styles.noItensText}>{t('groceries.list.empty')}</Text>
                             }
                         </ScrollView>
                         {displayMode === 'edit' ?
@@ -138,14 +141,14 @@ function ListModal(props) {
                     </View>
                     {displayMode === 'edit' &&
                         <View style={{ width: '100%', gap: 10 }}>
-                            <CustomButton label='Save' onPress={onSaveList} />
-                            <CustomButton label='Cancel' color='darkgrey' onPress={onCancel} />
+                            <CustomButton label={t('common.save')} onPress={onSaveList} />
+                            <CustomButton label={t('common.cancel')} color='darkgrey' onPress={onCancel} />
                         </View>
                     }
                 </View>
-                <AddItemDialog open={openAddDialog} close={() => setOpenAddDialog(false)} onAdd={addItem} />
+                <AddItemDialog open={openAddDialog} close={() => setOpenAddDialog(false)} onAdd={addItem} t={t} />
                 {selectedItem &&
-                    <EditItemDialog open={openEditDialog} close={() => setOpenEditDialog(false)} onSubmit={editItem} item={selectedItem} />
+                    <EditItemDialog open={openEditDialog} close={() => setOpenEditDialog(false)} onSubmit={editItem} item={selectedItem} t={t} />
                 }
                 <FlashMessage ref={localFlashRef} position='bottom' icon='auto' duration={3000} floating={true} />
             </PaperProvider>
@@ -156,7 +159,7 @@ function ListModal(props) {
 export default ListModal
 
 
-const ItemView = ({ el, index, checkItem, removeItem, editItem, displayMode }) => {
+const ItemView = ({t, el, index, checkItem, removeItem, editItem, displayMode }) => {
     const [showMenu, setShowMenu] = useState(false)
 
     return (
@@ -172,8 +175,8 @@ const ItemView = ({ el, index, checkItem, removeItem, editItem, displayMode }) =
                     onDismiss={() => setShowMenu(false)}
                     anchor={<IconButton icon='dots-vertical' size={20} style={{ margin: 0 }} onPress={() => setShowMenu(true)} />}
                 >
-                    <Menu.Item leadingIcon='pencil' title='Edit' onPress={() => { setShowMenu(false); editItem() }} />
-                    <Menu.Item leadingIcon='delete' title='Delete' onPress={removeItem} />
+                    <Menu.Item leadingIcon='pencil' title={t('groceries.cards.menu.edit')} onPress={() => { setShowMenu(false); editItem() }} />
+                    <Menu.Item leadingIcon='delete' title={t('groceries.cards.menu.delete')} onPress={removeItem} />
                 </Menu>
             }
         </View>

@@ -7,7 +7,7 @@ import WheelPicker from '../../WheelPicker/WheelPicker'
 
 const measureData = ['lt', 'uni', 'kg', 'gr']
 
-function EditItemDialog({ open, close, onSubmit, item }) {
+function EditItemDialog({ t, open, close, onSubmit, item }) {
     const { control, handleSubmit, setValue, formState: { errors } } = useForm()
     const theme = useTheme()
 
@@ -24,17 +24,17 @@ function EditItemDialog({ open, close, onSubmit, item }) {
 
     return (
         <Dialog visible={open} onDismiss={close} style={{ backgroundColor: theme.colors.surfaceVariant }}>
-            <Dialog.Title>Add item to list</Dialog.Title>
+            <Dialog.Title>{t('groceries.list.edit.title')}</Dialog.Title>
             <Dialog.Content style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
                 <Controller
                     control={control}
                     name="name"
                     defaultValue={item.data.name}
-                    rules={{ required: 'Value required' }}
+                    rules={{ required: t('groceries.list.edit.inputs.product.errors.required') }}
                     render={({ field: { onChange, value } }) => (
                         <View style={{ flex: 1 }}>
                             <TextInput
-                                label='Product'
+                                label={t('groceries.list.edit.inputs.product.label')}
                                 value={value}
                                 onChange={onChange}
                                 error={Boolean(errors.name)}
@@ -47,11 +47,11 @@ function EditItemDialog({ open, close, onSubmit, item }) {
                     control={control}
                     name="quantity"
                     defaultValue={item.data.quantity}
-                    rules={{ required: 'Value required' }}
+                    rules={{ required: t('groceries.list.edit.inputs.quantity.errors.required') }}
                     render={({ field: { onChange, value } }) => (
                         <View style={{ width: '15%' }}>
                             <TextInput
-                                label='Qtd.'
+                                label={t('groceries.list.edit.inputs.quantity.label')}
                                 type='numeric'
                                 value={value}
                                 onChange={onChange}
@@ -79,8 +79,8 @@ function EditItemDialog({ open, close, onSubmit, item }) {
 
             </Dialog.Content>
             <Dialog.Actions>
-                <Button onPress={handleSubmit(submit)}>Submit</Button>
-                <Button onPress={close}>Cancel</Button>
+                <Button onPress={handleSubmit(submit)}>{t('common.submit')}</Button>
+                <Button onPress={close}>{t('common.cancel')}</Button>
             </Dialog.Actions>
         </Dialog>
     )

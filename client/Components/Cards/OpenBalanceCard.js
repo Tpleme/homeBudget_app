@@ -8,7 +8,7 @@ import { useUserInfo } from '../../Hooks/useUser';
 import { createEntity } from '../../API/requests';
 import { showMessage } from 'react-native-flash-message'
 
-function OpenBalanceCard({ data, refresh }) {
+function OpenBalanceCard({ data, refresh, t }) {
     const [openInfoModal, setOpenInfoModal] = useState(false)
     const [showMenu, setShowMenu] = useState(false)
     const { userInfo } = useUserInfo()
@@ -30,7 +30,7 @@ function OpenBalanceCard({ data, refresh }) {
         <View style={styles.listView} >
             <View style={{ ...styles.closedView, backgroundColor: '#689f38' }}>
                 <Ionicons name='lock-open-outline' size={20} color='white' />
-                <Text style={{ color: 'white', textAlign: 'center', fontSize: 16 }}>Opened Balance</Text>
+                <Text style={{ color: 'white', textAlign: 'center', fontSize: 16 }}>{t('balance.cards.opened')}</Text>
                 <Menu
                     visible={showMenu}
                     onDismiss={() => setShowMenu(false)}
@@ -45,8 +45,8 @@ function OpenBalanceCard({ data, refresh }) {
                 >
                     {data.total > 0 ?
                         <>
-                            <Menu.Item leadingIcon='menu-open' title='Open Info' onPress={() => { setOpenInfoModal(true); setShowMenu(false) }} />
-                            <Menu.Item leadingIcon='lock' title='Close Balance' onPress={closeBalance} />
+                            <Menu.Item leadingIcon='menu-open' title={t('balance.cards.openInfo')} onPress={() => { setOpenInfoModal(true); setShowMenu(false) }} />
+                            <Menu.Item leadingIcon='lock' title={t('balance.cards.closeBalance')} onPress={closeBalance} />
                         </>
                         :
                         <Menu.Item title='No records on open balance'/>
@@ -55,8 +55,8 @@ function OpenBalanceCard({ data, refresh }) {
             </View>
             <View style={styles.infoView}>
                 <View style={styles.textView}>
-                    <Text style={styles.infoText}>From: {moment(data.start_date).format('DD MMM YYYY hh:mm')}</Text>
-                    <Text style={styles.infoText}>To: Today</Text>
+                    <Text style={styles.infoText}>{t('common.from')}: {moment(data.start_date).format('DD MMM YYYY hh:mm')}</Text>
+                    <Text style={styles.infoText}>{t('common.to')}: {t('balance.cards.today')}</Text>
                 </View>
                 <Text style={styles.totalText}>{data.total} €</Text>
             </View>
@@ -64,6 +64,7 @@ function OpenBalanceCard({ data, refresh }) {
                 open={openInfoModal}
                 close={() => setOpenInfoModal(false)}
                 data={data}
+                t={t}
             />
         </View>
     )

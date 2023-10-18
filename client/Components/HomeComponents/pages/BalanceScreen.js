@@ -10,6 +10,7 @@ import { Banner } from 'react-native-paper';
 import { useTheme } from 'react-native-paper'
 import ClosedBalanceCard from '../../Cards/ClosedBalanceCard';
 import OpenBalanceCard from '../../Cards/OpenBalanceCard';
+import { useTranslation } from 'react-i18next';
 
 import filterIcon from '../../../assets/Icons/filter.png'
 
@@ -21,6 +22,7 @@ function BalanceScreen({ navigation }) {
     const [openDatePicker, setOpenDatePicker] = useState(false)
     const [refresh, setRefresh] = useState(false)
     const theme = useTheme()
+    const { t } = useTranslation()
 
     useEffect(() => {
         getEntity({ entity: 'balance' }).then(res => {
@@ -68,12 +70,12 @@ function BalanceScreen({ navigation }) {
             }}>
             <NavigateBack navigation={navigation} />
             <StatusBar barStyle="light-content" backgroundColor="black" />
-            <Text style={styles.title}>Balance History</Text>
+            <Text style={styles.title}>{t('balance.title')}</Text>
             <View style={styles.balanceMainView}>
                 <Banner
                     style={{ backgroundColor: theme.colors.surfaceVariant }}
                     visible={dateRange.startDate && dateRange.endDate}
-                    actions={[{ label: 'Clear filter', onPress: () => resetFilter() }]}
+                    actions={[{ label: t('balance.clearFilter'), onPress: () => resetFilter() }]}
                     icon={({ size }) => (
                         <Image
                             source={filterIcon}
@@ -81,20 +83,20 @@ function BalanceScreen({ navigation }) {
                         />
                     )}>
                     {(dateRange.startDate && dateRange.endDate) &&
-                        <Text>{`From: ${dateRange.startDate.format('DD MMMM YYYY')}\nTo: ${dateRange.endDate.format('DD MMMM YYYY')}`}</Text>
+                        <Text>{`${t('common.from')} ${dateRange.startDate.format('DD MMMM YYYY')}\n${t('common.to')}: ${dateRange.endDate.format('DD MMMM YYYY')}`}</Text>
                     }
                 </Banner>
                 <View style={styles.filterView}>
-                    <CustomButton label='Filter by date' onPress={() => setOpenDatePicker(true)} />
+                    <CustomButton label={t('balance.filterBtn')} onPress={() => setOpenDatePicker(true)} />
                 </View>
                 <ScrollView style={styles.balanceItensView} contentContainerStyle={{ rowGap: 12, marginBottom: 20 }}>
-                    <OpenBalanceCard refresh={() => setRefresh(!refresh)} data={openBalance} />
+                    <OpenBalanceCard refresh={() => setRefresh(!refresh)} data={openBalance} t={t} />
                     {filteredData.length > 0 ?
                         filteredData.map((balance, index) => (
-                            <ClosedBalanceCard key={index} balance={balance} />
+                            <ClosedBalanceCard key={index} balance={balance} t={t} />
                         ))
                         :
-                        <Text style={{ color: 'white', textAlign: 'center' }}>No data found</Text>
+                        <Text style={{ color: 'white', textAlign: 'center' }}>{t('balance.noData')}</Text>
                     }
                 </ScrollView>
             </View>

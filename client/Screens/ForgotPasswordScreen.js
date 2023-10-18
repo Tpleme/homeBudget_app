@@ -6,10 +6,13 @@ import { TextInput } from '../Components/Inputs/TextInputs';
 import CustomButton from '../Components/Buttons/CustomButton';
 import { useForm, Controller } from 'react-hook-form'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
 
 function ForgotPasswordScreen({ navigation }) {
     const insets = useSafeAreaInsets();
     const { control, handleSubmit, formState: { errors, isValid } } = useForm({ mode: 'onChange' })
+    const { t } = useTranslation()
+
     const onSubmit = data => {
         console.log(data)
     }
@@ -21,26 +24,26 @@ function ForgotPasswordScreen({ navigation }) {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: '#202020',
-                paddingTop: insets.top + 40
+                paddingTop: insets.top + 50
             }}>
             <NavigateBack navigation={navigation} />
             <StatusBar barStyle="light-content" backgroundColor="#202020" />
             <View style={styles.mainView}>
-                <Text style={styles.title}>Forgot your password?</Text>
-                <Text style={styles.subtitle}>Do not worry, just type in your email that is registered in the app.</Text>
-                <Text style={styles.subtitle}>Then you will receive an email with all the instructions.</Text>
+                <Text style={styles.title}>{t('forgotPass.title')}</Text>
+                <Text style={styles.subtitle}>{t('forgotPass.text1')}</Text>
+                <Text style={styles.subtitle}>{t('forgotPass.text2')}</Text>
 
                 <Controller
                     control={control}
                     name="email"
                     defaultValue=''
                     rules={{
-                        required: 'Email required',
-                        pattern: { value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: 'Invalid email format' }
+                        required: t('fieldErrors.email.required'),
+                        pattern: { value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: t('fieldErrors.email.invalid') }
                     }}
                     render={({ field: { onChange, value } }) => (
                         <TextInput
-                            placeholder='Type your email here'
+                            placeholder={t('forgotPass.fieldPlaceholder')}
                             value={value}
                             type="email-address"
                             onChange={onChange}
@@ -49,7 +52,7 @@ function ForgotPasswordScreen({ navigation }) {
                         />
                     )}
                 />
-                <CustomButton disabled={!isValid} label='Recover password' onPress={handleSubmit(onSubmit)} />
+                <CustomButton disabled={!isValid} label={t('forgotPass.button1')} onPress={handleSubmit(onSubmit)} />
             </View>
         </View>
     );

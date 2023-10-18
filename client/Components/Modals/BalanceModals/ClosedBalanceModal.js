@@ -10,7 +10,7 @@ import BalanceTopInfo from './Blocks/BalanceTopInfo';
 import CategoriesPieChart from './Blocks/CategoriesPieChart';
 import UsersSpentPieChart from './Blocks/UsersSpentPieChart';
 
-function ClosedBalanceModal({ data, ...props }) {
+function ClosedBalanceModal({ data, t, ...props }) {
     const [balanceData, setBalanceData] = useState(null)
     const [divisionText, setDivisionText] = useState([])
 
@@ -68,18 +68,18 @@ function ClosedBalanceModal({ data, ...props }) {
         >
             <View style={styles.modalView}>
                 <NavigateBack backFnc={props.close} />
-                <Text style={styles.title}>Closed Balance</Text>
+                <Text style={styles.title}>{t('balance.cards.closed')}</Text>
                 {balanceData &&
                     <ScrollView style={styles.mainView} contentContainerStyle={{ gap: 10 }}>
-                        <BalanceTopInfo balanceData={balanceData} />
+                        <BalanceTopInfo balanceData={balanceData} t={t} />
                         <View style={{ ...styles.divisionView, backgroundColor: theme.colors.primary }}>
-                            {divisionText.map((division, index) => <BalanceDivision key={index} division={division} />)}
+                            {divisionText.map((division, index) => <BalanceDivision key={index} division={division} t={t} />)}
                         </View>
-                        <BalanceUsersDisplay data={balanceData.dataByUsers} />
+                        <BalanceUsersDisplay data={balanceData.dataByUsers} t={t} />
                         <Divider />
-                        <UsersSpentPieChart users={balanceData.dataByUsers} />
+                        <UsersSpentPieChart users={balanceData.dataByUsers} t={t} />
                         <Divider />
-                        <CategoriesPieChart records={balanceData.groupedExpensesByCategory} />
+                        <CategoriesPieChart records={balanceData.groupedExpensesByCategory} t={t} />
                     </ScrollView>
                 }
             </View>

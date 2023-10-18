@@ -3,7 +3,7 @@ import { View, Text } from 'react-native'
 import { PieChart } from "react-native-gifted-charts";
 import { chartColors } from '../../../../utils';
 
-function CategoriesPieChart({ records }) {
+function CategoriesPieChart({ records, t }) {
     const [data, setData] = useState(null)
     const [selectedRecord, setSelectedRecord] = useState(null)
 
@@ -17,7 +17,7 @@ function CategoriesPieChart({ records }) {
             focused: index === 0,
             ...chartColors[index],
         }))
-        
+
         setSelectedRecord(mappedArray[0])
 
         setData(mappedArray)
@@ -27,7 +27,7 @@ function CategoriesPieChart({ records }) {
     return (
         <View style={{ padding: 20, flex: 1 }}>
             <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>
-                Expenses by Categories
+                {t('balance.cards.chart2.title')}
             </Text>
             <View style={{ padding: 20, alignItems: 'center' }}>
                 {data &&

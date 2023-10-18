@@ -9,6 +9,7 @@ import RecordsCard from '../Components/Cards/RecordsCard';
 import moment from 'moment';
 import { ActivityIndicator, Banner } from 'react-native-paper';
 import { useTheme } from 'react-native-paper'
+import { useTranslation } from 'react-i18next';
 
 import filterIcon from '../assets/Icons/filter.png'
 
@@ -24,6 +25,7 @@ function ActivityScreen({ navigation }) {
     const [itensCount, setItensCount] = useState(null)
     const [filteredItensCount, setFilteredItensCount] = useState(null)
     const theme = useTheme()
+    const { t } = useTranslation()
 
     useEffect(() => {
         getData()
@@ -107,12 +109,12 @@ function ActivityScreen({ navigation }) {
             }}>
             <NavigateBack navigation={navigation} />
             <StatusBar barStyle="light-content" backgroundColor="black" />
-            <Text style={{ color: 'white', fontSize: 20 }}>Activity</Text>
+            <Text style={{ color: 'white', fontSize: 20 }}>{t('activity.title')}</Text>
             <View style={styles.activityMainView}>
                 <Banner
                     style={{ backgroundColor: theme.colors.surfaceVariant, marginTop: 10 }}
                     visible={dateRange.startDate && dateRange.endDate}
-                    actions={[{ label: 'Clear filter', onPress: () => resetFilter() }]}
+                    actions={[{ label: t('activity.clearFilterBtn'), onPress: () => resetFilter() }]}
                     icon={({ size }) => (
                         <Image
                             source={filterIcon}
@@ -120,22 +122,22 @@ function ActivityScreen({ navigation }) {
                         />
                     )}>
                     {(dateRange.startDate && dateRange.endDate) &&
-                        <Text>{`From: ${dateRange.startDate.format('DD MMMM YYYY')}\nTo: ${dateRange.endDate.format('DD MMMM YYYY')}`}</Text>
+                        <Text>{`${t('common.from')}: ${dateRange.startDate.format('DD MMMM YYYY')}\n${t('common.to')}: ${dateRange.endDate.format('DD MMMM YYYY')}`}</Text>
                     }
                 </Banner>
                 <View style={styles.filterView}>
-                    <CustomButton label='Filter by date' onPress={() => setOpenDatePicker(true)} />
+                    <CustomButton label={t('activity.filterBtn')} onPress={() => setOpenDatePicker(true)} />
                 </View>
                 <FlatList
                     style={styles.activityItensView}
                     contentContainerStyle={{ rowGap: 12, paddingBottom: 20 }}
                     renderItem={({ item }) => <RecordsCard record={item} />}
                     keyExtractor={(item) => item.id}
-                    ListEmptyComponent={<Text style={{ color: 'white', textAlign: 'center' }}>No data found</Text>}
+                    ListEmptyComponent={<Text style={{ color: 'white', textAlign: 'center' }}>{t('activity.noData')}</Text>}
                     refreshControl={<RefreshControl refreshing={loading} onRefresh={refreshAll} colors={['tomato']} tintColor='tomato' />}
                     ListFooterComponent={
                         filteredData.length > 0 && (filteredData.length === filteredItensCount) ?
-                            <Text style={{ textAlign: 'center', color: 'white' }}>No more records to show</Text>
+                            <Text style={{ textAlign: 'center', color: 'white' }}>{t('activity.noRecords')}</Text>
                             :
                             <ActivityIndicator animating={loadingMoreData} colors={['tomato']} />
                     }

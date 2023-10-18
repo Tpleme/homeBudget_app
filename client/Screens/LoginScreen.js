@@ -5,6 +5,7 @@ import { TextInput, PasswordTextInput } from '../Components/Inputs/TextInputs'
 import CustomButton from '../Components/Buttons/CustomButton'
 import { useForm, Controller } from 'react-hook-form'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next'
 
 import Logo from '../assets/Logo/loginLogo.png'
 import { loginUser } from '../API/requests'
@@ -13,6 +14,7 @@ function LoginScreen({ navigation, ...props }) {
     const { control, handleSubmit, formState: { errors } } = useForm()
     const [loading, setLoading] = useState(false)
     const insets = useSafeAreaInsets();
+    const { t } = useTranslation()
 
     const onSubmit = async (data) => {
         setLoading(true)
@@ -38,12 +40,12 @@ function LoginScreen({ navigation, ...props }) {
                 name="email"
                 defaultValue=''
                 rules={{
-                    required: 'Email required',
-                    pattern: { value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: 'Invalid email format' }
+                    required: t('fieldErrors.email.required'),
+                    pattern: { value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: t('fieldErrors.email.invalid')}
                 }}
                 render={({ field: { onChange, value } }) => (
                     <TextInput
-                        placeholder='Email'
+                        placeholder={t('labels.email')}
                         value={value}
                         type="email-address"
                         onChange={onChange}
@@ -57,7 +59,7 @@ function LoginScreen({ navigation, ...props }) {
                 name="password"
                 defaultValue=''
                 rules={{
-                    required: 'Password required',
+                    required: t('fieldErrors.password.required'),
                 }}
                 render={({ field: { onChange, value } }) => (
                     <PasswordTextInput
@@ -69,8 +71,8 @@ function LoginScreen({ navigation, ...props }) {
                     />
                 )}
             />
-            <CustomButton onPress={handleSubmit(onSubmit)} label={loading ? 'Logging you in' : 'Log in'} loading={loading} style={{ marginTop: 20 }} />
-            <CustomButton onPress={() => navigation.navigate('forgotPass')} label='Forgot Password' mode='text' style={{ marginTop: 'auto' }} />
+            <CustomButton onPress={handleSubmit(onSubmit)} label={loading ? t('common.loggingIn') : t('common.logIn')} loading={loading} style={{ marginTop: 20 }} />
+            <CustomButton onPress={() => navigation.navigate('forgotPass')} label={t('forgotPass.button')} mode='text' style={{ marginTop: 'auto' }} />
             <StatusBar barStyle="light-content" backgroundColor="#202020" />
         </View>
     )

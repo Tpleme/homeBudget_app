@@ -12,6 +12,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { changePortrait, removePortrait } from '../../../API/requests';
 import UserAvatar from '../../../Misc/UserAvatar';
 import { showMessage } from 'react-native-flash-message'
+import { useTranslation } from 'react-i18next'
 
 function ProfileModal(props) {
     const insets = useSafeAreaInsets();
@@ -19,6 +20,8 @@ function ProfileModal(props) {
     const [openChangePass, setOpenChangePass] = useState(false)
     const [openEditProfile, setOpenEditProfile] = useState(false)
     const [portrait, setPortrait] = useState(null)
+
+    const { t } = useTranslation()
 
     useEffect(() => {
         if (props.open) {
@@ -48,10 +51,10 @@ function ProfileModal(props) {
 
             changePortrait(userInfo.id, formData).then(res => {
                 setUserInfo({ ...userInfo, picture: res.data.portrait })
-                showMessage({message: res.data.message, type: 'success'})
+                showMessage({ message: res.data.message, type: 'success' })
             }, err => {
                 console.log(err)
-                showMessage({message: 'Error uploading your photo', type: 'danger'})
+                showMessage({ message: 'Error uploading your photo', type: 'danger' })
             })
         } else {
             alert('You did not select any image.');
@@ -61,10 +64,10 @@ function ProfileModal(props) {
     const removePicture = () => {
         removePortrait(userInfo.id).then(res => {
             setUserInfo({ ...userInfo, picture: null })
-            showMessage({message: res.data, type: 'success'})
+            showMessage({ message: res.data, type: 'success' })
         }, err => {
             console.log(err)
-            showMessage({message: 'Error removing your photo', type: 'danger'})
+            showMessage({ message: 'Error removing your photo', type: 'danger' })
         })
     }
 
@@ -90,7 +93,7 @@ function ProfileModal(props) {
                 </View>
                 <View style={styles.portraitWrapper}>
                     <UserAvatar user={{ ...userInfo, picture: portrait }} style={styles.portrait} />
-                    <CustomButton icon='pencil' label={portrait ? 'Change Portrait' : 'Add portrait'} onPress={pickPortrait} />
+                    <CustomButton icon='pencil' label={portrait ? t('profile.changePortrait') : t('profile.addPortrait')} onPress={pickPortrait} />
                     {portrait &&
                         <CustomButton icon='delete' color='darkgrey' label='Remove Portrait' onPress={removePicture} />
                     }
@@ -100,12 +103,12 @@ function ProfileModal(props) {
                     <Text style={{ color: 'white', fontSize: 18, textAlign: 'center' }}>{userInfo.email}</Text>
                 </View>
                 <View style={styles.actionsView}>
-                    <CustomButton label='Edit Profile' onPress={() => setOpenEditProfile(true)} />
-                    <CustomButton label='Change Password' onPress={() => setOpenChangePass(true)} />
+                    <CustomButton label={t('profile.button.edit')} onPress={() => setOpenEditProfile(true)} />
+                    <CustomButton label={t('profile.button.changePass')} onPress={() => setOpenChangePass(true)} />
                 </View>
             </View>
-            <EditProfile open={openEditProfile} close={() => setOpenEditProfile(false)} user={userInfo} setUserInfo={setUserInfo} showMessage={showMessageFromChild}/>
-            <ChangePassword open={openChangePass} close={() => setOpenChangePass(false)} user={userInfo} showMessage={showMessageFromChild} closeParent={props.closeParent}/>
+            <EditProfile open={openEditProfile} close={() => setOpenEditProfile(false)} user={userInfo} setUserInfo={setUserInfo} showMessage={showMessageFromChild} t={t} />
+            <ChangePassword open={openChangePass} close={() => setOpenChangePass(false)} user={userInfo} showMessage={showMessageFromChild} closeParent={props.closeParent} t={t} />
         </Modal>
     )
 }

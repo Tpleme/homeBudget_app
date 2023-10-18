@@ -10,7 +10,7 @@ import BalanceTopInfo from './Blocks/BalanceTopInfo';
 import CategoriesPieChart from './Blocks/CategoriesPieChart';
 import UsersSpentPieChart from './Blocks/UsersSpentPieChart';
 
-function OpenBalanceModal({ data, ...props }) {
+function OpenBalanceModal({ data, t, ...props }) {
     const [balanceData, setBalanceData] = useState(null)
     const [divisionText, setDivisionText] = useState([])
 
@@ -68,18 +68,18 @@ function OpenBalanceModal({ data, ...props }) {
         >
             <View style={styles.modalView}>
                 <NavigateBack backFnc={props.close} />
-                <Text style={styles.title}>Current opened balance</Text>
+                <Text style={styles.title}>{t('balance.cards.opened')}</Text>
                 {balanceData &&
                     <ScrollView style={styles.mainView} contentContainerStyle={{ gap: 10 }}>
-                        <BalanceTopInfo balanceData={balanceData} />
+                        <BalanceTopInfo balanceData={balanceData} t={t} />
                         <View style={{ ...styles.divisionView, backgroundColor: theme.colors.primary }}>
-                            {divisionText.map((division, index) => <BalanceDivision key={index} division={division} />)}
+                            {divisionText.map((division, index) => <BalanceDivision key={index} division={division} t={t} />)}
                         </View>
-                        <BalanceUsersDisplay data={balanceData.dataByUsers} />
+                        <BalanceUsersDisplay data={balanceData.dataByUsers} t={t} />
                         <Divider />
-                        <UsersSpentPieChart users={balanceData.dataByUsers} />
+                        <UsersSpentPieChart users={balanceData.dataByUsers} t={t} />
                         <Divider />
-                        <CategoriesPieChart records={balanceData.groupedExpensesByCategory} />
+                        <CategoriesPieChart records={balanceData.groupedExpensesByCategory} t={t}/>
                     </ScrollView>
                 }
             </View>

@@ -5,11 +5,13 @@ import ListModal from '../Modals/ShoppingList/ListModal'
 import moment from 'moment'
 import { deleteEntity } from '../../API/requests'
 import { showMessage } from 'react-native-flash-message'
+import { useTranslation } from 'react-i18next'
 
 function ShoppingListCard({ list, refresh }) {
     const [showMenu, setShowMenu] = useState(false)
     const [listMode, setListMode] = useState(null)
     const [openList, setOpenList] = useState(false)
+    const { t } = useTranslation()
 
     const removeList = () => {
         deleteEntity({ entity: 'shopping_list', id: list.id }).then(res => {
@@ -37,9 +39,9 @@ function ShoppingListCard({ list, refresh }) {
                 onDismiss={() => setShowMenu(false)}
                 anchor={<IconButton icon='dots-horizontal' size={20} iconColor='white' onPress={() => setShowMenu(true)} />}
             >
-                <Menu.Item leadingIcon='menu-open' title='Open' onPress={() => onOpenList('view')} />
-                <Menu.Item leadingIcon='pencil' title='Edit' onPress={() => onOpenList('edit')} />
-                <Menu.Item leadingIcon='delete' title='Delete' onPress={() => removeList()} />
+                <Menu.Item leadingIcon='menu-open' title={t('groceries.cards.menu.open')} onPress={() => onOpenList('view')} />
+                <Menu.Item leadingIcon='pencil' title={t('groceries.cards.menu.edit')} onPress={() => onOpenList('edit')} />
+                <Menu.Item leadingIcon='delete' title={t('groceries.cards.menu.delete')} onPress={() => removeList()} />
             </Menu>
             <ListModal
                 open={openList}

@@ -3,7 +3,7 @@ import { View, Text } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import UserAvatar from '../../../../Misc/UserAvatar';
 
-function BalanceDivision({ division }) {
+function BalanceDivision({ division, t }) {
 
     return (
         <View style={{ width: '100%' }}>
@@ -24,7 +24,7 @@ function BalanceDivision({ division }) {
                     </View>
                 </View>
                 <Text style={{ color: 'white', fontSize: 12 }}>
-                    ({division.payer.name} has to pay {division.amount} € to {division.receiver.name})
+                    ({division.payer.name} {t('balance.cards.division.1')} {division.amount} {t('balance.cards.division.2')} {division.receiver.name})
                 </Text>
             </View>
         </View>

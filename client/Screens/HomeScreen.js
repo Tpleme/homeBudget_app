@@ -6,12 +6,15 @@ import Activity from '../Components/HomeComponents/Activity';
 import HomePageChart from '../Components/Charts/HomePageChart';
 import { getEntity } from '../API/requests';
 import { StoreContext } from '../Context/Store';
+import { useTranslation } from 'react-i18next';
 
 function HomeScreen({ navigation }) {
     const [loading, setLoading] = useState(false);
     const [records, setRecords] = useState([])
     const [chartData, setChartData] = useState([])
     const [storeState, dispatch] = useContext(StoreContext)
+    const { t } = useTranslation()
+
 
     useEffect(() => {
         getData()
@@ -42,10 +45,10 @@ function HomeScreen({ navigation }) {
 
 
     const homeShortcuts = [
-        { title: "Add Record", route: 'addRecord', icon: 'add-outline' },
-        { title: "Groceries Lists", route: 'groceries', icon: 'list-outline' },
-        { title: "View Activity", route: 'activityScreen', icon: 'calendar-outline' },
-        { title: "View Balance", route: 'balanceScreen', icon: 'reader-outline' },
+        { title: t('homeScreen.shortcuts.1'), route: 'addRecord', icon: 'add-outline' },
+        { title: t('homeScreen.shortcuts.2'), route: 'groceries', icon: 'list-outline' },
+        { title: t('homeScreen.shortcuts.3'), route: 'activityScreen', icon: 'calendar-outline' },
+        { title: t('homeScreen.shortcuts.4'), route: 'balanceScreen', icon: 'reader-outline' },
     ]
 
     return (

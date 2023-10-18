@@ -3,37 +3,39 @@ import { SectionList, View } from 'react-native';
 import { SettingsListItem } from './SettingsListItem';
 import { SettingsListSectionHeader } from './SettingsListSectionHeader';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from 'react-i18next'
 
-const settingsData = [
-    {
-        title: 'General',
-        icon: (
-            <View style={{ padding: 10, borderRadius: 8, backgroundColor: 'tomato' }}>
-                <Ionicons name='home' size={25} color='white' />
-            </View>
-        ),
-        data: [
-            { route: 'theme', title: 'Theme' },
-        ],
-    },
-    {
-        title: 'Feedback and Help',
-        icon: (
-            <View style={{ padding: 10, borderRadius: 8, backgroundColor: 'tomato' }}>
-                <Ionicons name='home' size={25} color='white' />
-            </View>
-        ),
-        data: [
-            { route: 'about', title: 'About' },
-            { route: 'help', title: 'Help' },
-            { route: 'review', title: 'Review' },
-            { route: 'feedback', title: 'Feedback' },
-            { route: 'contacts', title: 'Contacts' },
-        ],
-    },
-];
 
 function SettingsList({ navigation }) {
+    const { t } = useTranslation()
+
+    const settingsData = [
+        {
+            title: t('settings.general.title'),
+            icon: (
+                <View style={{ padding: 10, borderRadius: 8, backgroundColor: 'tomato' }}>
+                    <Ionicons name='settings-outline' size={25} color='white' />
+                </View>
+            ),
+            data: [
+                { route: 'theme', title: t('settings.general.items.theme') },
+                { route: 'language', title: t('settings.general.items.language') },
+            ],
+        },
+        {
+            title: t('settings.about.title'),
+            icon: (
+                <View style={{ padding: 10, borderRadius: 8, backgroundColor: 'tomato' }}>
+                    <Ionicons name='information-outline' size={25} color='white' />
+                </View>
+            ),
+            data: [
+                { route: 'about', title: t('settings.general.items.language') },
+            ],
+        },
+    ];
+
+
     return (
         <SectionList
             sections={settingsData}
