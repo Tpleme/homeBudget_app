@@ -13,7 +13,6 @@ import { useTranslation } from 'react-i18next';
 
 import filterIcon from '../assets/Icons/filter.png'
 
-//TODO: criar componente separado de flatlist com refresh e pagination
 function ActivityScreen({ navigation }) {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
@@ -55,7 +54,7 @@ function ActivityScreen({ navigation }) {
     }
 
     const getMoreData = () => {
-        if (data.length === 0 || filteredItensCount === filteredData.length) return
+        if (data.length === 0 || filteredItensCount === filteredData.length) return;
 
         setLoadingMoreData(true)
         setDateRange({ startDate: undefined, endDate: undefined })
@@ -63,6 +62,7 @@ function ActivityScreen({ navigation }) {
         getEntity({ entity: 'records', query: { limit: 10, offset: (pagination * 10) } }).then(res => {
             setItensCount(res.data.count)
             setPagination(prev => prev + 1)
+            setFilteredItensCount(res.data.count)
             setData(prev => [...prev, ...res.data.rows])
             setFilteredData(prev => [...prev, ...res.data.rows])
             setLoadingMoreData(false)
@@ -94,7 +94,7 @@ function ActivityScreen({ navigation }) {
     }
 
     const refreshAll = () => {
-        setDateRange({ startDate: undefined, endDate: undefined }) 
+        setDateRange({ startDate: undefined, endDate: undefined })
         getData()
     }
 

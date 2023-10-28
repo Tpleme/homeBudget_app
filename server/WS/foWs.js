@@ -12,7 +12,6 @@ const handleWsFo = (socket, io) => {
 
 const connectUser = async (socket) => {
     console.log('User connected ' + socket.id)
-    //TODO: verificar se o uuid é um numero
 
     await models.app_users.update({ online: true }, { where: { id: socket.handshake.auth.uuid } })
 

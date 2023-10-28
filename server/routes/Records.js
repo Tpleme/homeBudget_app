@@ -8,8 +8,8 @@ const getAll = async (req, res) => {
     try {
         const records = await models.records.findAndCountAll({
             order: [['date', 'DESC']],
-            limit: req.query.limit ? parseInt(req.query.limit) : null,
             offset: req.query.offset ? parseInt(req.query.offset) : null,
+            limit: req.query.limit ? parseInt(req.query.limit) : null,
             include: [
                 { model: models.app_users, as: 'payer', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
                 { model: models.app_users, as: 'creator', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
@@ -78,11 +78,41 @@ const create = async (req, res) => {
 }
 
 const update = async (req, res) => {
-    res.status(501).send('Not implemented')
+    try {
+        const id = getIdParam(req)
+
+        const record = await models.records.findByPk(id)
+
+        if (!record) return res.status(404).send('Record not found')
+
+        await models.records.update(req.body, { where: { id } })
+
+        //TODO: enviar email para os utilizadores quando alguem editou um record
+        res.status(200).send('Record updated')
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
+    }
 }
 
 const remove = async (req, res) => {
-    res.status(501).send('Not implemented')
+    try {
+        const id = getIdParam(req)
+
+        const record = await models.records.findByPk(id)
+
+        if (!record) return res.status(404).send('Record not found')
+
+        await models.records.destroy({ where: { id } })
+
+        //TODO: enviar email para os utilizadores quando alguem elimina um record
+        res.status(200).send('Record deleted')
+
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
+    }
 }
 
 module.exports = {

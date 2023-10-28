@@ -14,7 +14,9 @@ export default {
         from: "De",
         to: "Até",
         createdAt: "Criado em",
-        createdBy: "Criado por"
+        createdBy: "Criado por",
+        edit: 'Editar',
+        delete: 'Eliminar'
     },
 
     topBar: {
@@ -249,5 +251,11 @@ export default {
                 about: "Sobre"
             }
         }
+    },
+
+    records: {
+        delete: {
+            text: "Tem a certeza que pretende eliminar esta despesa?\nNão poderá reverter esta ação.\n\nTodos os utilizadores irão receber um email a avisar desta ação."
+        },
     }
 }

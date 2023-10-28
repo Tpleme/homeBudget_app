@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native';
-import { HelperText } from 'react-native-paper';
+import { HelperText, Portal } from 'react-native-paper';
 import UserAvatar from '../../Misc/UserAvatar';
 
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
@@ -74,6 +74,9 @@ const styles = new StyleSheet.create({
     label: {
         color: 'white',
         marginBottom: 5
+    },
+    mainContainer: {
+        flex: 1
     },
     container: {
         flex: 1

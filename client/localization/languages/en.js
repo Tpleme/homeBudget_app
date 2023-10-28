@@ -14,7 +14,9 @@ export default {
         from: "From",
         to: "To",
         createdAt: "Created At",
-        createdBy: "Created By"
+        createdBy: "Created By",
+        edit: 'Edit',
+        delete: 'Delete'
     },
 
     topBar: {
@@ -249,5 +251,11 @@ export default {
                 about: "About"
             }
         }
+    },
+
+    records: {
+        delete: {
+            text: "Are you sure you want to remove this records?\nYou cannot undo this action.\n\nEvery member will receive an email informing about this action."
+        },
     }
 }
