@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native';
-import { Dialog, Portal, Text } from 'react-native-paper';
+import { Dialog, Portal } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next'
 import { useForm, Controller } from 'react-hook-form'
@@ -12,28 +12,31 @@ import moment from 'moment'
 import { showMessage } from 'react-native-flash-message'
 import CustomButton from '../Buttons/CustomButton';
 
-//Meter isto numa pagina em vez de dialog, os autocomplete passam-se com dialogs
+//subcategory default não funciona
 function EditRecordDialog({ open, close, record, closeAfterEdit }) {
     const [categoriesData, setCategoriesData] = useState(null)
-    const [selectedCategory, setSelectedCategory] = useState()
+    const [selectedCategory, setSelectedCategory] = useState(null)
     const [subCategoriesData, setSubCategoriesData] = useState(null)
     const [usersData, setUsersData] = useState(null)
     const [loading, setLoading] = useState(false)
-    console.log(record)
+
     const { t } = useTranslation()
     const theme = useTheme()
     const { control, handleSubmit, setValue, formState: { errors } } = useForm()
 
     useEffect(() => {
-        getEntity({ entity: 'categories' }).then(res => {
-            setCategoriesData(res.data.map(el => ({ ...el, title: el.name })))
-            setSelectedCategory(res.data.find(el => el.id === record.subcategory.category))
-        })
+        if (open) {
+            getEntity({ entity: 'categories' }).then(res => {
+                setCategoriesData(res.data.map(el => ({ ...el, title: el.name })))
+                setSelectedCategory(res.data.find(el => el.id === record.subcategory.category.id))
+            })
 
-        getEntity({ entity: 'app_users' }).then(res => {
-            setUsersData(res.data.map(el => ({ ...el, title: el.name })))
-        })
-    }, [])
+            getEntity({ entity: 'app_users' }).then(res => {
+                setUsersData(res.data.map(el => ({ ...el, title: el.name })))
+            })
+            console.log(record)
+        }
+    }, [open])
 
 
     useEffect(() => {
@@ -47,25 +50,26 @@ function EditRecordDialog({ open, close, record, closeAfterEdit }) {
     }, [selectedCategory])
 
     const onSubmit = data => {
-        setLoading(true)
+        console.log(data)
+        // setLoading(true)
 
-        const sendData = {
-            paidBy: data.paidBy.id,
-            subcategoryId: data.subcategory.id,
-            value: data.value,
-            date: data.date
-        }
+        // const sendData = {
+        //     paidBy: data.paidBy.id,
+        //     subcategoryId: data.subcategory.id,
+        //     value: data.value,
+        //     date: data.date
+        // }
 
-        editEntity({ entity: 'records', id: record.id, data: sendData }).then(res => {
-            showMessage({ message: res.data, type: 'success' })
-            setLoading(false)
-            setValue('value', null)
-            closeAfterEdit()
-        }, err => {
-            console.log(err)
-            showMessage({ message: 'Error adding new record', type: 'danger' })
-            setLoading(false)
-        })
+        // editEntity({ entity: 'records', id: record.id, data: sendData }).then(res => {
+        //     showMessage({ message: res.data, type: 'success' })
+        //     setLoading(false)
+        //     setValue('value', null)
+        //     closeAfterEdit()
+        // }, err => {
+        //     console.log(err)
+        //     showMessage({ message: 'Error adding new record', type: 'danger' })
+        //     setLoading(false)
+        // })
     }
 
 
@@ -73,7 +77,6 @@ function EditRecordDialog({ open, close, record, closeAfterEdit }) {
         <Portal>
             <Dialog visible={open} onDismiss={close} style={{ backgroundColor: theme.colors.surfaceVariant, ...styles.dialog }}>
                 <View style={styles.mainContainer}>
-                    <Text style={styles.title}>{t('addRecord.title')}</Text>
                     <View style={styles.form}>
                         <Controller
                             control={control}
@@ -191,23 +194,18 @@ export default EditRecordDialog
 const styles = StyleSheet.create({
     dialog: {
         flex: 1,
-        // backgroundColor: '#202020',
+        position: 'absolute',
+        backgroundColor: '#202020',
     },
     mainContainer: {
         alignItems: 'center',
         width: '100%',
-        flex: 1,
-        paddingBottom: 30,
-        paddingHorizontal: 20,
-    },
-    title: {
-        color: 'white',
-        fontSize: 20,
-        textAlign: 'center',
+        padding: 20,
     },
     form: {
-        flex: 1,
+        height: 500,
         width: '100%',
+        marginBottom: 20
     },
     actionsView: {
         marginTop: 'auto',

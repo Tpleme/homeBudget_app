@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet } from 'react-native';
-import { HelperText, Portal } from 'react-native-paper';
+import { HelperText } from 'react-native-paper';
 import UserAvatar from '../../Misc/UserAvatar';
 
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';

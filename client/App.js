@@ -17,8 +17,8 @@ function App() {
     const theme = 'dark'
 
     return (
-        <PaperProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
-            <AutocompleteDropdownContextProvider>
+        <AutocompleteDropdownContextProvider>
+            <PaperProvider theme={theme === 'dark' ? DarkTheme : LightTheme}>
                 <SafeAreaProvider>
                     <StoreProvider>
                         <UserProvider>
@@ -29,8 +29,8 @@ function App() {
                         </UserProvider>
                     </StoreProvider>
                 </SafeAreaProvider>
-            </AutocompleteDropdownContextProvider>
-        </PaperProvider>
+            </PaperProvider>
+        </AutocompleteDropdownContextProvider>
     )
 }
 
