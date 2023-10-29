@@ -80,10 +80,7 @@ function AddRecord({ navigation }) {
             contentContainerStyle={{ minHeight: '100%' }}
             style={{
                 ...styles.wrapper,
-                paddingTop: insets.top,
                 paddingBottom: insets.bottom,
-                paddingLeft: insets.left,
-                paddingRight: insets.right,
             }}>
             <StatusBar barStyle="light-content" backgroundColor="black" />
             <NavigateBack navigation={navigation} />
@@ -216,7 +213,7 @@ const styles = StyleSheet.create({
         width: '100%',
         gap: 20,
         marginTop: 20,
-        marginBottom: 50
+        marginBottom: 20
     },
     actionsView: {
         marginTop: 'auto',

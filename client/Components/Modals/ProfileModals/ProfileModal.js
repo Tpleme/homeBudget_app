@@ -86,7 +86,11 @@ function ProfileModal(props) {
                 props.close();
             }}
         >
-            <View style={styles.modalView}>
+            <View style={{
+                ...styles.modalView,
+                paddingTop: insets.top + 20,
+                paddingBottom: insets.bottom + 20,
+            }}>
                 <Image style={styles.topImage} source={backgroundImage} />
                 <View style={{ ...styles.backButton, paddingTop: insets.top + 10 }}>
                     <Ionicons name='arrow-back-outline' size={32} color='white' onPress={() => props.close()} />

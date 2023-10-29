@@ -7,8 +7,10 @@ import { TextInput } from '../../Inputs/TextInputs'
 import { editEntity } from '../../../API/requests';
 import backgroundImage from '../../../assets/backgrounds/banner.jpg'
 import FlashMessage from 'react-native-flash-message';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function EditProfile({ t, ...props }) {
+    const insets = useSafeAreaInsets();
     const [loading, setLoading] = useState(false)
     const { control, handleSubmit, formState: { errors, dirtyFields } } = useForm(
         { defaultValues: { name: props.user.name, email: props.user.email } }
@@ -43,7 +45,7 @@ function EditProfile({ t, ...props }) {
         <Modal
             animationIn="slideInDown"
             animationOut='slideOutUp'
-            style={styles.modal}
+            style={{ ...styles.modal, paddingBottom: insets.bottom }}
             isVisible={props.open}
             backdropOpacity={1}
             onBackButtonPress={() => {

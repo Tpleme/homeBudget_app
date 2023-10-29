@@ -11,6 +11,7 @@ import { TextInput } from '../../Inputs/TextInputs';
 import moment from 'moment'
 import FlashMessage from "react-native-flash-message";
 import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function ListModal(props) {
     const [displayMode, setDisplayMode] = useState(null)
@@ -23,6 +24,7 @@ function ListModal(props) {
     //Inside modal we have to get a ref for the flash message so it shows on top of the modal
     const localFlashRef = useRef()
     const { t } = useTranslation()
+    const insets = useSafeAreaInsets();
 
     useEffect(() => {
         if (props.open) {
@@ -99,7 +101,7 @@ function ListModal(props) {
         <Modal
             animationIn="slideInUp"
             animationOut='slideOutDown'
-            style={styles.modal}
+            style={{...styles.modal, paddingTop: insets.top, paddingBottom: insets.bottom}}
             isVisible={props.open}
             backdropOpacity={1}
             onBackButtonPress={() => {

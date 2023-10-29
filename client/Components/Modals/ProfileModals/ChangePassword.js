@@ -7,11 +7,13 @@ import { PasswordTextInput } from '../../Inputs/TextInputs'
 import { changePassword } from '../../../API/requests';
 import backgroundImage from '../../../assets/backgrounds/banner.jpg'
 import FlashMessage from 'react-native-flash-message';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function ChangePassword({t, ...props}) {
     const [loading, setLoading] = useState(false)
     const { control, handleSubmit, watch, formState: { errors } } = useForm()
     const flashMessageRef = useRef()
+    const insets = useSafeAreaInsets();
 
     const onSubmit = data => {
         setLoading(true)
@@ -31,7 +33,7 @@ function ChangePassword({t, ...props}) {
         <Modal
             animationIn="slideInDown"
             animationOut='slideOutUp'
-            style={styles.modal}
+            style={{...styles.modal, paddingBottom: insets.bottom}}
             isVisible={props.open}
             backdropOpacity={1}
             onBackButtonPress={() => {

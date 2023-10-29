@@ -1,10 +1,8 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function NavigateBack({ navigation, backFnc }) {
-    const insets = useSafeAreaInsets();
 
     const onPress = () => {
         if (backFnc) {
@@ -16,7 +14,7 @@ function NavigateBack({ navigation, backFnc }) {
     }
 
     return (
-        <View style={{ ...styles.mainContainer, padding: insets.top + 5 }}>
+        <View style={{ ...styles.mainContainer }}>
             <Ionicons name='arrow-back-outline' size={32} color='white' onPress={onPress} />
         </View>
     )
@@ -30,7 +28,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         backgroundColor: 'transparent',
         position: 'absolute',
-        top: 10,
+        top: 0,
         left: 0,
         zIndex: 500
     },

@@ -5,11 +5,13 @@ import ProfileModal from './ProfileModals/ProfileModal';
 import { useUserInfo } from '../../Hooks/useUser';
 import UserAvatar from '../../Misc/UserAvatar';
 import { useTranslation } from 'react-i18next';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 function TopBarModal(props) {
     const [openProfile, setOpenProfile] = useState(false)
     const { userInfo } = useUserInfo()
     const { t } = useTranslation()
+    const insets = useSafeAreaInsets();
 
     return (
         <Modal
@@ -25,7 +27,7 @@ function TopBarModal(props) {
                 props.close();
             }}
         >
-            <View style={styles.modalView}>
+            <View style={{ ...styles.modalView, paddingTop: insets.top + 10 }}>
                 <View style={styles.avatarView}>
                     <View style={styles.avatar}>
                         <UserAvatar user={userInfo} style={styles.image} />

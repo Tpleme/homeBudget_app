@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     listView: {
         width: '100%',
         backgroundColor: '#373737',
-        height: 'fit-content',
+        height: 'fit-content', //TODO: (ADVICE) "fit-content" is not a valid dimension. Dimensions must be a number, "auto", or a string suffixed with "%".
         borderRadius: 10,
         overflow: 'hidden'
     },

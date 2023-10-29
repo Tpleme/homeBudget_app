@@ -47,13 +47,13 @@ function GroceriesScreen({ navigation }) {
             }}>
             <NavigateBack navigation={navigation} />
             <StatusBar barStyle="light-content" backgroundColor="black" />
-            <FAB size='small' mode='flat' icon='plus' style={styles.addButton} onPress={() => addNewList()} />
             <View style={styles.shoppingMainView}>
                 <Text style={styles.title}>{t('groceries.title')}</Text>
                 <ScrollView style={styles.listsScrollView} contentContainerStyle={{ gap: 15, paddingBottom: 10 }}>
                     {lists.map(list => <ShoppingListCard key={list.id} list={list} refresh={() => setRefresh(!refresh)} />)}
                 </ScrollView>
             </View>
+            <FAB size='small' mode='flat' icon='plus' style={styles.addButton} onPress={() => addNewList()} />
             {/* For when we create a new list */}
             {newList &&
                 <ListModal
@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 20,
         right: 20,
-        zIndex: 10
     }
 })
 

@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         paddingLeft: 10,
         paddingBottom: 10,
-        height:45
     },
     textLogo: {
         height: 15,

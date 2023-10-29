@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     },
     divisionView: {
         width: '100%',
-        height: 'fit-content',
+        height: 'fit-content', //TODO: (ADVICE) "fit-content" is not a valid dimension. Dimensions must be a number, "auto", or a string suffixed with "%".
         borderRadius: 10,
         padding: 10,
     },
