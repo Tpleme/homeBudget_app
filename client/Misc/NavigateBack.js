@@ -2,7 +2,7 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-function NavigateBack({ navigation, backFnc }) {
+function NavigateBack({ navigation, backFnc, style }) {
 
     const onPress = () => {
         if (backFnc) {
@@ -14,7 +14,7 @@ function NavigateBack({ navigation, backFnc }) {
     }
 
     return (
-        <View style={{ ...styles.mainContainer }}>
+        <View style={{ ...styles.mainContainer, ...style }}>
             <Ionicons name='arrow-back-outline' size={32} color='white' onPress={onPress} />
         </View>
     )

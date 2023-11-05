@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
-import { View, StatusBar, StyleSheet, ScrollView, Text } from 'react-native';
-import { FAB } from 'react-native-paper';
+import { View, StatusBar, StyleSheet, FlatList, RefreshControl, Text } from 'react-native';
+import { FAB, ActivityIndicator } from 'react-native-paper';
 import NavigateBack from '../../../Misc/NavigateBack';
 import { createEntity, getEntity } from '../../../API/requests'
 import ShoppingListCard from '../../Cards/ShoppingListCard';
@@ -17,14 +17,43 @@ function GroceriesScreen({ navigation }) {
     // for new created list
     const [openNewCreatedList, setOpenNewCreateList] = useState(false)
     const [newList, setNewList] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const [listsCount, setListsCount] = useState(null)
+    const [pagination, setPagination] = useState(1)
+    const [loadingMoreData, setLoadingMoreData] = useState(false)
 
     useEffect(() => {
-        getEntity({ entity: 'shopping_list' }).then(res => {
-            setLists(res.data)
+        getData()
+    }, [refresh])
+
+    const getData = () => {
+        setLoading(true)
+        getEntity({ entity: 'shopping_list', query: { limit: 10 } }).then(res => {
+            setLists(res.data.rows)
+            setListsCount(res.data.count)
+            setPagination(1)
+            setLoading(false)
         }, err => {
+            setLoading(false)
             console.error(err)
         })
-    }, [refresh])
+    }
+
+    const getMoreData = () => {
+        if (lists.length === 0 || listsCount === lists.length) return;
+
+        setLoadingMoreData(true)
+
+        getEntity({ entity: 'shopping_list', query: { limit: 10, offset: (pagination * 10) } }).then(res => {
+            setListsCount(res.data.count)
+            setPagination(prev => prev + 1)
+            setLists(prev => [...prev, ...res.data.rows])
+            setLoadingMoreData(false)
+        }, err => {
+            setLoadingMoreData(false)
+            console.log(err)
+        })
+    }
 
     const addNewList = () => {
         createEntity({ entity: 'shopping_list', data: {} }).then(res => {
@@ -49,9 +78,24 @@ function GroceriesScreen({ navigation }) {
             <StatusBar barStyle="light-content" backgroundColor="black" />
             <View style={styles.shoppingMainView}>
                 <Text style={styles.title}>{t('groceries.title')}</Text>
-                <ScrollView style={styles.listsScrollView} contentContainerStyle={{ gap: 15, paddingBottom: 10 }}>
-                    {lists.map(list => <ShoppingListCard key={list.id} list={list} refresh={() => setRefresh(!refresh)} />)}
-                </ScrollView>
+                <FlatList
+                    style={styles.listsScrollView}
+                    contentContainerStyle={{ gap: 15, paddingBottom: 100 }}
+                    renderItem={({ item }) => <ShoppingListCard key={item.id} list={item} refresh={() => setRefresh(!refresh)} />}
+                    keyExtractor={(item) => item.id}
+                    ListEmptyComponent={<Text style={{ color: 'white', textAlign: 'center' }}>{t('activity.noData')}</Text>}
+                    refreshControl={<RefreshControl refreshing={loading} onRefresh={getData} colors={['tomato']} tintColor='tomato' />}
+                    ListFooterComponent={
+                        lists.length > 0 && (lists.length === listsCount) ?
+                            <Text style={{ textAlign: 'center', color: 'white' }}>{t('activity.noRecords')}</Text>
+                            :
+                            <ActivityIndicator animating={loadingMoreData} colors={['tomato']} />
+                    }
+                    data={lists}
+                    onEndReached={getMoreData}
+                    onEndReachedThreshold={0}
+                >
+                </FlatList>
             </View>
             <FAB size='small' mode='flat' icon='plus' style={styles.addButton} onPress={() => addNewList()} />
             {/* For when we create a new list */}

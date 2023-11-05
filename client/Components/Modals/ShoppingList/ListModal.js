@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Modal from 'react-native-modal'
-import { StyleSheet, View, Text, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Pressable } from 'react-native';
 import { Checkbox, FAB, IconButton, Menu, PaperProvider, useTheme } from 'react-native-paper'
 import CustomButton from '../../Buttons/CustomButton'
 import AddItemDialog from './AddItemDialog';
@@ -72,6 +72,10 @@ function ListModal(props) {
 
         newArray[index].checked = !item.checked
         setItens(newArray)
+
+        const stringItens = JSON.stringify(newArray)
+
+        editEntity({ entity: 'shopping_list', id: props.list.id, data: { itens: stringItens } })
     }
 
     const addItem = data => {
@@ -101,7 +105,7 @@ function ListModal(props) {
         <Modal
             animationIn="slideInUp"
             animationOut='slideOutDown'
-            style={{...styles.modal, paddingTop: insets.top, paddingBottom: insets.bottom}}
+            style={{ ...styles.modal, paddingTop: insets.top, paddingBottom: insets.bottom }}
             isVisible={props.open}
             backdropOpacity={1}
             onBackButtonPress={() => {
@@ -132,7 +136,10 @@ function ListModal(props) {
                                     displayMode={displayMode}
                                 />
                             )) :
-                                <Text style={styles.noItensText}>{t('groceries.list.empty')}</Text>
+                                displayMode === 'view' ?
+                                    <Text style={styles.noItensText}>{t('groceries.list.emptyViewMode')}</Text>
+                                    :
+                                    <Text style={styles.noItensText}>{t('groceries.list.emptyEditMode')}</Text>
                             }
                         </ScrollView>
                         {displayMode === 'edit' ?
@@ -161,7 +168,7 @@ function ListModal(props) {
 export default ListModal
 
 
-const ItemView = ({t, el, index, checkItem, removeItem, editItem, displayMode }) => {
+const ItemView = ({ t, el, index, checkItem, removeItem, editItem, displayMode }) => {
     const [showMenu, setShowMenu] = useState(false)
 
     return (

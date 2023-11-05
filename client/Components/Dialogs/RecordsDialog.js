@@ -21,7 +21,8 @@ function RecordsDialog({ open, close, record }) {
     }
 
     const closeAfterEdit = () => {
-        showEditRecord(false)
+        setShowEditRecord(false)
+        close()
         dispatch({ type: 'setRefreshRecords' });
     }
 

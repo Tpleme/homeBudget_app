@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet } from 'react-native';
-import { Dialog, Portal } from 'react-native-paper';
+import { Dialog, Portal, Text, Button } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
 import { useTranslation } from 'react-i18next'
 import { useForm, Controller } from 'react-hook-form'
@@ -12,13 +12,13 @@ import moment from 'moment'
 import { showMessage } from 'react-native-flash-message'
 import CustomButton from '../Buttons/CustomButton';
 
-//subcategory default não funciona
 function EditRecordDialog({ open, close, record, closeAfterEdit }) {
     const [categoriesData, setCategoriesData] = useState(null)
     const [selectedCategory, setSelectedCategory] = useState(null)
     const [subCategoriesData, setSubCategoriesData] = useState(null)
     const [usersData, setUsersData] = useState(null)
     const [loading, setLoading] = useState(false)
+    const [openInfoDialog, setOpenInfoDialog] = useState(false)
 
     const { t } = useTranslation()
     const theme = useTheme()
@@ -34,7 +34,6 @@ function EditRecordDialog({ open, close, record, closeAfterEdit }) {
             getEntity({ entity: 'app_users' }).then(res => {
                 setUsersData(res.data.map(el => ({ ...el, title: el.name })))
             })
-            console.log(record)
         }
     }, [open])
 
@@ -42,6 +41,7 @@ function EditRecordDialog({ open, close, record, closeAfterEdit }) {
     useEffect(() => {
         if (selectedCategory) {
             setSubCategoriesData(selectedCategory.subcategories.map(el => ({ ...el, title: el.name })))
+            setValue('subcategory', record.subcategory)
             return;
         }
         setSubCategoriesData(null)
@@ -50,26 +50,29 @@ function EditRecordDialog({ open, close, record, closeAfterEdit }) {
     }, [selectedCategory])
 
     const onSubmit = data => {
-        console.log(data)
-        // setLoading(true)
+        const changedData = {}
 
-        // const sendData = {
-        //     paidBy: data.paidBy.id,
-        //     subcategoryId: data.subcategory.id,
-        //     value: data.value,
-        //     date: data.date
-        // }
+        if (data.subcategory.id !== record.subcategory.id) changedData.subcategory = data.subcategory
+        if (data.value !== record.value) changedData.value = data.value
+        if (data.paidBy.id !== record.paidBy) changedData.paidBy = data.paidBy
+        if (!moment(data.date).isSame(moment(record.date), 'day')) changedData.date = data.date
 
-        // editEntity({ entity: 'records', id: record.id, data: sendData }).then(res => {
-        //     showMessage({ message: res.data, type: 'success' })
-        //     setLoading(false)
-        //     setValue('value', null)
-        //     closeAfterEdit()
-        // }, err => {
-        //     console.log(err)
-        //     showMessage({ message: 'Error adding new record', type: 'danger' })
-        //     setLoading(false)
-        // })
+        if (Object.keys(changedData).length === 0) {
+            showMessage({ message: 'No changes detected', type: 'info' })
+            return;
+        }
+
+        setLoading(true)
+
+        editEntity({ entity: 'records', id: record.id, data: changedData }).then(res => {
+            showMessage({ message: res.data, type: 'success' })
+            setLoading(false)
+            closeAfterEdit()
+        }, err => {
+            console.log(err)
+            showMessage({ message: 'Error adding new record', type: 'danger' })
+            setLoading(false)
+        })
     }
 
 
@@ -117,24 +120,30 @@ function EditRecordDialog({ open, close, record, closeAfterEdit }) {
                         <Controller
                             control={control}
                             name="subcategory"
-                            defaultValue={{ ...record.subcategory, title: record.subcategory.name }}
+                            // defaultValue={{ ...record.subcategory, title: record.subcategory.name }}
                             rules={{
                                 required: t('addRecord.fields.subcategory.errors.required'),
                             }}
-                            render={({ field: { onChange, value } }) => (
-                                <Autocomplete
-                                    label={t('addRecord.fields.subcategory.label')}
-                                    itemLabel='name'
-                                    initialValue={record.subcategory}
-                                    disabled={Boolean(!selectedCategory)}
-                                    textInputAdditionalProps={{ value: value?.title }} //necessary to have a initial value
-                                    dataSet={subCategoriesData}
-                                    onChange={onChange}
-                                    placeholder={selectedCategory ? t('addRecord.fields.subcategory.placeholder1') : t('addRecord.fields.subcategory.placeholder2')}
-                                    error={Boolean(errors.subcategory)}
-                                    helperText={errors.subcategory?.message}
-                                />
-                            )}
+                            render={({ field: { onChange, value } }) => {
+                                //for some reason, defaultValue does not work
+                                if (value) {
+                                    value = { ...value, title: value.name }
+                                }
+                                return (
+                                    <Autocomplete
+                                        label={t('addRecord.fields.subcategory.label')}
+                                        itemLabel='name'
+                                        initialValue={record.subcategory}
+                                        disabled={Boolean(!selectedCategory)}
+                                        textInputAdditionalProps={{ value: value?.title }} //necessary to have a initial value
+                                        dataSet={subCategoriesData}
+                                        onChange={onChange}
+                                        placeholder={selectedCategory ? t('addRecord.fields.subcategory.placeholder1') : t('addRecord.fields.subcategory.placeholder2')}
+                                        error={Boolean(errors.subcategory)}
+                                        helperText={errors.subcategory?.message}
+                                    />
+                                )
+                            }}
                         />
                         <Controller
                             control={control}
@@ -161,7 +170,7 @@ function EditRecordDialog({ open, close, record, closeAfterEdit }) {
                         <Controller
                             control={control}
                             name="date"
-                            defaultValue={moment().toDate()}
+                            defaultValue={moment(record.date).toDate()}
                             rules={{
                                 required: t('addRecord.fields.date.errors.required'),
                             }}
@@ -180,16 +189,31 @@ function EditRecordDialog({ open, close, record, closeAfterEdit }) {
                         />
                     </View>
                     <View style={styles.actionsView}>
-                        <CustomButton loading={loading} label={loading ? t('common.submitting') : t('common.submit')} onPress={handleSubmit(onSubmit)} />
+                        <CustomButton loading={loading} label={loading ? t('common.submitting') : t('common.submit')} onPress={() => setOpenInfoDialog(true)} />
                         <CustomButton disabled={loading} label={t('common.cancel')} onPress={close} />
                     </View>
                 </View>
+                <InfoDialog submit={handleSubmit(onSubmit)} t={t} theme={theme} open={openInfoDialog} close={() => setOpenInfoDialog(false)} />
             </Dialog>
         </Portal>
     )
 }
 
 export default EditRecordDialog
+
+const InfoDialog = ({ submit, t, theme, open, close }) => {
+    return (
+        <Portal>
+            <Dialog visible={open} onDismiss={close} style={{ backgroundColor: theme.colors.surfaceVariant, justifyContent: 'center', paddingHorizontal: 25, }}>
+                <Text style={{ textAlign: 'center' }}>{t('records.edit.text')}</Text>
+                <View style={{ padding: 10, flexDirection: 'row', justifyContent: 'center' }}>
+                    <Button onPress={close}>{t('common.no')}</Button>
+                    <Button onPress={() => { close(); submit() }}>{t('common.yes')}</Button>
+                </View>
+            </Dialog>
+        </Portal>
+    )
+}
 
 const styles = StyleSheet.create({
     dialog: {

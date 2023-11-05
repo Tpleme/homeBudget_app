@@ -7,7 +7,8 @@ export default {
         cancel: "Cancelar",
         close: "Fechar",
         submit: "Submeter",
-        submitting: "A submeter", 
+        continue: "Continuar",
+        submitting: "A submeter",
         save: 'Guardar',
         add: "Adicionar",
         confirm: "Confirmar",
@@ -16,7 +17,9 @@ export default {
         createdAt: "Criado em",
         createdBy: "Criado por",
         edit: 'Editar',
-        delete: 'Eliminar'
+        delete: 'Eliminar',
+        yes: "Sim",
+        no: "Não"
     },
 
     topBar: {
@@ -130,7 +133,8 @@ export default {
             }
         },
         list: {
-            empty: "A sua lista está vazia, comece por adicionar produtos ao clicar no botão com o simbolo + na canto inferior direito.",
+            emptyViewMode: "A sua lista está vazia, primeiro clique no botão a baixo para pode começar a editar a lista e em seguida para adicionar produtos basta clicar no botão com o simbolo + na canto inferior direito.",
+            emptyEditMode: "A sua lista está vazia, comece por adicionar produtos ao clicar no botão com o simbolo + na canto inferior direito.",
             add: {
                 title: "Adicionar item à lista",
                 inputs: {
@@ -144,10 +148,10 @@ export default {
                         label: "Qtd.",
                         errors: {
                             required: "Indique uma quantidade"
-                        } 
+                        }
                     }
                 }
-            }, 
+            },
             edit: {
                 title: "Editar item",
                 inputs: {
@@ -161,9 +165,9 @@ export default {
                         label: "Qtd.",
                         errors: {
                             required: "Indique uma quantidade"
-                        } 
+                        }
                     }
-                } 
+                }
             }
         }
     },
@@ -257,5 +261,8 @@ export default {
         delete: {
             text: "Tem a certeza que pretende eliminar esta despesa?\nNão poderá reverter esta ação.\n\nTodos os utilizadores irão receber um email a avisar desta ação."
         },
+        edit: {
+            text: "Ao alterar a info desta despesa todos os utilizadores serão informados por email.\n\nPretende continuar?",
+        }
     }
 }

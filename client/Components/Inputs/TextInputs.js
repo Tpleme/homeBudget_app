@@ -1,14 +1,20 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
+import { StyleSheet, View, Text, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { TextInput as PaperInput, HelperText } from 'react-native-paper'
 import CurrencyInput from 'react-native-currency-input'
 import { useTranslation } from 'react-i18next'
+
+export const DismissKeyboard = ({ children }) => (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+        {children}
+    </TouchableWithoutFeedback>
+)
 
 export const TextInput = ({ label, onChange, value, placeholder, type, error, helperText, mode, ...props }) => {
 
     const handleInput = value => {
         if (type === 'numeric' || type === 'number-pad' || type === 'decimal-pad') {
-                onChange(value.replace(/[^0-9.]/g, ""))
+            onChange(value.replace(/[^0-9.]/g, ""))
             return;
         }
         onChange(value)

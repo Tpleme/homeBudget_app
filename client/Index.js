@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
+import { Platform } from 'react-native';
 import Dashboard from './Screens/Dashboard'
 import LoginScreen from './Screens/LoginScreen';
 import ForgotPasswordScreen from './Screens/ForgotPasswordScreen';
@@ -23,7 +24,8 @@ function Index() {
     const socket = useContext(SocketContext)
 
     useEffect(() => {
-        setBackgroundColorAsync('#202020')
+        if (Platform.OS === 'android') setBackgroundColorAsync('#202020')
+
         socket.on('ready', getUser)
 
         return () => {

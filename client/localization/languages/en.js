@@ -7,6 +7,7 @@ export default {
         cancel: "Cancel",
         close: "Close",
         submit: "Submit",
+        continue: "Continue",
         save: 'Save',
         add: "Add",
         submitting: "Submitting",
@@ -16,7 +17,9 @@ export default {
         createdAt: "Created At",
         createdBy: "Created By",
         edit: 'Edit',
-        delete: 'Delete'
+        delete: 'Delete',
+        yes: "Yes",
+        no: "No"
     },
 
     topBar: {
@@ -130,7 +133,8 @@ export default {
             }
         },
         list: {
-            empty: "Your shopping list is empty, start by adding a new product by clicking on the button with a plus sign on the bottom right side.",
+            emptyViewMode: "Your shopping list is empty, first you need to click on the button bellow to start editing the list, then you can add products to the list by clicking on the button with a plus sign on the bottom right side.",
+            emptyEditMode: "Your shopping list is empty, start by adding a new product by clicking on the button with a plus sign on the bottom right side.",
             add: {
                 title: "Add item to list",
                 inputs: {
@@ -257,5 +261,8 @@ export default {
         delete: {
             text: "Are you sure you want to remove this records?\nYou cannot undo this action.\n\nEvery member will receive an email informing about this action."
         },
+        edit: {
+            text: "If you procede to edit this record, all user will be informed by email.\n\nDo you want to continue?",
+        }
     }
 }

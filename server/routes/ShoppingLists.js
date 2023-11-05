@@ -2,10 +2,18 @@ const { models } = require('../database/index')
 const { getIdParam } = require('../utils')
 
 const getAll = async (req, res) => {
-    const lists = await models.shopping_list.findAll({
-        order: [['createdAt', 'DESC']]
-    })
-    res.status(200).json(lists)
+
+    try {
+        const lists = await models.shopping_list.findAndCountAll({
+            order: [['createdAt', 'DESC']],
+            offset: req.query.offset ? parseInt(req.query.offset) : null,
+            limit: req.query.limit ? parseInt(req.query.limit) : null,
+        })
+        res.status(200).json(lists)
+    } catch (err) {
+        console.log(err)
+        res.status(500).send(err)
+    }
 
 }
 

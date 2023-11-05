@@ -19,7 +19,7 @@ function WheelPicker({ items, onChange, itemHeight, defaultValue, ...props }) {
         if (flatRef.current) {
             if (defaultValue) {
                 const defaultValueIndex = items.findIndex((item) => item === defaultValue)
-                if(defaultValueIndex > 0) {
+                if (defaultValueIndex > 0) {
                     flatRef.current.scrollToIndex({ index: defaultValueIndex })
                     onChange(items[defaultValueIndex])
                 }
@@ -52,10 +52,11 @@ function WheelPicker({ items, onChange, itemHeight, defaultValue, ...props }) {
         return (
             <Animated.View
                 style={[
-                    { height: itemHeight, lineHeight: itemHeight, transform: [{ scale }], opacity },
+                    { height: itemHeight, transform: [{ scale }], opacity },
                     styles.animatedContainer,
                 ]}>
-                <Text style={styles.pickerItem}>{item}</Text>
+                {/* No Ios o lineheight tem de levar mais 10 px para ficar centrado */}
+                <Text style={{ ...styles.pickerItem, lineHeight: itemHeight + 10 }}>{item}</Text>
             </Animated.View>
         );
     };

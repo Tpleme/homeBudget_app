@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, StatusBar, Image } from 'react-native'
 import * as SecureStore from 'expo-secure-store'
-import { TextInput, PasswordTextInput } from '../Components/Inputs/TextInputs'
+import { TextInput, PasswordTextInput, DismissKeyboard } from '../Components/Inputs/TextInputs'
 import CustomButton from '../Components/Buttons/CustomButton'
 import { useForm, Controller } from 'react-hook-form'
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -31,50 +31,52 @@ function LoginScreen({ navigation, ...props }) {
     }
 
     return (
-        <View style={{ ...styles.view, paddingTop: insets.top, paddingBottom: insets.bottom }}>
-            <View style={styles.imgWrapper}>
-                <Image alt='logo' source={Logo} style={styles.logo} />
+        <DismissKeyboard>
+            <View style={{ ...styles.view, paddingTop: insets.top, paddingBottom: insets.bottom }}>
+                <View style={styles.imgWrapper}>
+                    <Image alt='logo' source={Logo} style={styles.logo} />
+                </View>
+                <Controller
+                    control={control}
+                    name="email"
+                    defaultValue=''
+                    rules={{
+                        required: t('fieldErrors.email.required'),
+                        pattern: { value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: t('fieldErrors.email.invalid') }
+                    }}
+                    render={({ field: { onChange, value } }) => (
+                        <TextInput
+                            placeholder={t('labels.email')}
+                            value={value}
+                            type="email-address"
+                            onChange={onChange}
+                            error={Boolean(errors.email)}
+                            helperText={errors.email?.message}
+                        />
+                    )}
+                />
+                <Controller
+                    control={control}
+                    name="password"
+                    defaultValue=''
+                    rules={{
+                        required: t('fieldErrors.password.required'),
+                    }}
+                    render={({ field: { onChange, value } }) => (
+                        <PasswordTextInput
+                            value={value}
+                            type="password"
+                            onChange={onChange}
+                            error={Boolean(errors.password)}
+                            helperText={errors.password?.message}
+                        />
+                    )}
+                />
+                <CustomButton onPress={handleSubmit(onSubmit)} label={loading ? t('common.loggingIn') : t('common.logIn')} loading={loading} style={{ marginTop: 20 }} />
+                <CustomButton onPress={() => navigation.navigate('forgotPass')} label={t('forgotPass.button')} mode='text' style={{ marginTop: 'auto' }} />
+                <StatusBar barStyle="light-content" backgroundColor="#202020" />
             </View>
-            <Controller
-                control={control}
-                name="email"
-                defaultValue=''
-                rules={{
-                    required: t('fieldErrors.email.required'),
-                    pattern: { value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, message: t('fieldErrors.email.invalid')}
-                }}
-                render={({ field: { onChange, value } }) => (
-                    <TextInput
-                        placeholder={t('labels.email')}
-                        value={value}
-                        type="email-address"
-                        onChange={onChange}
-                        error={Boolean(errors.email)}
-                        helperText={errors.email?.message}
-                    />
-                )}
-            />
-            <Controller
-                control={control}
-                name="password"
-                defaultValue=''
-                rules={{
-                    required: t('fieldErrors.password.required'),
-                }}
-                render={({ field: { onChange, value } }) => (
-                    <PasswordTextInput
-                        value={value}
-                        type="password"
-                        onChange={onChange}
-                        error={Boolean(errors.password)}
-                        helperText={errors.password?.message}
-                    />
-                )}
-            />
-            <CustomButton onPress={handleSubmit(onSubmit)} label={loading ? t('common.loggingIn') : t('common.logIn')} loading={loading} style={{ marginTop: 20 }} />
-            <CustomButton onPress={() => navigation.navigate('forgotPass')} label={t('forgotPass.button')} mode='text' style={{ marginTop: 'auto' }} />
-            <StatusBar barStyle="light-content" backgroundColor="#202020" />
-        </View>
+        </DismissKeyboard>
     )
 }
 
