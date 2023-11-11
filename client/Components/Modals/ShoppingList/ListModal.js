@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Modal from 'react-native-modal'
-import { StyleSheet, View, Text, ScrollView, Pressable } from 'react-native';
+import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { Checkbox, FAB, IconButton, Menu, PaperProvider, useTheme } from 'react-native-paper'
 import CustomButton from '../../Buttons/CustomButton'
 import AddItemDialog from './AddItemDialog';
@@ -174,7 +174,7 @@ const ItemView = ({ t, el, index, checkItem, removeItem, editItem, displayMode }
     return (
         <View style={{ ...styles.itemView, opacity: el.checked ? 0.5 : 1 }}>
             {displayMode === 'view' &&
-                <Checkbox status={el.checked ? 'checked' : 'unchecked'} onPress={() => checkItem(el, index)} />
+                <Checkbox.Android status={el.checked ? 'checked' : 'unchecked'} onPress={() => checkItem(el, index)} />
             }
             <Text numberOfLines={1} style={styles.itemName}>{el.name}</Text>
             <Text style={{ marginLeft: 'auto', color: 'white', paddingRight: 10 }}>{el.quantity} {el.measure}</Text>

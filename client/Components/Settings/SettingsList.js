@@ -18,7 +18,7 @@ function SettingsList({ navigation }) {
                 </View>
             ),
             data: [
-                { route: 'theme', title: t('settings.general.items.theme') },
+                // { route: 'theme', title: t('settings.general.items.theme') },
                 { route: 'language', title: t('settings.general.items.language') },
             ],
         },
@@ -30,7 +30,7 @@ function SettingsList({ navigation }) {
                 </View>
             ),
             data: [
-                { route: 'about', title: t('settings.general.items.language') },
+                { route: 'about', title: t('settings.about.items.about') },
             ],
         },
     ];

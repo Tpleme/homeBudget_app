@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import {
     Animated,
+    Platform,
     StyleSheet,
     Text,
     View,
@@ -55,8 +56,12 @@ function WheelPicker({ items, onChange, itemHeight, defaultValue, ...props }) {
                     { height: itemHeight, transform: [{ scale }], opacity },
                     styles.animatedContainer,
                 ]}>
-                {/* No Ios o lineheight tem de levar mais 10 px para ficar centrado */}
-                <Text style={{ ...styles.pickerItem, lineHeight: itemHeight + 10 }}>{item}</Text>
+                {/* No Ios o lineHeight tem de levar mais 10 px para ficar centrado */}
+                {Platform.OS === 'ios' ?
+                    <Text style={{ ...styles.pickerItem, lineHeight: itemHeight + 10 }}>{item}</Text>
+                    :
+                    <Text style={{ ...styles.pickerItem, lineHeight: itemHeight }}>{item}</Text>
+                }
             </Animated.View>
         );
     };
@@ -91,7 +96,7 @@ function WheelPicker({ items, onChange, itemHeight, defaultValue, ...props }) {
                     index,
                 })}
             />
-            <View style={[styles.indicatorHolder, { top: itemHeight }]}>
+            <View style={[styles.indicatorHolder, { top: itemHeight }]} pointerEvents='none'>
                 <View style={[styles.indicator]} />
                 <View style={[styles.indicator, { marginTop: itemHeight }]} />
             </View>
