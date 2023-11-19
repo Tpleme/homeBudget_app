@@ -24,3 +24,5 @@ web-build/
 .env.development
 .env.test.local
 .env.production
+
+.eas.json

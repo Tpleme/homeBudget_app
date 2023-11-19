@@ -1,0 +1,39 @@
+{
+	"cli": {
+		"version": ">= 5.7.0"
+	},
+	"build": {
+		"development": {
+			"developmentClient": true,
+			"android": {
+				"buildType": "apk"
+			},
+			"env": {
+				"EXPO_PUBLIC_SERVER_URL": "http://192.168.1.100:3000"
+			},
+			"distribution": "internal"
+		},
+		"production": {
+			"developmentClient": true,
+			"android": {
+				"buildType": "apk"
+			},
+			"env": {
+				"EXPO_PUBLIC_SERVER_URL": "http://192.168.1.100:3000"
+			},
+			"distribution": "internal"
+		},
+		"preview": {
+			"developmentClient": true,
+			"android": {
+				"buildType": "apk"
+			},
+			"env": {
+				"EXPO_PUBLIC_SERVER_URL": "http://192.168.1.100:3000"
+			}
+		}
+	},
+	"submit": {
+		"production": {}
+	}
+}

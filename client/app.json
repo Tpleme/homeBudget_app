@@ -1,47 +1,54 @@
 {
-	"expo": {
-		"name": "Splitter",
-		"description": "Home budget app",
-		"slug": "splitter",
-		"version": "1.0.0",
-		"orientation": "portrait",
-		"icon": "./assets/icon.png",
-		"userInterfaceStyle": "light",
-		"splash": {
-			"image": "./assets/splash.png",
-			"resizeMode": "contain",
-			"backgroundColor": "#202020"
-		},
-		"plugins": [
-			[
-				"expo-image-picker",
-				{
-					"photosPermission": "The app accesses your photos to be able to upload a portrait.",
-					"cameraPermission": "The app accesses your camera to be able to take a photo and upload as your portrait"
-				}
-			]
-		],
-		"assetBundlePatterns": [
-			"**/*"
-		],
-		"ios": {
-			"supportsTablet": true,
-			"config": {
-				"usesNonExemptEncryption": false
-			}
-		},
-		"android": {
-			"softwareKeyboardLayoutMode": "pan",
-			"adaptiveIcon": {
-				"foregroundImage": "./assets/adaptive-icon.png",
-				"backgroundColor": "#202020"
-			}
-		},
-		"web": {
-			"favicon": "./assets/favicon.png"
-		},
-		"androidNavigationBar": {
-			// "backgroundColor": "#000000"
-		}
-	}
+  "expo": {
+    "name": "Splitter",
+    "description": "Home budget app",
+    "slug": "splitter",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#202020"
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to be able to upload a portrait.",
+          "cameraPermission": "The app accesses your camera to be able to take a photo and upload as your portrait"
+        }
+      ]
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "config": {
+        "usesNonExemptEncryption": false
+      },
+      "bundleIdentifier": "com.tpleme.splitter"
+    },
+    "android": {
+      "softwareKeyboardLayoutMode": "pan",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#202020"
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.tpleme.splitter"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "94ac14ff-30d5-4afb-b737-d7f408e05d27"
+      }
+    }
+  }
 }
