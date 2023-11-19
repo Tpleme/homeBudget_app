@@ -1,0 +1,27 @@
+name: Generate a build and deploy to production
+run-name: ${{ github.actor }} is deploying to production
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Deploy server
+    defaults:
+        run:
+          working-directory: ./server
+    steps:
+      - name: git-checkout
+        uses: actions/checkout@v3
+    
+      - name: Deploy
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: production-server
+          FOLDER: ./server
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+          MESSAGE: "Build: ({sha}) {msg}"
