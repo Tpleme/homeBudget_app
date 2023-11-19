@@ -21,9 +21,14 @@ app.use('/resources', express.static('resources'))
 
 require('./routes/index')(app);
 
+// const startServer = async () => {
+//     await db.init();
+//     server.listen(process.env.PORT)
+// }
+
 const startServer = async () => {
     await db.init();
-    server.listen(process.env.SERVER_PORT || 3000)
+    server.listen(process.env.PORT, '0.0.0.0')
 }
 
 const io = new Server(server)
