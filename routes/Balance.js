@@ -18,6 +18,10 @@ const getAll = async (req, res) => {
     if (!balances || balances.length === 0) {
         const openRecords = await models.records.findAll({ order: [['date', 'ASC']] })
 
+        if (!openRecords || openRecords.length === 0) {
+            return res.status(404).send({ balances: [], openBalance: [] })
+        }
+
         const recordsAmount = openRecords.reduce((acc, obj) => acc + obj.value, 0)
 
         const openBalance = {
@@ -49,7 +53,7 @@ const getOpenBalance = async (req, res) => {
     try {
 
         const openRecords = await models.records.findAll({
-            where: { date: { [Op.gt]: req.body.start_date } },
+            where: { date: { [Op.gte]: req.body.start_date } },
             order: [['date', 'DESC']],
             include: [
                 { model: models.app_users, as: 'payer', attributes: { exclude: ['password', 'pass_recovery_key', 'complete_profile_key'] } },
