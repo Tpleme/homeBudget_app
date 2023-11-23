@@ -17,7 +17,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use(helmet())
 app.use(compression())
 app.use(morgan('common'))
-app.use('/resources', express.static('resources'))
+// app.use('/resources', express.static('resources'))
+app.use('/static_files', express.static(process.env.RAILWAY_VOLUME_MOUNT_PATH))
 
 require('./routes/index')(app);
 

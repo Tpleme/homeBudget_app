@@ -4,32 +4,27 @@
 	},
 	"build": {
 		"development": {
-			"developmentClient": true,
 			"android": {
 				"buildType": "apk"
 			},
 			"env": {
-				"EXPO_PUBLIC_SERVER_URL": "http://192.168.1.100:3000"
-			},
-			"distribution": "internal"
+				"EXPO_PUBLIC_SERVER_URL": "https://splitter-server.up.railway.app"
+			}
 		},
 		"production": {
-			"developmentClient": true,
 			"android": {
 				"buildType": "apk"
 			},
 			"env": {
-				"EXPO_PUBLIC_SERVER_URL": "http://192.168.1.100:3000"
-			},
-			"distribution": "internal"
+				"EXPO_PUBLIC_SERVER_URL": "https://splitter-server.up.railway.app"
+			}
 		},
 		"preview": {
-			"developmentClient": true,
 			"android": {
 				"buildType": "apk"
 			},
 			"env": {
-				"EXPO_PUBLIC_SERVER_URL": "http://192.168.1.100:3000"
+				"EXPO_PUBLIC_SERVER_URL": "https://splitter-server.up.railway.app"
 			}
 		}
 	},

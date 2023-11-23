@@ -55,7 +55,7 @@ module.exports = app => {
         }
     }
 
-    app.get('/', (req, res) => {
+    app.get('/health', (_, res) => {
         res.status(200).send('Server is up and running')
     })
 
