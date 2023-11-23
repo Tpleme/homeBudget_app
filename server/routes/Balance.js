@@ -26,7 +26,7 @@ const getAll = async (req, res) => {
 
         const openBalance = {
             total: recordsAmount.toFixed(2),
-            start_date: openRecords[openRecords.length - 1].date,
+            start_date: openRecords[0].date,
         }
 
         return res.status(200).json({ balances, openBalance })

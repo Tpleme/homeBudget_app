@@ -78,7 +78,7 @@ function OpenBalanceModal({ data, t, ...props }) {
                         <Divider />
                         <UsersSpentPieChart users={balanceData.dataByUsers} t={t} />
                         <Divider />
-                        <CategoriesPieChart records={balanceData.groupedExpensesByCategory} t={t}/>
+                        <CategoriesPieChart records={balanceData.groupedExpensesByCategory} t={t} />
                     </ScrollView>
                 }
             </View>
