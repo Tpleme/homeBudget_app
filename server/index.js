@@ -17,17 +17,11 @@ app.use(express.urlencoded({ extended: true }))
 app.use(helmet())
 app.use(compression())
 app.use(morgan('common'))
-// app.use('/resources', express.static('resources'))
-app.use('/static_files', express.static(process.env.RAILWAY_VOLUME_MOUNT_PATH, { index: false }))
+app.use('/resources', express.static('resources', { index: false }))
 
 console.log(process.env.RAILWAY_VOLUME_MOUNT_PATH)
 
 require('./routes/index')(app);
-
-// const startServer = async () => {
-//     await db.init();
-//     server.listen(process.env.PORT)
-// }
 
 const startServer = async () => {
     await db.init();
