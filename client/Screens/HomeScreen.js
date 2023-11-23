@@ -34,7 +34,7 @@ function HomeScreen({ navigation }) {
             console.log(err)
         })
 
-        getEntity({ entity: 'balance' }).then(res => {
+        getEntity({ entity: 'balance', query: { order: JSON.stringify([['start_date', 'ASC']]) } }).then(res => {
             setChartData([...res.data.balances, res.data.openBalance])
             setLoading(false)
         }, err => {

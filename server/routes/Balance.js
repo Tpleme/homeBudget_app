@@ -2,10 +2,10 @@ const { models } = require('../database/index')
 const { getIdParam } = require('../utils')
 const { Op } = require('sequelize')
 
-//Aqui se não houver balances, não é possivel ir buscar records pela end_data. 
 const getAll = async (req, res) => {
+
     const balances = await models.balances.findAll({
-        order: [['start_date', 'DESC']],
+        order: req.query.order ? JSON.parse(req.query.order) : [['start_date', 'DESC']],
         include: {
             model: models.app_users,
             as: 'createdBy',
@@ -16,7 +16,16 @@ const getAll = async (req, res) => {
     })
 
     if (!balances || balances.length === 0) {
-        return res.status(404).send('No balances found')
+        const openRecords = await models.records.findAll({ order: [['date', 'ASC']] })
+
+        const recordsAmount = openRecords.reduce((acc, obj) => acc + obj.value, 0)
+
+        const openBalance = {
+            total: recordsAmount.toFixed(2),
+            start_date: openRecords[openRecords.length - 1].date,
+        }
+
+        return res.status(200).json({ balances, openBalance })
     }
 
     const openRecords = await models.records.findAll({

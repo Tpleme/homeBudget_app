@@ -4,6 +4,7 @@ import { LineChart } from "react-native-gifted-charts";
 import moment from 'moment';
 
 function HomePageChart(props) {
+
     const [chartData, setChartData] = useState([])
 
     const customDataPoint = () => {
@@ -30,15 +31,23 @@ function HomePageChart(props) {
     };
 
     useEffect(() => {
-        const data = props.data.map(el => (
-            {
-                value: parseInt(el.total),
-                date: `${moment(el.start_date).format('DD MMM')} - ${moment(el.end_date).format('DD MMM')}`,
-                labelComponent: () => customLabel(`${moment(el.start_date).format('DD MMM')} - ${moment(el.end_date).format('DD MMM')}`)
-            }
-        ))
+        if (props.data.length > 0) {
+            let data = props.data.map(el => (
+                {
+                    value: parseFloat(el.total),
+                    date: `${moment(el.start_date).format('DD MMM')} - ${moment(el.end_date).format('DD MMM')}`,
+                    labelComponent: () => customLabel(`${moment(el.start_date).format('DD MMM')} - ${moment(el.end_date).format('DD MMM')}`)
+                }
+            ))
 
-        setChartData(data)
+            //if the data is only one value, we need to create an empty value to show the chart
+            //otherwise it gives bunch of errors
+            if (data.length === 1) {
+                data = [{ value: 0 }, data[0]]
+            }
+
+            setChartData(data)
+        }
     }, [props.data])
 
 
@@ -57,7 +66,7 @@ function HomePageChart(props) {
                     startFillColor1="tomato"
                     endFillColor1="transparent"
                     startOpacity={0.9}
-                    endOpacity={0.2}
+                    endOpacity={0}
                     noOfSections={4}
                     hideRules
                     yAxisThickness={0}
@@ -97,7 +106,7 @@ function HomePageChart(props) {
 
                                     <View style={{ paddingHorizontal: 14, paddingVertical: 6, borderRadius: 16, backgroundColor: 'white' }}>
                                         <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
-                                            {'€' + items[0].value + '.0'}
+                                            {'€' + items[0].value}
                                         </Text>
                                     </View>
                                 </View>
