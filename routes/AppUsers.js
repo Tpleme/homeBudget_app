@@ -11,7 +11,8 @@ const { Op } = require('sequelize')
 const { responses } = require('../ServerResponses')
 const { v4: uuidv4 } = require('uuid')
 
-const imageDir = path.join(__dirname, "../resources/images/app_users");
+// const imageDir = path.join(__dirname, "../resources/images/app_users");
+const imageDir = path.join(__dirname, `${process.env.RAILWAY_VOLUME_MOUNT_PATH}/images/app_users`);
 
 const unlinkAsync = promisify(fs.unlink);
 const renameAsync = promisify(fs.rename)

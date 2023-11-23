@@ -12,7 +12,8 @@ const imageFilter = (req, file, next) => {
 const fileStorageEngine = multer.diskStorage({
     destination: (req, file, next) => {
         if (file) {
-            next(null, path.join(__dirname, "../resources/images/temp"))
+            // next(null, path.join(__dirname, "../resources/images/temp"))
+            next(null, path.join(__dirname, `${process.env.RAILWAY_VOLUME_MOUNT_PATH}/images/temp`))
         }
     },
     filename: (req, file, next) => {
