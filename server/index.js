@@ -19,8 +19,6 @@ app.use(compression())
 app.use(morgan('common'))
 app.use('/resources', express.static('resources', { index: false }))
 
-console.log(process.env.RAILWAY_VOLUME_MOUNT_PATH)
-
 require('./routes/index')(app);
 
 const startServer = async () => {
