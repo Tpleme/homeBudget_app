@@ -30,7 +30,6 @@ function AddRecord({ navigation }) {
     const { userInfo } = useUserInfo()
     const { control, handleSubmit, setValue, formState: { errors } } = useForm()
 
-
     useEffect(() => {
         getEntity({ entity: 'categories' }).then(res => {
             setCategoriesData(res.data.map(el => ({ ...el, title: el.name })))
@@ -38,6 +37,7 @@ function AddRecord({ navigation }) {
 
         getEntity({ entity: 'app_users' }).then(res => {
             setUsersData(res.data.map(el => ({ ...el, title: el.name })))
+            setValue('paidBy', { ...userInfo, title: userInfo.name }) //Default no controller parece não funcionar
         })
     }, [])
 

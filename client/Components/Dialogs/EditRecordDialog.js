@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { View, StyleSheet } from 'react-native';
 import { Dialog, Portal, Text, Button } from 'react-native-paper';
 import { useTheme } from 'react-native-paper';
@@ -9,8 +9,8 @@ import { InputCurrency } from '../Inputs/TextInputs';
 import Autocomplete from '../Inputs/Autocomplete';
 import { DatePickerInput } from 'react-native-paper-dates'
 import moment from 'moment'
-import { showMessage } from 'react-native-flash-message'
 import CustomButton from '../Buttons/CustomButton';
+import FlashMessage from 'react-native-flash-message';
 
 function EditRecordDialog({ open, close, record, closeAfterEdit }) {
     const [categoriesData, setCategoriesData] = useState(null)
@@ -20,6 +20,8 @@ function EditRecordDialog({ open, close, record, closeAfterEdit }) {
     const [loading, setLoading] = useState(false)
     const [openInfoDialog, setOpenInfoDialog] = useState(false)
 
+    //we need to instantiate flashMessage from Component and give it a ref so it renders on top of the dialog
+    const flashMessageRef = useRef()
     const { t } = useTranslation()
     const theme = useTheme()
     const { control, handleSubmit, setValue, formState: { errors } } = useForm()
@@ -29,10 +31,12 @@ function EditRecordDialog({ open, close, record, closeAfterEdit }) {
             getEntity({ entity: 'categories' }).then(res => {
                 setCategoriesData(res.data.map(el => ({ ...el, title: el.name })))
                 setSelectedCategory(res.data.find(el => el.id === record.subcategory.category.id))
+                setValue('category', { ...record.subcategory.category, title: record.subcategory.category.name }) //Default no controller parece não funcionar
             })
 
             getEntity({ entity: 'app_users' }).then(res => {
                 setUsersData(res.data.map(el => ({ ...el, title: el.name })))
+                setValue('paidBy', { ...record.payer, title: record.payer.name }) //Default no controller parece não funcionar
             })
         }
     }, [open])
@@ -58,19 +62,19 @@ function EditRecordDialog({ open, close, record, closeAfterEdit }) {
         if (!moment(data.date).isSame(moment(record.date), 'day')) changedData.date = data.date
 
         if (Object.keys(changedData).length === 0) {
-            showMessage({ message: 'No changes detected', type: 'info' })
+            flashMessageRef.current.showMessage({ message: 'No changes detected', type: 'info' })
             return;
         }
 
         setLoading(true)
 
         editEntity({ entity: 'records', id: record.id, data: changedData }).then(res => {
-            showMessage({ message: res.data, type: 'success' })
+            flashMessageRef.current.showMessage({ message: res.data, type: 'success' })
             setLoading(false)
             closeAfterEdit()
         }, err => {
             console.log(err)
-            showMessage({ message: 'Error adding new record', type: 'danger' })
+            flashMessageRef.current.showMessage({ message: 'Error adding new record', type: 'danger' })
             setLoading(false)
         })
     }
@@ -195,6 +199,7 @@ function EditRecordDialog({ open, close, record, closeAfterEdit }) {
                 </View>
                 <InfoDialog submit={handleSubmit(onSubmit)} t={t} theme={theme} open={openInfoDialog} close={() => setOpenInfoDialog(false)} />
             </Dialog>
+            <FlashMessage ref={flashMessageRef} position='bottom' icon='auto' duration={3000} floating={true} />
         </Portal>
     )
 }

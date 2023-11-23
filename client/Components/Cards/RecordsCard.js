@@ -18,7 +18,7 @@ function RecordsCard({ record }) {
                 </View>
                 <View style={styles.bottomView}>
                     <Text numberOfLines={1} style={{ color: theme.colors.primary }}>{record.subcategory.name}</Text>
-                    <Text numberOfLines={1} style={styles.dateText}>{moment(record.date).format('DD MMM YYYY hh:mm')}</Text>
+                    <Text numberOfLines={1} style={styles.dateText}>{moment(record.date).format('DD MMM YYYY HH:mm')}</Text>
                 </View>
             </View>
             <Text numberOfLines={1} style={{ color: theme.colors.primary, ...styles.amountText }}>{record.value} €</Text>

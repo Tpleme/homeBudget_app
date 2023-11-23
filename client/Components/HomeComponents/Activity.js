@@ -12,11 +12,19 @@ function Activity({ onViewMore, records }) {
                 <Text style={styles.topTitle}>{t('homeScreen.activity.title')}</Text>
                 <Text onPress={onViewMore} style={styles.topButton}>{t('homeScreen.activity.button')}</Text>
             </View>
-            <View style={styles.activityItens}>
-                {records.map((record, index) => (
-                   <RecordsCard key={index} record={record} /> 
-                ))}
-            </View>
+            {records.length > 0 ?
+                <View style={styles.activityItens}>
+                    {records.map((record, index) => (
+                        <RecordsCard key={index} record={record} />
+                    ))}
+                </View>
+                :
+                <View style={styles.noDataView}>
+                    <Text style={styles.noDataText}>
+                        {`Sem dados de despesas para mostrar.\n\nAssim que adicionar uma nova despesa, esta irá aparecer aqui`}
+                    </Text>
+                </View>
+            }
         </View>
     )
 }
@@ -48,5 +56,19 @@ const styles = StyleSheet.create({
     activityItens: {
         marginTop: 10,
         rowGap: 12,
+    },
+    noDataView: {
+        width: '100%',
+        borderColor: 'tomato',
+        borderWidth: 1,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
+        padding: 10
+    },
+    noDataText: {
+        color: 'grey',
+        textAlign: 'center',
     }
 });

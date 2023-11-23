@@ -173,14 +173,14 @@ export default {
     },
 
     balance: {
-        title: "Historico do balanço",
+        title: "Histórico do balanço",
         noData: "Sem data",
         filterBtn: "Filtrar por data",
         clearFilter: "Limpar filtros",
         cards: {
             closed: "Balanço fechado",
-            viewHistory: "Ver historico",
-            expensesHistory: "Historico de despesas",
+            viewHistory: "Ver histórico",
+            expensesHistory: "Histórico de despesas",
             noExpenses: "Sem despesas para apresentar",
             noInfo: "Sem informação a apresentar",
             division: {

@@ -19,7 +19,6 @@ function OpenBalanceModal({ data, t, ...props }) {
     useEffect(() => {
         if (props.open) {
             getOpenBalance({ data }).then(res => {
-                console.log(res.data)
                 setBalanceData(res.data)
                 setDivisionText(getEqualDivision(res.data.dataByUsers))
             }, err => {

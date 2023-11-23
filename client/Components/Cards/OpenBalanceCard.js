@@ -55,7 +55,7 @@ function OpenBalanceCard({ data, refresh, t }) {
             </View>
             <View style={styles.infoView}>
                 <View style={styles.textView}>
-                    <Text style={styles.infoText}>{t('common.from')}: {moment(data.start_date).format('DD MMM YYYY hh:mm')}</Text>
+                    <Text style={styles.infoText}>{t('common.from')}: {moment(data.start_date).format('DD MMM YYYY HH:mm')}</Text>
                     <Text style={styles.infoText}>{t('common.to')}: {t('balance.cards.today')}</Text>
                 </View>
                 <Text style={styles.totalText}>{data.total} €</Text>

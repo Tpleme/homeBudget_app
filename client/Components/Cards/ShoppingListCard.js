@@ -32,7 +32,7 @@ function ShoppingListCard({ list, refresh }) {
     return (
         <View key={list.id} style={styles.listView}  >
             <Pressable style={styles.textWrapper} onPress={() => onOpenList('view')}>
-                <Text style={styles.listCardText}>{list.name?.length ? list.name : moment(list.createdAt).format('DD MMMM YYYY - hh:mm')}</Text>
+                <Text style={styles.listCardText}>{list.name?.length ? list.name : moment(list.createdAt).format('DD MMMM YYYY - HH:mm')}</Text>
             </Pressable>
             <Menu
                 visible={showMenu}

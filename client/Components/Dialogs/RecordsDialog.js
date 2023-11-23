@@ -31,8 +31,8 @@ function RecordsDialog({ open, close, record }) {
             <Dialog visible={open} onDismiss={close} style={{ backgroundColor: theme.colors.surfaceVariant, ...styles.dialog }}>
                 <Text style={styles.title}>{record.value} € - {record.payer.name}</Text>
                 <Text style={styles.subtitle}>{record.subcategory.category.name} - {record.subcategory.name}</Text>
-                <Text style={styles.date}>{moment(record.date).format('DD MMMM YYYY hh:mm')}</Text>
-                <Text variant="bodyMedium">{t('common.createdAt')}: {moment(record.createdAt).format('DD MMMM YYYY hh:mm')}</Text>
+                <Text style={styles.date}>{moment(record.date).format('DD MMMM YYYY HH:mm')}</Text>
+                <Text variant="bodyMedium">{t('common.createdAt')}: {moment(record.createdAt).format('DD MMMM YYYY HH:mm')}</Text>
                 <Text variant="bodyMedium">{t('common.createdBy')}: {record.creator.name}</Text>
                 <View style={{ padding: 10, flexDirection: 'row', justifyContent: 'center' }}>
                     <Button onPress={close}>{t('common.close')}</Button>

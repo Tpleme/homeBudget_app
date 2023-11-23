@@ -28,7 +28,7 @@ function ListModal(props) {
 
     useEffect(() => {
         if (props.open) {
-            setListName(props.list.name?.length ? props.list.name : moment(props.list.createdAt).format('DD MMMM YYYY - hh:mm'))
+            setListName(props.list.name?.length ? props.list.name : moment(props.list.createdAt).format('DD MMMM YYYY - HH:mm'))
             if (props.list.itens) {
                 setItens(JSON.parse(props.list.itens))
             }
@@ -63,7 +63,7 @@ function ListModal(props) {
         if (props.list.itens) {
             setItens(JSON.parse(props.list.itens))
         }
-        setListName(props.list.name ?? moment(props.list.createdAt).format('DD MMMM YYYY - hh:mm'))
+        setListName(props.list.name ?? moment(props.list.createdAt).format('DD MMMM YYYY - HH:mm'))
         setDisplayMode('view');
     }
 

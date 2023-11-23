@@ -17,8 +17,8 @@ function ClosedBalanceCard({ balance, t }) {
             </View>
             <View style={styles.infoView}>
                 <View style={styles.textView}>
-                    <Text style={styles.infoText}>{t('common.to')}: {moment(balance.end_date).format('DD MMM YYYY hh:mm')}</Text>
-                    <Text style={styles.infoText}>{t('common.from')}: {moment(balance.start_date).format('DD MMM YYYY hh:mm')}</Text>
+                    <Text style={styles.infoText}>{t('common.to')}: {moment(balance.end_date).format('DD MMM YYYY HH:mm')}</Text>
+                    <Text style={styles.infoText}>{t('common.from')}: {moment(balance.start_date).format('DD MMM YYYY HH:mm')}</Text>
                 </View>
                 <Text style={styles.totalText}>{balance.total} €</Text>
             </View>

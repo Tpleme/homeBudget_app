@@ -54,7 +54,7 @@ function HomePageChart(props) {
 
     return (
         <View style={styles.homeChartMainView}>
-            {chartData.length > 0 &&
+            {chartData.length > 0 ?
                 <LineChart
                     thickness1={3}
                     areaChart
@@ -114,6 +114,12 @@ function HomePageChart(props) {
                         },
                     }}
                 />
+                :
+                <View style={styles.noDataView}>
+                    <Text style={styles.noDataText}>
+                        {`Sem dados de despesas para mostrar.\n\nAdicione despesas para poder ver um gráfico.`}
+                    </Text>
+                </View>
             }
         </View>
     )
@@ -126,5 +132,19 @@ const styles = StyleSheet.create({
         flex: 1,
         height: '100%',
         width: '100%',
+        padding: 10
+    },
+    noDataView: {
+        height: '100%',
+        width: '100%',
+        borderColor: 'tomato',
+        borderWidth: 1,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    noDataText: {
+        color: 'grey',
+        textAlign: 'center',
     }
 })
